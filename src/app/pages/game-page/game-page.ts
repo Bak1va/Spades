@@ -102,16 +102,16 @@ export class GamePage implements OnInit, OnDestroy {
     switch (system) {
       case 'tshirt':
         this.votingCards = [
-          { value: 'XS', image: '' }, { value: 'S', image: '' }, { value: 'M', image: '' },
-          { value: 'L', image: '' }, { value: 'XL', image: '' }, { value: 'XXL', image: '' },
+          { value: 'XS', image: 'assets/card_xs.png' }, { value: 'S', image: 'assets/card_s.png' }, { value: 'M', image: 'assets/card_m.png' },
+          { value: 'L', image: 'assets/card_l.png' }, { value: 'XL', image: 'assets/card_xl.png' }, { value: 'XXL', image: 'assets/card_xxl.png' },
           { value: '?', image: 'assets/card_question.png' }, { value: '☕', image: 'assets/card_coffee.png' }
         ];
         break;
       case 'powers':
         this.votingCards = [
           { value: '1', image: 'assets/card_1.png' }, { value: '2', image: 'assets/card_2.png' },
-          { value: '4', image: '' }, { value: '8', image: '' }, { value: '16', image: '' },
-          { value: '32', image: '' }, { value: '64', image: '' },
+          { value: '4', image: 'assets/card_4.png' }, { value: '8', image: 'assets/card_8.png' }, { value: '16', image: 'assets/card_16.png' },
+          { value: '32', image: 'assets/card_32.png' }, { value: '64', image: 'assets/card_64.png' },
           { value: '?', image: 'assets/card_question.png' }, { value: '☕', image: 'assets/card_coffee.png' }
         ];
         break;
