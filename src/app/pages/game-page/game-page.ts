@@ -31,7 +31,7 @@ export class GamePage implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.lobbyId = this.route.snapshot.paramMap.get('lobbyId') || '';
+    this.lobbyId = (this.route.snapshot.paramMap.get('lobbyId') || '').toUpperCase();
     this.gameLink = window.location.href;
 
     const savedName = localStorage.getItem('planningPokerUsername');

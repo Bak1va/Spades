@@ -62,8 +62,9 @@
 
           <!-- Center button -->
           <div class="table-center">
+            <!-- Debug: {{ lobby?.users | json }} -->
             @if (!lobby?.votesRevealed) {
-              <button class="btn-reveal" (click)="revealVotes()" [disabled]="!hasAnyVotes()">
+              <button class="btn-reveal" (click)="revealVotes()">
                 Reveal cards
               </button>
             } @else {
