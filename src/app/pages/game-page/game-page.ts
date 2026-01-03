@@ -1,16 +1,16 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { UpperCasePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { SocketService, Lobby } from '../../services/socket.service';
 import { TranslateService } from '../../services/translate.service';
+import { UserService } from '../../services/user.service';
 import { QRCodeComponent } from 'angularx-qrcode';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-game-page',
-  imports: [FormsModule, CommonModule, QRCodeComponent, UpperCasePipe],
+  imports: [FormsModule, CommonModule, QRCodeComponent],
   templateUrl: './game-page.html',
   styleUrl: './game-page.css',
 })
@@ -24,6 +24,7 @@ export class GamePage implements OnInit, OnDestroy {
   copied = false;
   gameLink = '';
   lang: 'en' | 'ro' | 'fr';
+  isAuthenticating = true; // Show loading state while checking auth
 
   votingCards = [
     { value: '0', image: 'assets/card_0.png' },
@@ -47,7 +48,8 @@ export class GamePage implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private socketService: SocketService,
-    public translateService: TranslateService
+    public translateService: TranslateService,
+    private userService: UserService
   ) {
     this.lang = this.translateService.currentLang;
   }
@@ -58,16 +60,19 @@ export class GamePage implements OnInit, OnDestroy {
       ? `${window.location.origin}/game/${this.lobbyId}`
       : window.location.href;
 
+    // Load saved username from localStorage
     const savedName = localStorage.getItem('planningPokerUsername');
     if (savedName) {
       this.userName = savedName;
     }
 
+    // Load voting system preference
     const votingSystem = localStorage.getItem('planningPokerVotingSystem');
     if (votingSystem) {
       this.setVotingCards(votingSystem);
     }
 
+    // Subscribe to lobby updates
     this.subscriptions.push(
       this.socketService.lobby$.subscribe(lobby => {
         if (lobby) {
@@ -77,14 +82,15 @@ export class GamePage implements OnInit, OnDestroy {
       })
     );
 
+    // Subscribe to socket events
     this.subscriptions.push(
       this.socketService.onUserJoined().subscribe(),
       this.socketService.onUserLeft().subscribe(),
       this.socketService.onVoteSubmitted().subscribe(),
-      this.socketService.onVotesRevealed().subscribe(data => {
+      this.socketService.onVotesRevealed().subscribe(() => {
         this.selectedVote = null;
       }),
-      this.socketService.onRoundStarted().subscribe(data => {
+      this.socketService.onRoundStarted().subscribe(() => {
         this.selectedVote = null;
       }),
       this.socketService.onLobbyClosed().subscribe(() => {
@@ -97,33 +103,84 @@ export class GamePage implements OnInit, OnDestroy {
       })
     );
 
-    if (this.userName && this.lobbyId) {
-      if (this.socketService.currentLobby?.id === this.lobbyId) {
-        this.hasJoined = true;
-        this.showInvitePopup = true;
-      }
+    // Check if already in this lobby via socket
+    if (this.socketService.currentLobby?.id === this.lobbyId) {
+      this.hasJoined = true;
+      this.isAuthenticating = false;
+      return;
     }
+
+    // Initialize user authentication
+    this.initializeUser();
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
+  /**
+   * Initialize user - check Keycloak auth and auto-join if possible
+   */
+  private async initializeUser(): Promise<void> {
+    try {
+      // Wait for Keycloak to initialize and check SSO
+      const authenticated = await this.userService.init();
+
+      if (authenticated) {
+        console.log('User is authenticated via Keycloak');
+
+        // Get username from Keycloak token
+        const keycloakUsername = this.userService.getUsername() || this.userService.getFullName();
+        
+        if (keycloakUsername) {
+          this.userName = keycloakUsername;
+          localStorage.setItem('planningPokerUsername', this.userName);
+        }
+      }
+
+      // Done checking auth
+      this.isAuthenticating = false;
+
+      // Auto-join lobby if we have username and lobbyId
+      if (this.userName && this.lobbyId && !this.hasJoined) {
+        this.joinLobby();
+      }
+    } catch (err) {
+      console.log('Keycloak initialization failed or user not authenticated:', err);
+      this.isAuthenticating = false;
+
+      // Still try to join if we have a saved username
+      if (this.userName && this.lobbyId && !this.hasJoined) {
+        this.joinLobby();
+      }
+    }
+  }
+
   setVotingCards(system: string): void {
     switch (system) {
       case 'tshirt':
         this.votingCards = [
-          { value: 'XS', image: 'assets/card_xs.png' }, { value: 'S', image: 'assets/card_s.png' }, { value: 'M', image: 'assets/card_m.png' },
-          { value: 'L', image: 'assets/card_l.png' }, { value: 'XL', image: 'assets/card_xl.png' }, { value: 'XXL', image: 'assets/card_xxl.png' },
-          { value: '?', image: 'assets/card_question.png' }, { value: '☕', image: 'assets/card_coffee.png' }
+          { value: 'XS', image: 'assets/card_xs.png' },
+          { value: 'S', image: 'assets/card_s.png' },
+          { value: 'M', image: 'assets/card_m.png' },
+          { value: 'L', image: 'assets/card_l.png' },
+          { value: 'XL', image: 'assets/card_xl.png' },
+          { value: 'XXL', image: 'assets/card_xxl.png' },
+          { value: '?', image: 'assets/card_question.png' },
+          { value: '☕', image: 'assets/card_coffee.png' }
         ];
         break;
       case 'powers':
         this.votingCards = [
-          { value: '1', image: 'assets/card_1.png' }, { value: '2', image: 'assets/card_2.png' },
-          { value: '4', image: 'assets/card_4.png' }, { value: '8', image: 'assets/card_8.png' }, { value: '16', image: 'assets/card_16.png' },
-          { value: '32', image: 'assets/card_32.png' }, { value: '64', image: 'assets/card_64.png' },
-          { value: '?', image: 'assets/card_question.png' }, { value: '☕', image: 'assets/card_coffee.png' }
+          { value: '1', image: 'assets/card_1.png' },
+          { value: '2', image: 'assets/card_2.png' },
+          { value: '4', image: 'assets/card_4.png' },
+          { value: '8', image: 'assets/card_8.png' },
+          { value: '16', image: 'assets/card_16.png' },
+          { value: '32', image: 'assets/card_32.png' },
+          { value: '64', image: 'assets/card_64.png' },
+          { value: '?', image: 'assets/card_question.png' },
+          { value: '☕', image: 'assets/card_coffee.png' }
         ];
         break;
       default:
@@ -159,6 +216,29 @@ export class GamePage implements OnInit, OnDestroy {
         this.router.navigate(['/']);
       }
     });
+  }
+
+  /**
+   * Trigger Keycloak login - redirects to Keycloak and back
+   */
+  login(): void {
+    const redirect = this.gameLink || window.location.href;
+    this.userService.login(redirect).catch(err => console.error('Login failed', err));
+  }
+
+  /**
+   * Logout from Keycloak
+   */
+  logout(): void {
+    const redirect = window.location.origin;
+    this.userService.logout(redirect).catch(err => console.error('Logout failed', err));
+  }
+
+  /**
+   * Check if user is logged in via Keycloak
+   */
+  isLoggedIn(): boolean {
+    return this.userService.isLoggedIn();
   }
 
   vote(card: { value: string; image: string }): void {

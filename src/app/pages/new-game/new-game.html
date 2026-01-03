@@ -9,7 +9,13 @@
     </select>
   </div>
 
-  <div class="form-section">
+  <!-- Loading state while checking authentication -->
+  <div *ngIf="isLoading" class="form-section" style="text-align: center;">
+    <p>{{ translateService.translate('newGame.checkingAuth') || 'Checking authentication...' }}</p>
+  </div>
+
+  <!-- Form shown only when authenticated -->
+  <div *ngIf="!isLoading" class="form-section">
     <div class="form-group">
       <label for="gameName">{{ translateService.translate('newGame.gameName') }}</label>
       <input type="text" id="gameName" [(ngModel)]="gameName"
@@ -17,9 +23,10 @@
     </div>
 
     <div class="form-group">
-      <label for="userName">{{ translateService.translate('newGame.yourName') }}</label>
-      <input type="text" id="userName" [(ngModel)]="userName"
-        [placeholder]="translateService.translate('newGame.enterYourName')" class="input-field" />
+      <label>{{ translateService.translate('newGame.yourName') }}</label>
+      <div class="input-field readonly" style="padding: 8px; background: #f5f5f5; border-radius:4px; color: #333;">
+        {{ userName }}
+      </div>
     </div>
 
     <div class="form-group">

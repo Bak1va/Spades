@@ -111,6 +111,16 @@ export class TranslateService {
             fr: 'Créer la partie'
         },
 
+        'join.login' : {
+            en: 'Login',
+            ro: 'Autentificare',
+            fr: 'Connexion'
+        },
+        'join.or' : {
+            en: 'or',
+            ro: 'sau',
+            fr: 'ou'
+        },
         'join.title': {
             en: 'Join the game',
             ro: 'Intră în joc',
