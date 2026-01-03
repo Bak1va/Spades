@@ -1,30 +1,26 @@
 name: Deploy Frontend
-
 on:
   push:
     branches: [main]
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-
       - name: Build Angular
         run: |
           npm ci
           npm run build -- --configuration=production
-
       - name: List build output
         run: |
-          echo "Build output:"
-          ls -la dist/
-
+          echo "=== Full dist structure ==="
+          ls -laR dist/
+          echo "=== Checking browser folder ==="
+          ls -la dist/Spades/browser/ || echo "browser folder not found"
       - name: Deploy to server
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -32,7 +28,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: "dist/spades/browser/"
+          source: "dist/Spades/browser/*"
           target: "/var/www/poker/frontend/Spades"
-          strip_components: 2
+          strip_components: 3
           rm: true
