@@ -48,6 +48,12 @@ export class SocketService {
       this.connectedSubject.next(false);
       console.log('Disconnected from server');
     });
+
+    this.socket.on('lobby-updated', (data: { lobby: Lobby }) => {
+      if (data.lobby) {
+        this.lobbySubject.next(data.lobby);
+      }
+    });
   }
 
   get socketId(): string {
@@ -72,7 +78,7 @@ export class SocketService {
   joinLobby(lobbyId: string, userName: string): Observable<{ lobby: Lobby }> {
     return new Observable(observer => {
       this.socket.emit('join-lobby', { lobbyId, userName });
-      
+
       this.socket.once('lobby-joined', (data: { lobby: Lobby }) => {
         this.lobbySubject.next(data.lobby);
         observer.next(data);
@@ -119,8 +125,11 @@ export class SocketService {
       this.socket.on('user-left', (data: { userId: string; userName: string }) => {
         const lobby = this.lobbySubject.value;
         if (lobby) {
-          lobby.users = lobby.users.filter(u => u.id !== data.userId);
-          this.lobbySubject.next({ ...lobby });
+          const updatedLobby = {
+            ...lobby,
+            users: lobby.users.filter(u => u.id !== data.userId)
+          };
+          this.lobbySubject.next(updatedLobby);
         }
         observer.next(data);
       });
@@ -177,6 +186,19 @@ export class SocketService {
       this.socket.on('lobby-closed', () => {
         this.lobbySubject.next(null);
         observer.next();
+      });
+    });
+  }
+
+  kickUser(lobbyId: string, userId: string): void {
+    this.socket.emit('kick-user', { lobbyId, userId });
+  }
+
+  onKicked(): Observable<{ lobbyId: string }> {
+    return new Observable(observer => {
+      this.socket.on('kicked', (data: { lobbyId: string }) => {
+        this.lobbySubject.next(null);
+        observer.next(data);
       });
     });
   }

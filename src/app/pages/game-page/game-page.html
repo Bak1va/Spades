@@ -19,111 +19,100 @@
   <!-- Main game area -->
   <main class="game-main">
     @if (!hasJoined) {
-      <!-- Join form for new players -->
-      <div class="join-form-container">
-        <h2>Join the game</h2>
-        <div class="form-group">
-          <label>Your name</label>
-          <input
-            type="text"
-            [(ngModel)]="userName"
-            placeholder="Enter your name"
-            class="input-field"
-          />
-        </div>
-        <button
-          class="btn-primary"
-          (click)="joinLobby()"
-          [disabled]="!userName.trim()"
-        >
-          Join Game
-        </button>
+    <!-- Join form for new players -->
+    <div class="join-form-container">
+      <h2>Join the game</h2>
+      <div class="form-group">
+        <label>Your name</label>
+        <input type="text" [(ngModel)]="userName" placeholder="Enter your name" class="input-field" />
       </div>
+      <button class="btn-primary" (click)="joinLobby()" [disabled]="!userName.trim()">
+        Join Game
+      </button>
+    </div>
     } @else {
-      <!-- Table area -->
-      <div class="table-section">
-        @if (lobby && lobby.users.length <= 1) {
-          <p class="lonely-message">Feeling lonely? 😴</p>
-          <button class="invite-link" (click)="showInvitePopup = true">
-            Invite players
-          </button>
+    <!-- Table area -->
+    <div class="table-section">
+      @if (lobby && lobby.users.length <= 1) { <p class="lonely-message">Feeling lonely? 😴</p>
+        <button class="invite-link" (click)="showInvitePopup = true">
+          Invite players
+        </button>
         }
-        
+
         <div class="poker-table">
           <!-- Players around the table -->
           <div class="players-around-table">
             @for (user of lobby?.users; track user.id) {
-              <div class="player-spot">
-                <div class="player-card" [class.voted]="user.vote" [class.revealed]="lobby?.votesRevealed">
-                  @if (lobby?.votesRevealed && user.vote) {
-                    <span class="vote-value">{{ user.vote }}</span>
-                  } @else if (user.vote) {
-                    <span class="card-back">✓</span>
-                  }
-                </div>
-                <span class="player-name">{{ user.name }}</span>
+            <div class="player-spot">
+              <div class="player-card" [class.voted]="user.vote" [class.revealed]="lobby?.votesRevealed">
+                @if (lobby?.votesRevealed && user.vote) {
+                <span class="vote-value">{{ user.vote }}</span>
+                } @else if (user.vote) {
+                <span class="card-back">✓</span>
+                }
               </div>
+              <span class="player-name">{{ user.name }}</span>
+              @if (isHost() && user.id !== lobby?.host) {
+              <button class="btn-kick" (click)="kickUser(user.id)" title="Kick player">❌</button>
+              }
+            </div>
             }
           </div>
 
           <!-- Center button -->
           <div class="table-center">
             @if (!lobby?.votesRevealed) {
-              <button class="btn-reveal" (click)="revealVotes()">
-                Reveal cards
-              </button>
+            <button class="btn-reveal" (click)="revealVotes()">
+              Reveal cards
+            </button>
             } @else {
-              <button class="btn-new-round" (click)="startNewRound()">
-                Start new round
-              </button>
+            <button class="btn-new-round" (click)="startNewRound()">
+              Start new round
+            </button>
             }
           </div>
         </div>
-      </div>
+    </div>
 
-      <div class="voting-section">
-        <p class="voting-label">Choose your card 👇</p>
-        <div class="voting-cards">
-          @for (card of votingCards; track card.value) {
-            <button 
-              class="vote-card" 
-              [class.selected]="selectedVote === card.value"
-              (click)="vote(card)"
-              [disabled]="lobby?.votesRevealed"
-            >
-              @if (card.image) {
-                <img [src]="card.image" [alt]="card.value" class="card-image" />
-              } @else {
-                <span class="card-text">{{ card.value }}</span>
-              }
-            </button>
+    <div class="voting-section">
+      <p class="voting-label">Choose your card 👇</p>
+      <div class="voting-cards">
+        @for (card of votingCards; track card.value) {
+        <button class="vote-card" [class.selected]="selectedVote === card.value" (click)="vote(card)"
+          [disabled]="lobby?.votesRevealed">
+          @if (card.image) {
+          <img [src]="card.image" [alt]="card.value" class="card-image" />
+          } @else {
+          <span class="card-text">{{ card.value }}</span>
           }
-        </div>
+        </button>
+        }
       </div>
+    </div>
     }
   </main>
 
   @if (showInvitePopup) {
-    <div class="modal-overlay" (click)="showInvitePopup = false">
-      <div class="modal-content" (click)="$event.stopPropagation()">
-        <h2>Invite players</h2>
-        <p>Share this link with your team:</p>
+  <div class="modal-overlay" (click)="showInvitePopup = false">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <h2>Invite players</h2>
+      <p>Share this link with your team:</p>
 
-        <div class="link-box">
-          <input type="text" [value]="gameLink" readonly class="link-input" />
-          <button class="copy-btn" (click)="copyLink()">
-            {{ copied ? "✓ Copied!" : "📋 Copy" }}
-          </button>
-        </div>
-
-        <div class="modal-qrcode" style="width: 100%; display: flex; justify-content: center; margin: 20px 0;">
-          @if (gameLink) {
-            <qrcode [qrdata]="gameLink" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
-          }
-        </div>
-
-        <button class="btn-close" (click)="showInvitePopup = false">Close</button>
+      <div class="link-box">
+        <input type="text" [value]="gameLink" readonly class="link-input" />
+        <button class="copy-btn" (click)="copyLink()">
+          {{ copied ? "✓ Copied!" : "📋 Copy" }}
+        </button>
       </div>
+
+      <div class="modal-qrcode" style="width: 100%; display: flex; justify-content: center; margin: 20px 0;">
+        @if (gameLink) {
+        <qrcode [qrdata]="gameLink" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+        }
+      </div>
+
+      <button class="btn-close" (click)="showInvitePopup = false">Close</button>
     </div>
+  </div>
   }
 </div>
