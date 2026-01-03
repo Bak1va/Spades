@@ -20,6 +20,11 @@ jobs:
           npm ci
           npm run build -- --configuration=production
 
+      - name: List build output
+        run: |
+          echo "Build output:"
+          ls -la dist/
+
       - name: Deploy to server
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -27,7 +32,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: "dist/spades/browser/*"
+          source: "dist/spades/browser/"
           target: "/var/www/poker/frontend/Spades"
-          strip_components: 3
+          strip_components: 2
           rm: true
