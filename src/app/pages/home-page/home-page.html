@@ -1,9 +1,9 @@
 <div class="home-container">
   <div class="home-header">
     <h1>{{ translateService.translate('home.title') }}</h1>
-    <button class="btn-lang" (click)="toggleLanguage()" title="Change language">
-      {{ translateService.translate('header.language') }}
-    </button>
+    <select class="lang-select" [(ngModel)]="lang" (ngModelChange)="setLanguage($event)" title="Change language">
+      <option *ngFor="let opt of translateService.languageOptions" [value]="opt.code">{{ opt.label }}</option>
+    </select>
   </div>
 
   <button class="btn-primary" (click)="goToNewGame()">
