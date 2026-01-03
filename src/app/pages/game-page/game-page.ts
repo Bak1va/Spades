@@ -24,10 +24,8 @@ export class GamePage implements OnInit, OnDestroy {
   copied = false;
   gameLink = '';
   lang: 'en' | 'ro' | 'fr';
-  roundStartTime: number | null = null;
-  timerDuration = 300;
-  displayedTime = this.timerDuration;
-  private timerInterval: any = null;
+
+
 
   votingCards = [
     { value: '0', image: 'assets/card_0.png' },
@@ -46,6 +44,7 @@ export class GamePage implements OnInit, OnDestroy {
   ];
 
   private subscriptions: Subscription[] = [];
+  voteStatistics: { vote: string; count: number; percentage: number }[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -87,10 +86,11 @@ export class GamePage implements OnInit, OnDestroy {
       this.socketService.onVoteSubmitted().subscribe(),
       this.socketService.onVotesRevealed().subscribe(data => {
         this.selectedVote = null;
+        this.calculateVoteStatistics();
       }),
       this.socketService.onRoundStarted().subscribe(data => {
         this.selectedVote = null;
-        this.startRoundTimer();
+        this.voteStatistics = [];
       }),
       this.socketService.onLobbyClosed().subscribe(() => {
         alert(this.translateService.translate('alert.lobbyClosed'));
@@ -112,9 +112,6 @@ export class GamePage implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
-    if (this.timerInterval) {
-      clearInterval(this.timerInterval);
-    }
   }
 
   setVotingCards(system: string): void {
@@ -225,20 +222,29 @@ export class GamePage implements OnInit, OnDestroy {
     this.router.navigate(['/']);
   }
 
-  startRoundTimer(): void {
-    this.roundStartTime = Date.now();
-    this.displayedTime = this.timerDuration;
-    if (this.timerInterval) {
-      clearInterval(this.timerInterval);
+  calculateVoteStatistics(): void {
+    if (!this.lobby || this.lobby.users.length === 0) {
+      this.voteStatistics = [];
+      return;
     }
-    this.timerInterval = setInterval(() => {
-      if (this.roundStartTime) {
-        const elapsed = Math.floor((Date.now() - this.roundStartTime) / 1000);
-        this.displayedTime = Math.max(0, this.timerDuration - elapsed);
-        if (this.displayedTime <= 0) {
-          clearInterval(this.timerInterval);
-        }
+
+    const voteCounts: { [key: string]: number } = {};
+    const usersWithVotes = this.lobby.users.filter(u => u.vote !== null);
+
+    usersWithVotes.forEach(user => {
+      if (user.vote) {
+        voteCounts[user.vote] = (voteCounts[user.vote] || 0) + 1;
       }
-    }, 100);
+    });
+
+    const totalVotes = usersWithVotes.length || 1;
+
+    this.voteStatistics = Object.entries(voteCounts)
+      .map(([vote, count]) => ({
+        vote,
+        count,
+        percentage: Math.round((count / totalVotes) * 100)
+      }))
+      .sort((a, b) => b.count - a.count);
   }
 }
