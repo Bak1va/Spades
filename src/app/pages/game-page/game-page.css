@@ -20,7 +20,6 @@
 .logo-icon {
   font-size: 24px;
   color: var(--astral-gold);
-  filter: drop-shadow(0 0 8px var(--ethereal-glow));
 }
 
 .game-name {
@@ -63,15 +62,12 @@
   background: rgba(45, 27, 78, 0.5);
   border: 1px solid var(--astral-gold);
   color: var(--stardust-gold);
-  padding: 10px 20px;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(5px);
+  padding: 8px 16px;
+  transition: all 0.2s;
 }
 
 .btn-outline:hover {
   background: rgba(74, 45, 107, 0.7);
-  box-shadow: 0 0 16px var(--ethereal-glow);
-  transform: translateY(-2px);
 }
 
 .btn-exit {
@@ -108,13 +104,11 @@
 
 .join-form-container {
   max-width: 360px;
-  margin: 80px auto;
+  margin: 60px auto;
   background: rgba(45, 27, 78, 0.6);
-  padding: 32px;
+  padding: 24px;
   border: 2px solid var(--astral-gold);
-  border-radius: 8px;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
 }
 
 .join-form-container h2 {
@@ -428,7 +422,6 @@
   object-position: center;
   position: relative;
   z-index: 1;
-  filter: drop-shadow(0 0 4px rgba(212, 175, 55, 0.3));
 }
 
 .card-text {
