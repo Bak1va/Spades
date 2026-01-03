@@ -242,4 +242,14 @@ export class SocketService {
   disconnect(): void {
     this.socket.disconnect();
   }
+
+  reconnect(): void {
+    if (this.socket.disconnected) {
+      this.socket.connect();
+    }
+  }
+
+  clearLobby(): void {
+    this.lobbySubject.next(null);
+  }
 }

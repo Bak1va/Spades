@@ -14,6 +14,11 @@ interface Translations {
 })
 export class TranslateService {
     private supportedLangs: Array<'en' | 'ro' | 'fr'> = ['en', 'ro', 'fr'];
+    public readonly languageOptions = [
+        { code: 'en' as const, label: 'English' },
+        { code: 'ro' as const, label: 'Română' },
+        { code: 'fr' as const, label: 'Français' },
+    ];
     private currentLangSubject = new BehaviorSubject<'en' | 'ro' | 'fr'>('en');
     public currentLang$ = this.currentLangSubject.asObservable();
 
@@ -106,6 +111,16 @@ export class TranslateService {
             fr: 'Créer la partie'
         },
 
+        'join.login' : {
+            en: 'Login',
+            ro: 'Autentificare',
+            fr: 'Connexion'
+        },
+        'join.or' : {
+            en: 'or',
+            ro: 'sau',
+            fr: 'ou'
+        },
         'join.title': {
             en: 'Join the game',
             ro: 'Intră în joc',
@@ -127,11 +142,6 @@ export class TranslateService {
             fr: 'Rejoindre la partie'
         },
 
-        'game.lonelyMessage': {
-            en: 'Feeling lonely? 😴',
-            ro: 'Te simți singur? 😴',
-            fr: 'Tu te sens seul ? 😴'
-        },
         'game.invitePlayers': {
             en: 'Invite players',
             ro: 'Invită jucători',
@@ -224,6 +234,10 @@ export class TranslateService {
             return key;
         }
         return translation[this.currentLang] ?? translation.en;
+    }
+
+    get languages(): Array<'en' | 'ro' | 'fr'> {
+        return this.supportedLangs;
     }
 
     toggleLanguage(): void {
