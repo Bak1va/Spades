@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UpperCasePipe, CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { SocketService } from '../../services/socket.service';
@@ -6,7 +7,7 @@ import { TranslateService } from '../../services/translate.service';
 
 @Component({
   selector: 'app-new-game',
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule, UpperCasePipe],
   templateUrl: './new-game.html',
   styleUrl: './new-game.css',
 })
@@ -17,12 +18,15 @@ export class NewGame implements OnInit {
   gameLink = '';
   copied = false;
   lobbyId = '';
+  lang: 'en' | 'ro' | 'fr';
 
   constructor(
     private router: Router,
     private socketService: SocketService,
     public translateService: TranslateService
-  ) { }
+  ) {
+    this.lang = this.translateService.currentLang;
+  }
 
   ngOnInit(): void {
     const savedName = localStorage.getItem('planningPokerUsername');
@@ -71,7 +75,8 @@ export class NewGame implements OnInit {
     this.router.navigate(['/game', this.lobbyId]);
   }
 
-  toggleLanguage(): void {
-    this.translateService.toggleLanguage();
+  setLanguage(lang: 'en' | 'ro' | 'fr'): void {
+    this.lang = lang;
+    this.translateService.setLanguage(lang);
   }
 }

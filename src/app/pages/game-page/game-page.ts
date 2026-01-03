@@ -1,14 +1,16 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { UpperCasePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { SocketService, Lobby } from '../../services/socket.service';
 import { TranslateService } from '../../services/translate.service';
 import { QRCodeComponent } from 'angularx-qrcode';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-game-page',
-  imports: [FormsModule, QRCodeComponent],
+  imports: [FormsModule, CommonModule, QRCodeComponent, UpperCasePipe],
   templateUrl: './game-page.html',
   styleUrl: './game-page.css',
 })
@@ -21,6 +23,7 @@ export class GamePage implements OnInit, OnDestroy {
   showInvitePopup = false;
   copied = false;
   gameLink = '';
+  lang: 'en' | 'ro' | 'fr';
 
   votingCards = [
     { value: '0', image: 'assets/card_0.png' },
@@ -45,7 +48,9 @@ export class GamePage implements OnInit, OnDestroy {
     private router: Router,
     private socketService: SocketService,
     public translateService: TranslateService
-  ) { }
+  ) {
+    this.lang = this.translateService.currentLang;
+  }
 
   ngOnInit(): void {
     this.lobbyId = (this.route.snapshot.paramMap.get('lobbyId') || '').toUpperCase();
@@ -198,7 +203,8 @@ export class GamePage implements OnInit, OnDestroy {
     }
   }
 
-  toggleLanguage(): void {
-    this.translateService.toggleLanguage();
+  setLanguage(lang: 'en' | 'ro' | 'fr'): void {
+    this.lang = lang;
+    this.translateService.setLanguage(lang);
   }
 }

@@ -74,6 +74,14 @@
   transform: translateY(-2px);
 }
 
+.lang-select {
+  padding: 8px 10px;
+  border: 1px solid var(--astral-gold);
+  background: rgba(45, 27, 78, 0.5);
+  color: var(--stardust-gold);
+  border-radius: 4px;
+}
+
 .game-main {
   flex: 1;
   display: flex;

@@ -4,9 +4,9 @@
       <span class="logo-icon">♠</span>
       <h1>{{ translateService.translate('newGame.createGame') }}</h1>
     </div>
-    <button class="btn-lang" (click)="toggleLanguage()" title="Change language">
-      {{ translateService.translate('header.language') }}
-    </button>
+    <select class="lang-select" [(ngModel)]="lang" (ngModelChange)="setLanguage($event)" title="Change language">
+      <option *ngFor="let opt of translateService.languageOptions" [value]="opt.code">{{ opt.label }}</option>
+    </select>
   </div>
 
   <div class="form-section">
