@@ -43,7 +43,7 @@ export class GamePage implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private socketService: SocketService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.lobbyId = (this.route.snapshot.paramMap.get('lobbyId') || '').toUpperCase();
@@ -82,6 +82,10 @@ export class GamePage implements OnInit, OnDestroy {
       }),
       this.socketService.onLobbyClosed().subscribe(() => {
         alert('The game has been closed by the host');
+        this.router.navigate(['/']);
+      }),
+      this.socketService.onKicked().subscribe(() => {
+        alert('You have been kicked from the game by the host');
         this.router.navigate(['/']);
       })
     );
@@ -152,7 +156,7 @@ export class GamePage implements OnInit, OnDestroy {
 
   vote(card: { value: string; image: string }): void {
     if (!this.lobbyId || this.lobby?.votesRevealed) return;
-    
+
     this.selectedVote = card.value;
     this.socketService.submitVote(this.lobbyId, card.value);
   }
@@ -178,5 +182,17 @@ export class GamePage implements OnInit, OnDestroy {
         this.copied = false;
       }, 2000);
     });
+  }
+
+  isHost(): boolean {
+    return this.lobby?.host === this.socketService.socketId;
+  }
+
+  kickUser(userId: string): void {
+    if (!this.lobbyId || !this.isHost()) return;
+
+    if (confirm('Are you sure you want to kick this player?')) {
+      this.socketService.kickUser(this.lobbyId, userId);
+    }
   }
 }
