@@ -17,7 +17,7 @@
       <select class="lang-select" [(ngModel)]="lang" (ngModelChange)="setLanguage($event)" title="Change language">
         <option *ngFor="let opt of translateService.languageOptions" [value]="opt.code">{{ opt.label }}</option>
       </select>
-      <button class="btn-exit" (click)="exitLobby()">Exit</button>
+      <button class="btn-outline" (click)="exitLobby()">Exit</button>
     </div>
   </header>
 
