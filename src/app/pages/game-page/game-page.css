@@ -63,7 +63,6 @@
   border: 1px solid var(--astral-gold);
   color: var(--stardust-gold);
   padding: 8px 16px;
-  transition: all 0.2s;
 }
 
 .btn-outline:hover {
@@ -129,7 +128,6 @@
 }
 
 .btn-primary:hover:not(:disabled) {
-  transform: translateY(-2px);
   box-shadow: 0 6px 20px var(--ethereal-glow);
 }
 
@@ -140,24 +138,6 @@
   align-items: center;
   justify-content: center;
   padding-top: 50px;
-}
-
-.lonely-message {
-  color: var(--moonlight);
-  font-style: italic;
-}
-
-.invite-link {
-  background: none;
-  border: none;
-  color: var(--astral-gold);
-  margin-bottom: 16px;
-  text-decoration: underline;
-  transition: color 0.3s ease;
-}
-
-.invite-link:hover {
-  color: var(--stardust-gold);
 }
 
 .poker-table {
@@ -248,7 +228,6 @@
   margin: 0 auto 6px;
   border-radius: 4px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-  transition: all 0.3s ease;
   position: relative;
 }
 
@@ -287,7 +266,6 @@
   font-size: 10px;
   border-radius: 4px;
   cursor: pointer;
-  transition: all 0.2s ease;
   opacity: 0.7;
   margin-top: 4px;
   display: block;
@@ -298,7 +276,6 @@
 .btn-kick:hover {
   background: rgba(239, 68, 68, 0.9);
   opacity: 1;
-  transform: scale(1.1);
   box-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
 }
 
@@ -320,7 +297,6 @@
 
 .btn-reveal:hover:not(:disabled),
 .btn-new-round:hover {
-  transform: translateY(-2px);
   box-shadow: 0 6px 24px var(--ethereal-glow);
 }
 
@@ -378,7 +354,6 @@
   bottom: -2px;
   background: linear-gradient(135deg, var(--astral-gold), transparent);
   opacity: 0;
-  transition: opacity 0.3s ease;
   z-index: 0;
   border-radius: 6px;
 }
@@ -389,7 +364,6 @@
 
 .vote-card:hover:not(:disabled) {
   border-color: var(--astral-gold);
-  transform: translateY(-4px);
   box-shadow: 0 8px 20px var(--ethereal-glow);
 }
 
@@ -471,7 +445,6 @@
 }
 
 .copy-btn:hover {
-  transform: translateY(-2px);
   box-shadow: 0 4px 16px var(--ethereal-glow);
 }
 
