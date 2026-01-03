@@ -25,6 +25,8 @@ export class GamePage implements OnInit, OnDestroy {
   gameLink = '';
   lang: 'en' | 'ro' | 'fr';
 
+
+
   votingCards = [
     { value: '0', image: 'assets/card_0.png' },
     { value: '1', image: 'assets/card_1.png' },
@@ -42,6 +44,7 @@ export class GamePage implements OnInit, OnDestroy {
   ];
 
   private subscriptions: Subscription[] = [];
+  voteStatistics: { vote: string; count: number; percentage: number }[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -83,9 +86,11 @@ export class GamePage implements OnInit, OnDestroy {
       this.socketService.onVoteSubmitted().subscribe(),
       this.socketService.onVotesRevealed().subscribe(data => {
         this.selectedVote = null;
+        this.calculateVoteStatistics();
       }),
       this.socketService.onRoundStarted().subscribe(data => {
         this.selectedVote = null;
+        this.voteStatistics = [];
       }),
       this.socketService.onLobbyClosed().subscribe(() => {
         alert(this.translateService.translate('alert.lobbyClosed'));
@@ -215,5 +220,31 @@ export class GamePage implements OnInit, OnDestroy {
     this.lobby = null;
     this.socketService.reconnect();
     this.router.navigate(['/']);
+  }
+
+  calculateVoteStatistics(): void {
+    if (!this.lobby || this.lobby.users.length === 0) {
+      this.voteStatistics = [];
+      return;
+    }
+
+    const voteCounts: { [key: string]: number } = {};
+    const usersWithVotes = this.lobby.users.filter(u => u.vote !== null);
+
+    usersWithVotes.forEach(user => {
+      if (user.vote) {
+        voteCounts[user.vote] = (voteCounts[user.vote] || 0) + 1;
+      }
+    });
+
+    const totalVotes = usersWithVotes.length || 1;
+
+    this.voteStatistics = Object.entries(voteCounts)
+      .map(([vote, count]) => ({
+        vote,
+        count,
+        percentage: Math.round((count / totalVotes) * 100)
+      }))
+      .sort((a, b) => b.count - a.count);
   }
 }
