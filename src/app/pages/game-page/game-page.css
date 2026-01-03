@@ -1,0 +1,273 @@
+.game-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: #0f172a;
+  border-bottom: 1px solid #334155;
+}
+
+.header-left, .header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-avatar {
+  width: 28px;
+  height: 28px;
+  background: #3b82f6;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.btn-outline {
+  background: none;
+  border: 1px solid #3b82f6;
+  color: #3b82f6;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.game-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.join-form-container {
+  max-width: 300px;
+  margin: 80px auto;
+}
+
+.join-form-container h2 {
+  margin-bottom: 16px;
+}
+
+.form-group {
+  margin-bottom: 12px;
+}
+
+.form-group label {
+  display: block;
+  color: #94a3b8;
+  margin-bottom: 4px;
+}
+
+.input-field {
+  width: 100%;
+  background: #334155;
+  border: 1px solid #475569;
+  color: white;
+  padding: 10px;
+}
+
+.btn-primary {
+  width: 100%;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+}
+
+.table-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.lonely-message {
+  color: #94a3b8;
+}
+
+.invite-link {
+  background: none;
+  border: none;
+  color: #3b82f6;
+  cursor: pointer;
+  margin-bottom: 16px;
+}
+
+.poker-table {
+  width: 400px;
+  height: 200px;
+  background: #334155;
+  border: 2px solid #475569;
+  border-radius: 100px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 40px 0;
+}
+
+.players-around-table {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.player-spot {
+  position: absolute;
+  text-align: center;
+}
+
+.player-spot:nth-child(1) { bottom: -70px; left: 50%; transform: translateX(-50%); }
+.player-spot:nth-child(2) { top: -70px; left: 50%; transform: translateX(-50%); }
+.player-spot:nth-child(3) { left: -50px; top: 50%; transform: translateY(-50%); }
+.player-spot:nth-child(4) { right: -50px; top: 50%; transform: translateY(-50%); }
+.player-spot:nth-child(5) { bottom: -70px; left: 25%; }
+.player-spot:nth-child(6) { bottom: -70px; right: 25%; }
+.player-spot:nth-child(7) { top: -70px; left: 25%; }
+.player-spot:nth-child(8) { top: -70px; right: 25%; }
+
+.player-card {
+  width: 40px;
+  height: 56px;
+  background: #1e293b;
+  border: 1px solid #475569;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 4px;
+}
+
+.player-card.voted {
+  border-color: #3b82f6;
+  background: #1e3a5f;
+}
+
+.player-card.revealed {
+  background: #3b82f6;
+}
+
+.player-name {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.btn-reveal, .btn-new-round {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  cursor: pointer;
+}
+
+.btn-reveal:disabled {
+  opacity: 0.5;
+}
+
+.btn-new-round {
+  background: #22c55e;
+}
+
+.voting-section {
+  padding: 20px;
+  border-top: 1px solid #334155;
+  text-align: center;
+}
+
+.voting-label {
+  color: #94a3b8;
+  margin-bottom: 12px;
+}
+
+.voting-cards {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.vote-card {
+  width: 50px;
+  height: 70px;
+  background: #1e293b;
+  border: 1px solid #475569;
+  color: white;
+  cursor: pointer;
+}
+
+.vote-card:hover:not(:disabled) {
+  border-color: #3b82f6;
+}
+
+.vote-card.selected {
+  background: #3b82f6;
+  border-color: #3b82f6;
+}
+
+.vote-card:disabled {
+  opacity: 0.5;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: #334155;
+  padding: 24px;
+  width: 90%;
+  max-width: 400px;
+}
+
+.modal-content h2 {
+  margin-bottom: 8px;
+}
+
+.modal-content p {
+  color: #94a3b8;
+  margin-bottom: 16px;
+}
+
+.link-box {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.link-input {
+  flex: 1;
+  background: #1e293b;
+  border: 1px solid #475569;
+  color: #3b82f6;
+  padding: 8px;
+}
+
+.copy-btn {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.btn-close {
+  background: none;
+  border: 1px solid #64748b;
+  color: #94a3b8;
+  padding: 8px 20px;
+  cursor: pointer;
+}

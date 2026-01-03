@@ -1,0 +1,49 @@
+.home-container {
+  max-width: 400px;
+  margin: 100px auto;
+  padding: 20px;
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 30px;
+}
+
+.btn-primary {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 12px 32px;
+  cursor: pointer;
+  margin-bottom: 40px;
+}
+
+.join-section p {
+  color: #94a3b8;
+  margin-bottom: 10px;
+}
+
+.join-form {
+  display: flex;
+  gap: 8px;
+}
+
+.input-field {
+  flex: 1;
+  background: #334155;
+  border: 1px solid #475569;
+  color: white;
+  padding: 10px;
+}
+
+.btn-secondary {
+  background: none;
+  border: 1px solid #3b82f6;
+  color: #3b82f6;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.btn-secondary:disabled {
+  opacity: 0.5;
+}

@@ -1,0 +1,72 @@
+<div class="new-game-container">
+  <div class="header">
+    <span class="logo-icon">♠</span>
+    <h1>Create Game</h1>
+  </div>
+
+  <div class="form-section">
+    <div class="form-group">
+      <label for="gameName">Game's name</label>
+      <input 
+        type="text" 
+        id="gameName"
+        [(ngModel)]="gameName" 
+        placeholder="Enter game name"
+        class="input-field"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="userName">Your name</label>
+      <input 
+        type="text" 
+        id="userName"
+        [(ngModel)]="userName" 
+        placeholder="Enter your name"
+        class="input-field"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="votingSystem">Voting system</label>
+      <select id="votingSystem" [(ngModel)]="selectedVotingSystem" class="input-field">
+        <option value="fibonacci">Fibonacci ( 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, ?, ☕ )</option>
+        <option value="tshirt">T-Shirt ( XS, S, M, L, XL, XXL, ?, ☕ )</option>
+        <option value="powers">Powers of 2 ( 1, 2, 4, 8, 16, 32, 64, ?, ☕ )</option>
+      </select>
+    </div>
+
+    <button class="btn-primary" (click)="createGame()" [disabled]="!userName.trim()">
+      Create game
+    </button>
+  </div>
+
+  <!-- Link Popup Modal -->
+  @if (showLinkPopup) {
+    <div class="modal-overlay" (click)="closeLinkPopup()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <h2>🎉 Game Created!</h2>
+        <p>Share this link with your team:</p>
+        
+        <div class="link-box">
+          <input 
+            type="text" 
+            [value]="gameLink" 
+            readonly 
+            class="link-input"
+            #linkInput
+          />
+          <button class="copy-btn" (click)="copyLink()">
+            {{ copied ? '✓ Copied!' : '📋 Copy' }}
+          </button>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn-primary" (click)="goToGame()">
+            Enter Game →
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

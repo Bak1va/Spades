@@ -1,0 +1,22 @@
+<div class="home-container">
+  <h1>Planning Poker</h1>
+  
+  <button class="btn-primary" (click)="goToNewGame()">
+    Start New Game
+  </button>
+  
+  <div class="join-section">
+    <p>Or join with code:</p>
+    <div class="join-form">
+      <input 
+        type="text" 
+        [(ngModel)]="joinCode" 
+        placeholder="Game code"
+        class="input-field"
+      />
+      <button class="btn-secondary" (click)="joinGame()" [disabled]="!joinCode">
+        Join
+      </button>
+    </div>
+  </div>
+</div>

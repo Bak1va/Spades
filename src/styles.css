@@ -1,1 +1,16 @@
-/* You can add global styles to this file, and also import other style files */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, sans-serif;
+  background: #1e293b;
+  color: #e2e8f0;
+}
+
+input, select, button {
+  font-family: inherit;
+  font-size: inherit;
+}
