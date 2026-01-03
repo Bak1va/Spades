@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -24,6 +24,11 @@ export class GamePage implements OnInit, OnDestroy {
   gameLink = '';
   showIssuesTab = false;
   currentIssue: Issue | null = null;
+  isRevealing = false;
+  countdownValue: number | null = null;
+  noIssuesMessage = false;
+
+  @ViewChild(IssuesTab) issuesTabComponent!: IssuesTab;
 
   votingCards = [
     { value: '0', image: 'assets/card_0.png' },
@@ -84,6 +89,25 @@ export class GamePage implements OnInit, OnDestroy {
       }),
       this.socketService.onRoundStarted().subscribe(data => {
         this.selectedVote = null;
+      }),
+      this.socketService.onCountdownStarted().subscribe(() => {
+        this.startCountdownAnimation();
+      }),
+      this.socketService.onIssueSelected().subscribe(data => {
+        this.currentIssue = data.issue;
+        this.noIssuesMessage = false;
+        
+        if (this.issuesTabComponent && data.issue) {
+          const issueIndex = this.issuesTabComponent.issues.findIndex(i => i.id === data.issue.id);
+          if (issueIndex !== -1) {
+            this.issuesTabComponent.issues[issueIndex] = data.issue;
+          }
+        }
+      }),
+      this.socketService.onIssuesUpdated().subscribe(data => {
+        if (this.issuesTabComponent) {
+          this.issuesTabComponent.issues = data.issues;
+        }
       }),
       this.socketService.onLobbyClosed().subscribe(() => {
         alert(this.translateService.translate('alert.lobbyClosed'));
@@ -167,13 +191,127 @@ export class GamePage implements OnInit, OnDestroy {
   }
 
   revealVotes(): void {
-    if (!this.lobbyId) return;
-    this.socketService.revealVotes(this.lobbyId);
+    if (!this.lobbyId || !this.allPlayersVoted() || !this.currentIssue) return;
+    
+    // Emit countdown start event - this will trigger startCountdownAnimation for ALL players
+    this.socketService.startCountdown(this.lobbyId);
+  }
+
+  startCountdownAnimation(): void {
+    this.isRevealing = true;
+    this.countdownValue = 3;
+
+    const countdownInterval = setInterval(() => {
+      if (this.countdownValue && this.countdownValue > 1) {
+        this.countdownValue--;
+      } else {
+        clearInterval(countdownInterval);
+        this.countdownValue = null;
+        this.isRevealing = false;
+        
+        // Only host reveals the votes after countdown
+        if (this.isHost()) {
+          this.socketService.revealVotes(this.lobbyId);
+          
+          // Calculate and store the result after a short delay
+          setTimeout(() => {
+            this.calculateAndStoreResult();
+          }, 500);
+        }
+      }
+    }, 1000);
+  }
+
+  allPlayersVoted(): boolean {
+    if (!this.lobby || !this.lobby.users.length) return false;
+    return this.lobby.users.every(user => user.vote !== null && user.vote !== undefined);
+  }
+
+  getVotedPlayersCount(): number {
+    if (!this.lobby) return 0;
+    return this.lobby.users.filter(user => user.vote !== null && user.vote !== undefined).length;
+  }
+
+  calculateAndStoreResult(): void {
+    if (!this.lobby || !this.currentIssue) return;
+
+    // Get all numeric votes (exclude '?' and '☕')
+    const numericVotes = this.lobby.users
+      .map(u => u.vote)
+      .filter(vote => vote && !isNaN(Number(vote)))
+      .map(vote => Number(vote));
+
+    if (numericVotes.length === 0) {
+      // If no numeric votes, mark as completed without points
+      this.currentIssue.status = 'completed';
+      this.currentIssue.points = '?';
+      
+      // Update the issue in the issues list as well
+      if (this.issuesTabComponent) {
+        const issueIndex = this.issuesTabComponent.issues.findIndex(i => i.id === this.currentIssue!.id);
+        if (issueIndex !== -1) {
+          this.issuesTabComponent.issues[issueIndex] = { ...this.currentIssue };
+        }
+      }
+      
+      // Broadcast the updated issue to all players
+      this.socketService.selectIssue(this.lobbyId, this.currentIssue);
+      if (this.issuesTabComponent) {
+        this.socketService.updateIssuesList(this.lobbyId, this.issuesTabComponent.issues);
+      }
+      return;
+    }
+
+    // Calculate mean and round to nearest integer
+    const mean = numericVotes.reduce((sum, val) => sum + val, 0) / numericVotes.length;
+    const roundedMean = Math.round(mean);
+
+    // Update the current issue
+    this.currentIssue.status = 'completed';
+    this.currentIssue.points = roundedMean.toString();
+    
+    // Update the issue in the issues list as well
+    if (this.issuesTabComponent) {
+      const issueIndex = this.issuesTabComponent.issues.findIndex(i => i.id === this.currentIssue!.id);
+      if (issueIndex !== -1) {
+        this.issuesTabComponent.issues[issueIndex] = { ...this.currentIssue };
+      }
+    }
+    
+    // Broadcast the updated issue to all players
+    this.socketService.selectIssue(this.lobbyId, this.currentIssue);
+    if (this.issuesTabComponent) {
+      this.socketService.updateIssuesList(this.lobbyId, this.issuesTabComponent.issues);
+    }
   }
 
   startNewRound(): void {
     if (!this.lobbyId) return;
+    
+    // Clear votes and reset state
     this.socketService.newRound(this.lobbyId);
+    this.noIssuesMessage = false;
+
+    // Check if there are pending issues
+    if (this.issuesTabComponent) {
+      const pendingIssues = this.issuesTabComponent.getIssuesByStatus('pending');
+      
+      if (pendingIssues.length > 0) {
+        // Automatically select the next pending issue
+        const nextIssue = pendingIssues[0];
+        nextIssue.status = 'voting';
+        this.currentIssue = nextIssue;
+        // Broadcast to all players
+        this.socketService.selectIssue(this.lobbyId, nextIssue);
+        this.socketService.updateIssuesList(this.lobbyId, this.issuesTabComponent.issues);
+      } else {
+        // No pending issues left
+        this.currentIssue = null;
+        this.noIssuesMessage = true;
+        // Broadcast to all players
+        this.socketService.selectIssue(this.lobbyId, null);
+      }
+    }
   }
 
   hasAnyVotes(): boolean {
@@ -211,20 +349,36 @@ export class GamePage implements OnInit, OnDestroy {
 
   onIssueSelected(issue: Issue): void {
     this.currentIssue = issue;
+    this.noIssuesMessage = false;
     // Update issue status to voting and start a new round
     if (issue.status === 'pending') {
       issue.status = 'voting';
-      this.startNewRound();
+      this.socketService.newRound(this.lobbyId);
+    }
+    // Broadcast the selected issue to all players
+    this.socketService.selectIssue(this.lobbyId, issue);
+    // Broadcast updated issues list
+    if (this.issuesTabComponent) {
+      this.socketService.updateIssuesList(this.lobbyId, this.issuesTabComponent.issues);
     }
   }
 
   onIssueAdded(title: string): void {
     console.log('Issue added:', title);
+    // Broadcast updated issues list
+    if (this.issuesTabComponent) {
+      this.socketService.updateIssuesList(this.lobbyId, this.issuesTabComponent.issues);
+    }
   }
 
   onIssueDeleted(issueId: string): void {
     if (this.currentIssue?.id === issueId) {
       this.currentIssue = null;
+      this.socketService.selectIssue(this.lobbyId, null);
+    }
+    // Broadcast updated issues list
+    if (this.issuesTabComponent) {
+      this.socketService.updateIssuesList(this.lobbyId, this.issuesTabComponent.issues);
     }
   }
 }

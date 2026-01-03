@@ -49,6 +49,16 @@
           <div class="parchment-content">
             <h3 class="issue-label">Current Issue</h3>
             <p class="issue-title-display">{{ currentIssue.title }}</p>
+            @if (currentIssue.status === 'voting' && !lobby?.votesRevealed) {
+            <div class="voting-progress">
+              <p class="progress-text">{{ getVotedPlayersCount() }} / {{ (lobby?.users?.length ?? 0) }} players voted</p>
+            </div>
+            } @else if (currentIssue.status === 'completed' && currentIssue.points) {
+            <div class="issue-result">
+              <p class="result-label">Story Points</p>
+              <p class="result-points">{{ currentIssue.points }}</p>
+            </div>
+            }
           </div>
         </div>
       </div>
@@ -86,14 +96,48 @@
 
           <!-- Center button -->
           <div class="table-center">
-            @if (!lobby?.votesRevealed) {
-            <button class="btn-reveal" (click)="revealVotes()">
+            @if (isRevealing && countdownValue) {
+            <div class="countdown-overlay">
+              <div class="countdown-number">{{ countdownValue }}</div>
+              <p class="countdown-text">Revealing cards...</p>
+            </div>
+            } @else if (!currentIssue) {
+            @if (isHost()) {
+            <div class="no-issues-message">
+              <p class="message-title">📋 No Active Issue</p>
+              <p class="message-subtitle">Select an issue from the Issues tab to start voting</p>
+            </div>
+            } @else {
+            <div class="waiting-message">
+              <p>Waiting for host to select an issue...</p>
+            </div>
+            }
+            } @else if (noIssuesMessage) {
+            <div class="no-issues-message">
+              <p class="message-title">🎯 No Issues Left!</p>
+              <p class="message-subtitle">Add a new issue to continue voting</p>
+            </div>
+            } @else if (!lobby?.votesRevealed) {
+            @if (isHost()) {
+            <button class="btn-reveal" (click)="revealVotes()" [disabled]="!allPlayersVoted() || isRevealing"
+              [title]="!allPlayersVoted() ? 'Waiting for all players to vote' : 'Reveal cards'">
               {{ translateService.translate('game.revealCards') }}
             </button>
             } @else {
+            <div class="waiting-message">
+              <p>Waiting for host to reveal...</p>
+            </div>
+            }
+            } @else {
+            @if (isHost()) {
             <button class="btn-new-round" (click)="startNewRound()">
               {{ translateService.translate('game.startNewRound') }}
             </button>
+            } @else {
+            <div class="waiting-message">
+              <p>Waiting for host to start new round...</p>
+            </div>
+            }
             }
           </div>
         </div>

@@ -99,6 +99,18 @@ export class SocketService {
     this.socket.emit('reveal-votes', { lobbyId });
   }
 
+  startCountdown(lobbyId: string): void {
+    this.socket.emit('start-countdown', { lobbyId });
+  }
+
+  selectIssue(lobbyId: string, issue: any): void {
+    this.socket.emit('select-issue', { lobbyId, issue });
+  }
+
+  updateIssuesList(lobbyId: string, issues: any[]): void {
+    this.socket.emit('update-issues', { lobbyId, issues });
+  }
+
   newRound(lobbyId: string, story?: string): void {
     this.socket.emit('new-round', { lobbyId, story });
   }
@@ -161,6 +173,30 @@ export class SocketService {
           lobby.votesRevealed = true;
           this.lobbySubject.next({ ...lobby });
         }
+        observer.next(data);
+      });
+    });
+  }
+
+  onCountdownStarted(): Observable<void> {
+    return new Observable(observer => {
+      this.socket.on('countdown-started', () => {
+        observer.next();
+      });
+    });
+  }
+
+  onIssueSelected(): Observable<{ issue: any }> {
+    return new Observable(observer => {
+      this.socket.on('issue-selected', (data: { issue: any }) => {
+        observer.next(data);
+      });
+    });
+  }
+
+  onIssuesUpdated(): Observable<{ issues: any[] }> {
+    return new Observable(observer => {
+      this.socket.on('issues-updated', (data: { issues: any[] }) => {
         observer.next(data);
       });
     });
