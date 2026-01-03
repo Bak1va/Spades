@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { SocketService, Lobby } from '../../services/socket.service';
+import { TranslateService } from '../../services/translate.service';
 import { QRCodeComponent } from 'angularx-qrcode';
 
 @Component({
@@ -42,7 +43,8 @@ export class GamePage implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private socketService: SocketService
+    private socketService: SocketService,
+    public translateService: TranslateService
   ) { }
 
   ngOnInit(): void {
@@ -81,11 +83,11 @@ export class GamePage implements OnInit, OnDestroy {
         this.selectedVote = null;
       }),
       this.socketService.onLobbyClosed().subscribe(() => {
-        alert('The game has been closed by the host');
+        alert(this.translateService.translate('alert.lobbyClosed'));
         this.router.navigate(['/']);
       }),
       this.socketService.onKicked().subscribe(() => {
-        alert('You have been kicked from the game by the host');
+        alert(this.translateService.translate('alert.kicked'));
         this.router.navigate(['/']);
       })
     );
@@ -148,7 +150,7 @@ export class GamePage implements OnInit, OnDestroy {
         this.hasJoined = true;
       },
       error: (err) => {
-        alert(err.message || 'Failed to join lobby');
+        alert(err.message || this.translateService.translate('alert.joinFailed'));
         this.router.navigate(['/']);
       }
     });
@@ -191,8 +193,12 @@ export class GamePage implements OnInit, OnDestroy {
   kickUser(userId: string): void {
     if (!this.lobbyId || !this.isHost()) return;
 
-    if (confirm('Are you sure you want to kick this player?')) {
+    if (confirm(this.translateService.translate('alert.confirmKick'))) {
       this.socketService.kickUser(this.lobbyId, userId);
     }
+  }
+
+  toggleLanguage(): void {
+    this.translateService.toggleLanguage();
   }
 }
