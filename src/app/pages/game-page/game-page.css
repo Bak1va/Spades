@@ -74,6 +74,21 @@
   transform: translateY(-2px);
 }
 
+.btn-exit {
+  padding: 8px 14px;
+  border: 1px solid #f87171;
+  background: rgba(127, 29, 29, 0.6);
+  color: #ffe4e6;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.btn-exit:hover {
+  background: rgba(185, 28, 28, 0.8);
+  box-shadow: 0 0 12px rgba(248, 113, 113, 0.35);
+  transform: translateY(-2px);
+}
+
 .lang-select {
   padding: 8px 10px;
   border: 1px solid var(--astral-gold);
@@ -458,14 +473,6 @@
   display: flex;
   gap: 8px;
   margin-bottom: 20px;
-}
-
-.modal-content img.qr {
-  display: block;
-  margin: 0 auto;
-  max-width: 260px;
-  width: 100%;
-  height: auto;
 }
 
 .link-input {

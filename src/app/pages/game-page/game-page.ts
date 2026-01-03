@@ -207,4 +207,13 @@ export class GamePage implements OnInit, OnDestroy {
     this.lang = lang;
     this.translateService.setLanguage(lang);
   }
+
+  exitLobby(): void {
+    this.socketService.disconnect();
+    this.socketService.clearLobby();
+    this.hasJoined = false;
+    this.lobby = null;
+    this.socketService.reconnect();
+    this.router.navigate(['/']);
+  }
 }
