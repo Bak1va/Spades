@@ -1,21 +1,22 @@
 <div class="home-container">
-  <h1>Planning Poker</h1>
-  
+  <div class="home-header">
+    <h1>{{ translateService.translate('home.title') }}</h1>
+    <button class="btn-lang" (click)="toggleLanguage()" title="Change language">
+      {{ translateService.translate('header.language') }}
+    </button>
+  </div>
+
   <button class="btn-primary" (click)="goToNewGame()">
-    Start New Game
+    {{ translateService.translate('home.startNewGame') }}
   </button>
-  
+
   <div class="join-section">
-    <p>Or join with code:</p>
+    <p>{{ translateService.translate('home.orJoinWithCode') }}</p>
     <div class="join-form">
-      <input 
-        type="text" 
-        [(ngModel)]="joinCode" 
-        placeholder="Game code"
-        class="input-field"
-      />
+      <input type="text" [(ngModel)]="joinCode" [placeholder]="translateService.translate('home.gameCode')"
+        class="input-field" />
       <button class="btn-secondary" (click)="joinGame()" [disabled]="!joinCode">
-        Join
+        {{ translateService.translate('home.join') }}
       </button>
     </div>
   </div>

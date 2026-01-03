@@ -11,7 +11,10 @@
         {{ userName }}
       </span>
       <button class="btn-outline" (click)="showInvitePopup = true">
-        👥 Invite players
+        {{ translateService.translate('header.invitePlayers') }}
+      </button>
+      <button class="btn-lang" (click)="toggleLanguage()" title="Change language">
+        {{ translateService.translate('header.language') }}
       </button>
     </div>
   </header>
@@ -21,21 +24,23 @@
     @if (!hasJoined) {
     <!-- Join form for new players -->
     <div class="join-form-container">
-      <h2>Join the game</h2>
+      <h2>{{ translateService.translate('join.title') }}</h2>
       <div class="form-group">
-        <label>Your name</label>
-        <input type="text" [(ngModel)]="userName" placeholder="Enter your name" class="input-field" />
+        <label>{{ translateService.translate('join.yourName') }}</label>
+        <input type="text" [(ngModel)]="userName" [placeholder]="translateService.translate('join.enterName')"
+          class="input-field" />
       </div>
       <button class="btn-primary" (click)="joinLobby()" [disabled]="!userName.trim()">
-        Join Game
+        {{ translateService.translate('join.button') }}
       </button>
     </div>
     } @else {
     <!-- Table area -->
     <div class="table-section">
-      @if (lobby && lobby.users.length <= 1) { <p class="lonely-message">Feeling lonely? 😴</p>
+      @if (lobby && lobby.users.length <= 1) { <p class="lonely-message">{{
+        translateService.translate('game.lonelyMessage') }}</p>
         <button class="invite-link" (click)="showInvitePopup = true">
-          Invite players
+          {{ translateService.translate('game.invitePlayers') }}
         </button>
         }
 
@@ -53,7 +58,8 @@
               </div>
               <span class="player-name">{{ user.name }}</span>
               @if (isHost() && user.id !== lobby?.host) {
-              <button class="btn-kick" (click)="kickUser(user.id)" title="Kick player">❌</button>
+              <button class="btn-kick" (click)="kickUser(user.id)"
+                [title]="translateService.translate('game.kickPlayer')">❌</button>
               }
             </div>
             }
@@ -63,11 +69,11 @@
           <div class="table-center">
             @if (!lobby?.votesRevealed) {
             <button class="btn-reveal" (click)="revealVotes()">
-              Reveal cards
+              {{ translateService.translate('game.revealCards') }}
             </button>
             } @else {
             <button class="btn-new-round" (click)="startNewRound()">
-              Start new round
+              {{ translateService.translate('game.startNewRound') }}
             </button>
             }
           </div>
@@ -75,7 +81,7 @@
     </div>
 
     <div class="voting-section">
-      <p class="voting-label">Choose your card 👇</p>
+      <p class="voting-label">{{ translateService.translate('game.chooseCard') }}</p>
       <div class="voting-cards">
         @for (card of votingCards; track card.value) {
         <button class="vote-card" [class.selected]="selectedVote === card.value" (click)="vote(card)"
@@ -95,13 +101,13 @@
   @if (showInvitePopup) {
   <div class="modal-overlay" (click)="showInvitePopup = false">
     <div class="modal-content" (click)="$event.stopPropagation()">
-      <h2>Invite players</h2>
-      <p>Share this link with your team:</p>
+      <h2>{{ translateService.translate('invite.title') }}</h2>
+      <p>{{ translateService.translate('invite.shareLink') }}</p>
 
       <div class="link-box">
         <input type="text" [value]="gameLink" readonly class="link-input" />
         <button class="copy-btn" (click)="copyLink()">
-          {{ copied ? "✓ Copied!" : "📋 Copy" }}
+          {{ copied ? translateService.translate('invite.copied') : translateService.translate('invite.copy') }}
         </button>
       </div>
 
@@ -111,7 +117,8 @@
         }
       </div>
 
-      <button class="btn-close" (click)="showInvitePopup = false">Close</button>
+      <button class="btn-close" (click)="showInvitePopup = false">{{ translateService.translate('invite.close')
+        }}</button>
     </div>
   </div>
   }

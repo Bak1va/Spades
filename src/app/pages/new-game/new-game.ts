@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { SocketService } from '../../services/socket.service';
+import { TranslateService } from '../../services/translate.service';
 
 @Component({
   selector: 'app-new-game',
@@ -19,8 +20,9 @@ export class NewGame implements OnInit {
 
   constructor(
     private router: Router,
-    private socketService: SocketService
-  ) {}
+    private socketService: SocketService,
+    public translateService: TranslateService
+  ) { }
 
   ngOnInit(): void {
     const savedName = localStorage.getItem('planningPokerUsername');
@@ -67,5 +69,9 @@ export class NewGame implements OnInit {
 
   goToGame(): void {
     this.router.navigate(['/game', this.lobbyId]);
+  }
+
+  toggleLanguage(): void {
+    this.translateService.toggleLanguage();
   }
 }
