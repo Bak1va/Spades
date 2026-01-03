@@ -15,20 +15,14 @@ jobs:
         run: |
           npm ci
           npm run build -- --configuration=production
-      - name: List build output
-        run: |
-          echo "=== Full dist structure ==="
-          ls -laR dist/
-          echo "=== Checking browser folder ==="
-          ls -la dist/Spades/browser/ || echo "browser folder not found"
       - name: Deploy to server
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT }}
+          port: 2222
           source: "dist/Spades/browser/*"
-          target: "/var/www/poker/frontend/Spades"
+          target: "/var/www/poker/frontend"
           strip_components: 3
           rm: true
