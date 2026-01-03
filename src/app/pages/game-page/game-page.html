@@ -10,6 +10,11 @@
         <span class="user-avatar">{{ userName.charAt(0).toUpperCase() }}</span>
         {{ userName }}
       </span>
+      @if (isHost() && hasJoined) {
+      <button class="btn-outline" (click)="toggleIssuesTab()" [class.active]="showIssuesTab">
+        <span class="icon">📜</span> {{ showIssuesTab ? 'Hide' : 'Issues' }}
+      </button>
+      }
       <button class="btn-outline" (click)="showInvitePopup = true">
         {{ translateService.translate('header.invitePlayers') }}
       </button>
@@ -20,22 +25,36 @@
   </header>
 
   <!-- Main game area -->
-  <main class="game-main">
-    @if (!hasJoined) {
-    <!-- Join form for new players -->
-    <div class="join-form-container">
-      <h2>{{ translateService.translate('join.title') }}</h2>
-      <div class="form-group">
-        <label>{{ translateService.translate('join.yourName') }}</label>
-        <input type="text" [(ngModel)]="userName" [placeholder]="translateService.translate('join.enterName')"
-          class="input-field" />
+  <main class="game-main" [class.with-sidebar]="showIssuesTab">
+    <div class="game-content">
+      @if (!hasJoined) {
+      <!-- Join form for new players -->
+      <div class="join-form-container">
+        <h2>{{ translateService.translate('join.title') }}</h2>
+        <div class="form-group">
+          <label>{{ translateService.translate('join.yourName') }}</label>
+          <input type="text" [(ngModel)]="userName" [placeholder]="translateService.translate('join.enterName')"
+            class="input-field" />
+        </div>
+        <button class="btn-primary" (click)="joinLobby()" [disabled]="!userName.trim()">
+          {{ translateService.translate('join.button') }}
+        </button>
       </div>
-      <button class="btn-primary" (click)="joinLobby()" [disabled]="!userName.trim()">
-        {{ translateService.translate('join.button') }}
-      </button>
-    </div>
-    } @else {
-    <!-- Table area -->
+      } @else {
+
+      <!-- Current Issue Title -->
+      @if (currentIssue) {
+      <div class="current-issue-banner">
+        <div class="parchment">
+          <div class="parchment-content">
+            <h3 class="issue-label">Current Issue</h3>
+            <p class="issue-title-display">{{ currentIssue.title }}</p>
+          </div>
+        </div>
+      </div>
+      }
+
+      <!-- Table area -->
     <div class="table-section">
       @if (lobby && lobby.users.length <= 1) { <p class="lonely-message">{{
         translateService.translate('game.lonelyMessage') }}</p>
@@ -95,6 +114,16 @@
         }
       </div>
     </div>
+    }
+    </div>
+
+    <!-- Issues Sidebar -->
+    @if (showIssuesTab) {
+    <aside class="issues-sidebar">
+      <app-issues-tab [isHost]="isHost()" [currentIssue]="currentIssue" (issueSelected)="onIssueSelected($event)"
+        (issueAdded)="onIssueAdded($event)" (issueDeleted)="onIssueDeleted($event)">
+      </app-issues-tab>
+    </aside>
     }
   </main>
 

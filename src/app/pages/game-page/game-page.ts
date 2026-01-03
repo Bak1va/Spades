@@ -5,10 +5,11 @@ import { Subscription } from 'rxjs';
 import { SocketService, Lobby } from '../../services/socket.service';
 import { TranslateService } from '../../services/translate.service';
 import { QRCodeComponent } from 'angularx-qrcode';
+import { IssuesTab, Issue } from './issues-tab';
 
 @Component({
   selector: 'app-game-page',
-  imports: [FormsModule, QRCodeComponent],
+  imports: [FormsModule, QRCodeComponent, IssuesTab],
   templateUrl: './game-page.html',
   styleUrl: './game-page.css',
 })
@@ -21,6 +22,8 @@ export class GamePage implements OnInit, OnDestroy {
   showInvitePopup = false;
   copied = false;
   gameLink = '';
+  showIssuesTab = false;
+  currentIssue: Issue | null = null;
 
   votingCards = [
     { value: '0', image: 'assets/card_0.png' },
@@ -200,5 +203,28 @@ export class GamePage implements OnInit, OnDestroy {
 
   toggleLanguage(): void {
     this.translateService.toggleLanguage();
+  }
+
+  toggleIssuesTab(): void {
+    this.showIssuesTab = !this.showIssuesTab;
+  }
+
+  onIssueSelected(issue: Issue): void {
+    this.currentIssue = issue;
+    // Update issue status to voting and start a new round
+    if (issue.status === 'pending') {
+      issue.status = 'voting';
+      this.startNewRound();
+    }
+  }
+
+  onIssueAdded(title: string): void {
+    console.log('Issue added:', title);
+  }
+
+  onIssueDeleted(issueId: string): void {
+    if (this.currentIssue?.id === issueId) {
+      this.currentIssue = null;
+    }
   }
 }
