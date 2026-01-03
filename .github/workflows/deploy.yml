@@ -28,6 +28,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           source: "dist/spades/browser/*"
-          target: "/var/www/poker/frontend"
+          target: "/var/www/poker/frontend/Spades"
           strip_components: 3
           rm: true
