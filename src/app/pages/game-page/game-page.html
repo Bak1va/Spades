@@ -6,6 +6,10 @@
       <span class="game-name">{{ lobbyId }}</span>
     </div>
     <div class="header-right">
+      @if (!hasJoined || lobby?.votesRevealed) {
+      } @else {
+      <span class="header-timer">⏱ {{ displayedTime }}s</span>
+      }
       <span class="user-badge">
         <span class="user-avatar">{{ userName.charAt(0).toUpperCase() }}</span>
         {{ userName }}

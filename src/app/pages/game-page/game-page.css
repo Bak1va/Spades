@@ -30,6 +30,13 @@
   letter-spacing: 2px;
 }
 
+.header-timer {
+  margin-left: 24px;
+  font-size: 14px;
+  color: var(--astral-gold);
+  font-weight: 600;
+}
+
 .header-left,
 .header-right {
   display: flex;
@@ -209,6 +216,9 @@
   position: absolute;
   text-align: center;
   pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .player-spot:nth-child(1) {
@@ -267,6 +277,7 @@
   border-radius: 4px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   transition: all 0.3s ease;
+  position: relative;
 }
 
 .player-card.voted {

@@ -24,6 +24,10 @@ export class GamePage implements OnInit, OnDestroy {
   copied = false;
   gameLink = '';
   lang: 'en' | 'ro' | 'fr';
+  roundStartTime: number | null = null;
+  timerDuration = 300;
+  displayedTime = this.timerDuration;
+  private timerInterval: any = null;
 
   votingCards = [
     { value: '0', image: 'assets/card_0.png' },
@@ -86,6 +90,7 @@ export class GamePage implements OnInit, OnDestroy {
       }),
       this.socketService.onRoundStarted().subscribe(data => {
         this.selectedVote = null;
+        this.startRoundTimer();
       }),
       this.socketService.onLobbyClosed().subscribe(() => {
         alert(this.translateService.translate('alert.lobbyClosed'));
@@ -107,6 +112,9 @@ export class GamePage implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+    }
   }
 
   setVotingCards(system: string): void {
@@ -215,5 +223,22 @@ export class GamePage implements OnInit, OnDestroy {
     this.lobby = null;
     this.socketService.reconnect();
     this.router.navigate(['/']);
+  }
+
+  startRoundTimer(): void {
+    this.roundStartTime = Date.now();
+    this.displayedTime = this.timerDuration;
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+    }
+    this.timerInterval = setInterval(() => {
+      if (this.roundStartTime) {
+        const elapsed = Math.floor((Date.now() - this.roundStartTime) / 1000);
+        this.displayedTime = Math.max(0, this.timerDuration - elapsed);
+        if (this.displayedTime <= 0) {
+          clearInterval(this.timerInterval);
+        }
+      }
+    }, 100);
   }
 }
