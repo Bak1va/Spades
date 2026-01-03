@@ -363,10 +363,14 @@
   background: linear-gradient(135deg, rgba(45, 27, 78, 0.95), rgba(74, 45, 107, 0.95));
   padding: 32px;
   width: 90%;
-  max-width: 440px;
+  max-width: 520px;
   border: 2px solid var(--astral-gold);
   border-radius: 8px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: stretch;
 }
 
 .modal-content h2 {
@@ -382,6 +386,14 @@
   display: flex;
   gap: 8px;
   margin-bottom: 20px;
+}
+
+.modal-content img.qr {
+  display: block;
+  margin: 0 auto;
+  max-width: 260px;
+  width: 100%;
+  height: auto;
 }
 
 .link-input {

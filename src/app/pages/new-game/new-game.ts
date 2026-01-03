@@ -13,7 +13,6 @@ export class NewGame implements OnInit {
   gameName = '';
   userName = '';
   selectedVotingSystem = 'fibonacci';
-  showLinkPopup = false;
   gameLink = '';
   copied = false;
   lobbyId = '';
@@ -40,9 +39,16 @@ export class NewGame implements OnInit {
 
     this.socketService.createLobby(this.userName).subscribe({
       next: (data) => {
-        this.lobbyId = data.lobbyId;
-        this.gameLink = `${window.location.origin}/game/${this.lobbyId}`;
-        this.showLinkPopup = true;
+        this.lobbyId = data.lobbyId || data.lobby?.id || '';
+        if (this.lobbyId) {
+          this.gameLink = `${window.location.origin}/game/${this.lobbyId}`;
+        } else if (data.lobby && data.lobby.id) {
+          this.gameLink = `${window.location.origin}/game/${data.lobby.id}`;
+          this.lobbyId = data.lobby.id;
+        } else {
+          this.gameLink = window.location.href;
+        }
+        this.goToGame();
       },
       error: (err) => {
         console.error('Failed to create lobby:', err);
@@ -57,10 +63,6 @@ export class NewGame implements OnInit {
         this.copied = false;
       }, 2000);
     });
-  }
-
-  closeLinkPopup(): void {
-    this.showLinkPopup = false;
   }
 
   goToGame(): void {

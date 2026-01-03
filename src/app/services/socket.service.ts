@@ -57,9 +57,13 @@ export class SocketService {
   createLobby(userName: string): Observable<{ lobbyId: string; lobby: Lobby }> {
     return new Observable(observer => {
       this.socket.emit('create-lobby', { userName });
-      this.socket.once('lobby-created', (data: { lobbyId: string; lobby: Lobby }) => {
-        this.lobbySubject.next(data.lobby);
-        observer.next(data);
+      this.socket.once('lobby-created', (data: any) => {
+        const lobby: Lobby | null = data?.lobby ?? (data?.id ? { ...data, id: data.id } : null);
+        const lobbyId: string = data?.lobbyId ?? data?.id ?? lobby?.id ?? '';
+        if (lobby) {
+          this.lobbySubject.next(lobby);
+        }
+        observer.next({ lobbyId, lobby: lobby as Lobby });
         observer.complete();
       });
     });

@@ -25,6 +25,17 @@
   filter: drop-shadow(0 0 10px var(--ethereal-glow));
 }
 
+.modal-content {
+  background: #334155;
+  padding: 24px;
+  width: 90%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: stretch;
+}
+
 .header h1 {
   margin: 0;
   font-size: 2rem;
@@ -41,6 +52,22 @@
 
 .modal-actions {
   margin-top: 16px;
+}
+
+.modal-content img.qr {
+  display: block;
+  margin: 0 auto;
+  max-width: 260px;
+  width: 100%;
+  height: auto;
+}
+
+.link-input {
+  flex: 1;
+  background: #1e293b;
+  border: 1px solid #475569;
+  color: #3b82f6;
+  padding: 8px;
 }
 
 .modal-actions .btn-primary {
