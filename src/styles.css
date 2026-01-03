@@ -1,3 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Raleway:wght@300;400;500&display=swap');
+
+:root {
+  --deep-purple: #1a0f2e;
+  --mystic-purple: #2d1b4e;
+  --cosmic-purple: #4a2d6b;
+  --astral-gold: #d4af37;
+  --stardust-gold: #f4e4c1;
+  --moonlight: #e8dff5;
+  --shadow: #0d0620;
+  --ethereal-glow: rgba(212, 175, 55, 0.3);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -5,12 +18,173 @@
 }
 
 body {
-  font-family: system-ui, sans-serif;
-  background: #1e293b;
-  color: #e2e8f0;
+  font-family: 'Raleway', sans-serif;
+  background: linear-gradient(135deg, var(--shadow) 0%, var(--deep-purple) 50%, var(--mystic-purple) 100%);
+  color: var(--moonlight);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(2px 2px at 20% 30%, var(--astral-gold), transparent),
+    radial-gradient(2px 2px at 60% 70%, var(--stardust-gold), transparent),
+    radial-gradient(1px 1px at 50% 50%, var(--moonlight), transparent),
+    radial-gradient(1px 1px at 80% 10%, var(--astral-gold), transparent);
+  background-size: 200px 200px;
+  opacity: 0.4;
+  animation: twinkle 3s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
 }
 
 input, select, button {
   font-family: inherit;
   font-size: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Cinzel', serif;
+  color: var(--stardust-gold);
+  letter-spacing: 1px;
+}
+
+input, select, textarea {
+  background: rgba(13, 6, 32, 0.8);
+  border: 1px solid var(--cosmic-purple);
+  color: var(--moonlight);
+  padding: 12px;
+  border-radius: 4px;
+  transition: border 0.3s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--astral-gold);
+  box-shadow: 0 0 12px var(--ethereal-glow);
+}
+
+button {
+  cursor: pointer;
+  font-family: 'Raleway', sans-serif;
+  transition: all 0.3s ease;
+  border-radius: 4px;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--cosmic-purple), var(--astral-gold));
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  font-family: 'Cinzel', serif;
+  font-weight: 500;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 16px var(--ethereal-glow);
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--ethereal-glow);
+}
+
+.btn-secondary {
+  background: rgba(45, 27, 78, 0.5);
+  border: 2px solid var(--astral-gold);
+  color: var(--stardust-gold);
+  padding: 12px 24px;
+  backdrop-filter: blur(5px);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: rgba(74, 45, 107, 0.7);
+  box-shadow: 0 0 16px var(--ethereal-glow);
+  transform: translateY(-2px);
+}
+
+/* Common form styles */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  color: var(--moonlight);
+  margin-bottom: 8px;
+  font-weight: 300;
+}
+
+.input-field {
+  width: 100%;
+}
+
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(13, 6, 32, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+  z-index: 100;
+}
+
+.modal-content {
+  background: linear-gradient(135deg, rgba(45, 27, 78, 0.95), rgba(74, 45, 107, 0.95));
+  padding: 32px;
+  width: 90%;
+  max-width: 440px;
+  border: 2px solid var(--astral-gold);
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
+}
+
+.modal-content h2 {
+  margin-bottom: 12px;
+}
+
+.modal-content p {
+  color: var(--moonlight);
+  margin-bottom: 20px;
+}
+
+.link-box {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.link-input {
+  flex: 1;
+  color: var(--astral-gold);
+}
+
+.copy-btn {
+  background: linear-gradient(135deg, var(--cosmic-purple), var(--astral-gold));
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-weight: 500;
+}
+
+.copy-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px var(--ethereal-glow);
 }

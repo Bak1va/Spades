@@ -20,7 +20,21 @@ export class GamePage implements OnInit, OnDestroy {
   copied = false;
   gameLink = '';
 
-  votingCards = ['0', '1', '2', '3', '5', '8', '13', '21', '34', '55', '89', '?', '☕'];
+  votingCards = [
+    { value: '0', image: 'assets/card_0.png' },
+    { value: '1', image: 'assets/card_1.png' },
+    { value: '2', image: 'assets/card_2.png' },
+    { value: '3', image: 'assets/card_3.png' },
+    { value: '5', image: 'assets/card_5.png' },
+    { value: '8', image: 'assets/card_8.png' },
+    { value: '13', image: 'assets/card_13.png' },
+    { value: '21', image: 'assets/card_21.png' },
+    { value: '34', image: 'assets/card_34.png' },
+    { value: '55', image: 'assets/card_55.png' },
+    { value: '89', image: 'assets/card_89.png' },
+    { value: '?', image: 'assets/card_question.png' },
+    { value: '☕', image: 'assets/card_coffee.png' }
+  ];
 
   private subscriptions: Subscription[] = [];
 
@@ -83,13 +97,36 @@ export class GamePage implements OnInit, OnDestroy {
   setVotingCards(system: string): void {
     switch (system) {
       case 'tshirt':
-        this.votingCards = ['XS', 'S', 'M', 'L', 'XL', 'XXL', '?', '☕'];
+        this.votingCards = [
+          { value: 'XS', image: '' }, { value: 'S', image: '' }, { value: 'M', image: '' },
+          { value: 'L', image: '' }, { value: 'XL', image: '' }, { value: 'XXL', image: '' },
+          { value: '?', image: 'assets/card_question.png' }, { value: '☕', image: 'assets/card_coffee.png' }
+        ];
         break;
       case 'powers':
-        this.votingCards = ['1', '2', '4', '8', '16', '32', '64', '?', '☕'];
+        this.votingCards = [
+          { value: '1', image: 'assets/card_1.png' }, { value: '2', image: 'assets/card_2.png' },
+          { value: '4', image: '' }, { value: '8', image: '' }, { value: '16', image: '' },
+          { value: '32', image: '' }, { value: '64', image: '' },
+          { value: '?', image: 'assets/card_question.png' }, { value: '☕', image: 'assets/card_coffee.png' }
+        ];
         break;
       default:
-        this.votingCards = ['0', '1', '2', '3', '5', '8', '13', '21', '34', '55', '89', '?', '☕'];
+        this.votingCards = [
+          { value: '0', image: 'assets/card_0.png' },
+          { value: '1', image: 'assets/card_1.png' },
+          { value: '2', image: 'assets/card_2.png' },
+          { value: '3', image: 'assets/card_3.png' },
+          { value: '5', image: 'assets/card_5.png' },
+          { value: '8', image: 'assets/card_8.png' },
+          { value: '13', image: 'assets/card_13.png' },
+          { value: '21', image: 'assets/card_21.png' },
+          { value: '34', image: 'assets/card_34.png' },
+          { value: '55', image: 'assets/card_55.png' },
+          { value: '89', image: 'assets/card_89.png' },
+          { value: '?', image: 'assets/card_question.png' },
+          { value: '☕', image: 'assets/card_coffee.png' }
+        ];
     }
   }
 
@@ -109,11 +146,11 @@ export class GamePage implements OnInit, OnDestroy {
     });
   }
 
-  vote(card: string): void {
+  vote(card: { value: string; image: string }): void {
     if (!this.lobbyId || this.lobby?.votesRevealed) return;
     
-    this.selectedVote = card;
-    this.socketService.submitVote(this.lobbyId, card);
+    this.selectedVote = card.value;
+    this.socketService.submitVote(this.lobbyId, card.value);
   }
 
   revealVotes(): void {

@@ -79,14 +79,18 @@
       <div class="voting-section">
         <p class="voting-label">Choose your card 👇</p>
         <div class="voting-cards">
-          @for (card of votingCards; track card) {
+          @for (card of votingCards; track card.value) {
             <button 
               class="vote-card" 
-              [class.selected]="selectedVote === card"
+              [class.selected]="selectedVote === card.value"
               (click)="vote(card)"
               [disabled]="lobby?.votesRevealed"
             >
-              {{ card }}
+              @if (card.image) {
+                <img [src]="card.image" [alt]="card.value" class="card-image" />
+              } @else {
+                <span class="card-text">{{ card.value }}</span>
+              }
             </button>
           }
         </div>
