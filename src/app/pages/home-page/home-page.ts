@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { TranslateService } from '../../services/translate.service';
 
 @Component({
   selector: 'app-home-page',
@@ -11,7 +12,10 @@ import { FormsModule } from '@angular/forms';
 export class HomePage {
   joinCode = '';
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    public translateService: TranslateService
+  ) { }
 
   goToNewGame(): void {
     this.router.navigate(['/new-game']);
@@ -21,5 +25,9 @@ export class HomePage {
     if (this.joinCode.trim()) {
       this.router.navigate(['/game', this.joinCode.toUpperCase()]);
     }
+  }
+
+  toggleLanguage(): void {
+    this.translateService.toggleLanguage();
   }
 }

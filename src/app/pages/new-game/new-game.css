@@ -14,15 +14,42 @@
 .header {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 16px;
+  justify-content: space-between;
   margin-bottom: 32px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 .logo-icon {
   font-size: 32px;
   color: var(--astral-gold);
   filter: drop-shadow(0 0 10px var(--ethereal-glow));
+}
+
+.btn-lang {
+  background: rgba(45, 27, 78, 0.5);
+  border: 1px solid var(--astral-gold);
+  color: var(--stardust-gold);
+  padding: 8px 16px;
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+  cursor: pointer;
+  min-width: 50px;
+  border-radius: 4px;
+}
+
+.btn-lang:hover {
+  background: rgba(74, 45, 107, 0.7);
+  box-shadow: 0 0 16px var(--ethereal-glow);
+  transform: translateY(-2px);
 }
 
 .modal-content {

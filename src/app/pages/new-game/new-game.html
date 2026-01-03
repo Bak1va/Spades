@@ -1,43 +1,38 @@
 <div class="new-game-container">
   <div class="header">
-    <span class="logo-icon">♠</span>
-    <h1>Create Game</h1>
+    <div class="header-left">
+      <span class="logo-icon">♠</span>
+      <h1>{{ translateService.translate('newGame.createGame') }}</h1>
+    </div>
+    <button class="btn-lang" (click)="toggleLanguage()" title="Change language">
+      {{ translateService.translate('header.language') }}
+    </button>
   </div>
 
   <div class="form-section">
     <div class="form-group">
-      <label for="gameName">Game's name</label>
-      <input 
-        type="text" 
-        id="gameName"
-        [(ngModel)]="gameName" 
-        placeholder="Enter game name"
-        class="input-field"
-      />
+      <label for="gameName">{{ translateService.translate('newGame.gameName') }}</label>
+      <input type="text" id="gameName" [(ngModel)]="gameName"
+        [placeholder]="translateService.translate('newGame.enterGameName')" class="input-field" />
     </div>
 
     <div class="form-group">
-      <label for="userName">Your name</label>
-      <input 
-        type="text" 
-        id="userName"
-        [(ngModel)]="userName" 
-        placeholder="Enter your name"
-        class="input-field"
-      />
+      <label for="userName">{{ translateService.translate('newGame.yourName') }}</label>
+      <input type="text" id="userName" [(ngModel)]="userName"
+        [placeholder]="translateService.translate('newGame.enterYourName')" class="input-field" />
     </div>
 
     <div class="form-group">
-      <label for="votingSystem">Voting system</label>
+      <label for="votingSystem">{{ translateService.translate('newGame.votingSystem') }}</label>
       <select id="votingSystem" [(ngModel)]="selectedVotingSystem" class="input-field">
-        <option value="fibonacci">Fibonacci ( 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, ?, ☕ )</option>
-        <option value="tshirt">T-Shirt ( XS, S, M, L, XL, XXL, ?, ☕ )</option>
-        <option value="powers">Powers of 2 ( 1, 2, 4, 8, 16, 32, 64, ?, ☕ )</option>
+        <option value="fibonacci">{{ translateService.translate('newGame.fibonacci') }}</option>
+        <option value="tshirt">{{ translateService.translate('newGame.tshirt') }}</option>
+        <option value="powers">{{ translateService.translate('newGame.powers') }}</option>
       </select>
     </div>
 
     <button class="btn-primary" (click)="createGame()" [disabled]="!userName.trim()">
-      Create game
+      {{ translateService.translate('newGame.createButton') }}
     </button>
   </div>
 </div>
