@@ -142,11 +142,6 @@ export class TranslateService {
             fr: 'Rejoindre la partie'
         },
 
-        'game.lonelyMessage': {
-            en: 'Feeling lonely? 😴',
-            ro: 'Te simți singur? 😴',
-            fr: 'Tu te sens seul ? 😴'
-        },
         'game.invitePlayers': {
             en: 'Invite players',
             ro: 'Invită jucători',
