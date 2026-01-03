@@ -3,10 +3,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { SocketService, Lobby } from '../../services/socket.service';
+import { QRCodeComponent } from 'angularx-qrcode';
 
 @Component({
   selector: 'app-game-page',
-  imports: [FormsModule],
+  imports: [FormsModule, QRCodeComponent],
   templateUrl: './game-page.html',
   styleUrl: './game-page.css',
 })
@@ -32,7 +33,9 @@ export class GamePage implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.lobbyId = (this.route.snapshot.paramMap.get('lobbyId') || '').toUpperCase();
-    this.gameLink = window.location.href;
+    this.gameLink = this.lobbyId
+      ? `${window.location.origin}/game/${this.lobbyId}`
+      : window.location.href;
 
     const savedName = localStorage.getItem('planningPokerUsername');
     if (savedName) {
@@ -72,6 +75,7 @@ export class GamePage implements OnInit, OnDestroy {
     if (this.userName && this.lobbyId) {
       if (this.socketService.currentLobby?.id === this.lobbyId) {
         this.hasJoined = true;
+        this.showInvitePopup = true;
       }
     }
   }

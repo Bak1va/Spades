@@ -21,7 +21,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 2222
+          port: ${{ secrets.SSH_PORT }}
           source: "dist/Spades/browser/*"
           target: "/var/www/poker/frontend"
           strip_components: 3

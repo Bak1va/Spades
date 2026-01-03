@@ -40,33 +40,4 @@
       Create game
     </button>
   </div>
-
-  <!-- Link Popup Modal -->
-  @if (showLinkPopup) {
-    <div class="modal-overlay" (click)="closeLinkPopup()">
-      <div class="modal-content" (click)="$event.stopPropagation()">
-        <h2>🎉 Game Created!</h2>
-        <p>Share this link with your team:</p>
-        
-        <div class="link-box">
-          <input 
-            type="text" 
-            [value]="gameLink" 
-            readonly 
-            class="link-input"
-            #linkInput
-          />
-          <button class="copy-btn" (click)="copyLink()">
-            {{ copied ? '✓ Copied!' : '📋 Copy' }}
-          </button>
-        </div>
-
-        <div class="modal-actions">
-          <button class="btn-primary" (click)="goToGame()">
-            Enter Game →
-          </button>
-        </div>
-      </div>
-    </div>
-  }
 </div>
