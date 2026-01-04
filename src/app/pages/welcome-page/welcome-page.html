@@ -1,0 +1,134 @@
+<div class="welcome-container">
+  <!-- Header -->
+  <header class="welcome-header" [class.scrolled]="scrollY > 50">
+    <div class="header-content">
+      <div class="header-left">
+        <span class="logo-icon">♠</span>
+        <span class="logo-text">Planning Poker</span>
+      </div>
+      <div class="header-right">
+        <ng-container *ngIf="!isLoading">
+          <ng-container *ngIf="isAuthenticated; else loginBtn">
+            <div class="user-badge" (click)="goToAccount()">
+              <span class="user-avatar">{{ (fullName || username || '?').charAt(0).toUpperCase() }}</span>
+              <span class="user-name">{{ fullName || username }}</span>
+            </div>
+          </ng-container>
+          <ng-template #loginBtn>
+            <button class="btn-login" (click)="login()">Login</button>
+          </ng-template>
+        </ng-container>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1 class="hero-title animate-fade-in">Planning Poker for Agile Teams</h1>
+        <p class="hero-subtitle animate-fade-in-delay">Easy-to-use and fun estimations. Collaborate in real-time with your team using Fibonacci, T-Shirt, or custom voting systems.</p>
+        <button class="btn-get-started animate-fade-in-delay-2" (click)="getStarted()">
+          Get Started
+          <span class="arrow">→</span>
+        </button>
+      </div>
+      <div class="hero-visual animate-slide-in">
+        <div class="demo-card">
+          <div class="demo-header">
+            <div class="demo-dot"></div>
+            <div class="demo-dot"></div>
+            <div class="demo-dot"></div>
+          </div>
+          <div class="demo-content">
+            <div class="demo-cards">
+              <div class="demo-card-item">1</div>
+              <div class="demo-card-item">2</div>
+              <div class="demo-card-item active">3</div>
+              <div class="demo-card-item">5</div>
+              <div class="demo-card-item">8</div>
+            </div>
+            <div class="demo-users">
+              <div class="demo-user">
+                <div class="demo-avatar">A</div>
+                <div class="demo-user-info">
+                  <div class="demo-name"></div>
+                  <div class="demo-vote"></div>
+                </div>
+              </div>
+              <div class="demo-user">
+                <div class="demo-avatar">B</div>
+                <div class="demo-user-info">
+                  <div class="demo-name"></div>
+                  <div class="demo-vote"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section">
+    <h2 class="section-title">Why Choose Our Planning Poker?</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Real-Time Collaboration</h3>
+        <p>Vote together with your team in real-time. See votes as they happen and reveal results instantly.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎯</div>
+        <h3>Multiple Voting Systems</h3>
+        <p>Choose from Fibonacci, T-Shirt sizes, or Powers of 2. Customize your estimation approach.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Vote Statistics</h3>
+        <p>Analyze voting patterns with detailed statistics and consensus indicators.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📄</div>
+        <h3>Issue Management</h3>
+        <p>Manage your stories and issues directly in the app. Track progress and results.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>Secure & Private</h3>
+        <p>Your sessions are private and secure. Integrated with Keycloak authentication.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌐</div>
+        <h3>Multi-Language</h3>
+        <p>Available in English, Romanian, and French. More languages coming soon.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="cta-content">
+      <h2>Ready to Start Estimating?</h2>
+      <p>Join thousands of agile teams using our Planning Poker tool</p>
+      <button class="btn-cta" (click)="getStarted()">
+        Get Started Now
+        <span class="arrow">→</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="welcome-footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <span class="logo-icon">♠</span>
+        <span class="logo-text">Planning Poker</span>
+      </div>
+      <div class="footer-section">
+        <p>&copy; 2026 Planning Poker. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</div>
