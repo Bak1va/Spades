@@ -649,7 +649,7 @@
   display: flex;
   justify-content: center;
   gap: 12px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   max-width: 900px;
   margin: 0 auto;
 }
@@ -714,6 +714,38 @@
   font-weight: 600;
   position: relative;
   z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .voting-cards {
+    flex-wrap: wrap;
+    max-width: 100%;
+    padding: 0 10px;
+  }
+
+  .vote-card {
+    width: 65px;
+    height: 95px;
+  }
+
+  .card-text {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .voting-cards {
+    gap: 8px;
+  }
+
+  .vote-card {
+    width: 60px;
+    height: 90px;
+  }
+
+  .card-text {
+    font-size: 20px;
+  }
 }
 
 .modal-overlay {
