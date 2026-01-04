@@ -784,3 +784,58 @@
   border-color: var(--astral-gold);
   color: var(--stardust-gold);
 }
+
+/* Vote Statistics - Minimalist Design */
+.vote-statistics {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 0 20px;
+  animation: fadeIn 0.4s ease;
+}
+
+.statistic-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(45, 27, 78, 0.3);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 6px;
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+}
+
+.statistic-item:hover {
+  background: rgba(45, 27, 78, 0.5);
+  border-color: var(--astral-gold);
+  transform: translateY(-2px);
+}
+
+.stat-label {
+  font-family: 'Cinzel', serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--astral-gold);
+  min-width: 24px;
+  text-align: center;
+}
+
+.stat-bar {
+  height: 4px;
+  min-width: 40px;
+  max-width: 80px;
+  background: linear-gradient(90deg, var(--cosmic-purple), var(--astral-gold));
+  border-radius: 2px;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+}
+
+.stat-value {
+  font-family: 'Raleway', sans-serif;
+  font-size: 13px;
+  color: var(--moonlight);
+  font-weight: 500;
+  white-space: nowrap;
+}

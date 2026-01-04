@@ -72,6 +72,19 @@
       </div>
       }
 
+      <!-- Vote Statistics -->
+      @if (lobby?.votesRevealed && voteStatistics.length > 0) {
+      <div class="vote-statistics">
+        @for (stat of voteStatistics; track stat.vote) {
+        <div class="statistic-item">
+          <span class="stat-label">{{ stat.vote }}</span>
+          <div class="stat-bar" [style.width.%]="stat.percentage"></div>
+          <span class="stat-value">{{ stat.count }} ({{ stat.percentage }}%)</span>
+        </div>
+        }
+      </div>
+      }
+
       <!-- Table area -->
     <div class="table-section">
       <div class="poker-table">
@@ -94,24 +107,6 @@
           </div>
           }
         </div>
-
-        @if (lobby?.votesRevealed && voteStatistics.length > 0) {
-        <div class="vote-statistics">
-          <h3>Vote Distribution</h3>
-          <div class="statistics-container">
-            @for (stat of voteStatistics; track stat.vote) {
-            <div class="statistic-item">
-              <div class="stat-label">{{ stat.vote }}</div>
-              <div class="stat-bar-container">
-                <div class="stat-bar" [style.width.%]="stat.percentage">
-                  <span class="stat-text">{{ stat.count }} ({{ stat.percentage }}%)</span>
-                </div>
-              </div>
-            </div>
-            }
-          </div>
-        </div>
-        }
 
           <!-- Center button -->
           <div class="table-center">
