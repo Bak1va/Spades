@@ -1,0 +1,336 @@
+.issues-tab {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  background: rgba(13, 6, 32, 0.9);
+  border-left: 2px solid var(--astral-gold);
+  backdrop-filter: blur(10px);
+  overflow-y: auto;
+}
+
+.issues-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--astral-gold);
+}
+
+.issues-title {
+  font-family: 'Cinzel', serif;
+  font-size: 24px;
+  color: var(--stardust-gold);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  letter-spacing: 1px;
+}
+
+.scroll-icon {
+  font-size: 28px;
+  filter: drop-shadow(0 0 8px var(--ethereal-glow));
+}
+
+.btn-add-issue {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--cosmic-purple), var(--astral-gold));
+  border: 2px solid var(--astral-gold);
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px var(--ethereal-glow);
+}
+
+.btn-add-issue:hover {
+  transform: rotate(90deg) scale(1.1);
+  box-shadow: 0 6px 24px var(--ethereal-glow);
+}
+
+.btn-add-issue.active {
+  transform: rotate(45deg);
+  background: linear-gradient(135deg, #8b0000, #ff4444);
+}
+
+.add-issue-form {
+  margin-bottom: 24px;
+  display: flex;
+  gap: 12px;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.issue-input {
+  flex: 1;
+  padding: 12px 16px;
+  background: rgba(45, 27, 78, 0.5);
+  border: 2px solid var(--astral-gold);
+  border-radius: 8px;
+  color: var(--moonlight);
+  font-family: 'Raleway', sans-serif;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.issue-input:focus {
+  outline: none;
+  border-color: var(--stardust-gold);
+  box-shadow: 0 0 16px var(--ethereal-glow);
+}
+
+.issue-input::placeholder {
+  color: rgba(232, 223, 245, 0.5);
+}
+
+.btn-submit-issue {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, var(--cosmic-purple), var(--astral-gold));
+  border: 2px solid var(--astral-gold);
+  border-radius: 8px;
+  color: white;
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.btn-submit-issue:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--ethereal-glow);
+}
+
+.btn-submit-issue:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.issues-stats {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 16px;
+  background: rgba(45, 27, 78, 0.4);
+  border: 1px solid var(--astral-gold);
+  border-radius: 8px;
+}
+
+.stat-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--stardust-gold);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.stat-value {
+  font-family: 'Cinzel', serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--astral-gold);
+  text-shadow: 0 0 8px var(--ethereal-glow);
+}
+
+.issues-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  overflow-y: auto;
+}
+
+.issue-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.section-title {
+  font-family: 'Cinzel', serif;
+  font-size: 16px;
+  color: var(--stardust-gold);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.empty-message {
+  font-size: 14px;
+  color: rgba(232, 223, 245, 0.5);
+  font-style: italic;
+  text-align: center;
+  padding: 16px;
+}
+
+.issue-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: rgba(45, 27, 78, 0.5);
+  border: 2px solid var(--cosmic-purple);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.issue-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--astral-gold);
+  transform: scaleY(0);
+  transition: transform 0.3s ease;
+}
+
+.issue-item:hover::before {
+  transform: scaleY(1);
+}
+
+.issue-item:hover {
+  border-color: var(--astral-gold);
+  box-shadow: 0 4px 16px var(--ethereal-glow);
+  transform: translateX(4px);
+}
+
+.issue-item.selected {
+  border-color: var(--astral-gold);
+  background: rgba(74, 45, 107, 0.6);
+  box-shadow: 0 4px 16px var(--ethereal-glow);
+}
+
+.issue-item.selected::before {
+  transform: scaleY(1);
+}
+
+.issue-item.voting {
+  border-color: #4169e1;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(65, 105, 225, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(65, 105, 225, 0.8);
+  }
+}
+
+.issue-item.completed {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.issue-item.completed:hover {
+  transform: none;
+  border-color: var(--cosmic-purple);
+  box-shadow: none;
+}
+
+.issue-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.issue-title {
+  font-size: 14px;
+  color: var(--moonlight);
+  line-height: 1.4;
+}
+
+.issue-points {
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  color: var(--astral-gold);
+  font-weight: 600;
+}
+
+.voting-badge {
+  font-size: 12px;
+  color: #4169e1;
+  font-weight: 600;
+  animation: blink 1.5s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.btn-delete-issue {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(139, 0, 0, 0.6);
+  border: 1px solid #ff4444;
+  color: #ff4444;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-delete-issue:hover {
+  background: rgba(139, 0, 0, 0.9);
+  transform: scale(1.1);
+  box-shadow: 0 0 12px rgba(255, 68, 68, 0.5);
+}
+
+/* Scrollbar styling */
+.issues-tab::-webkit-scrollbar,
+.issues-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.issues-tab::-webkit-scrollbar-track,
+.issues-list::-webkit-scrollbar-track {
+  background: rgba(13, 6, 32, 0.5);
+}
+
+.issues-tab::-webkit-scrollbar-thumb,
+.issues-list::-webkit-scrollbar-thumb {
+  background: var(--cosmic-purple);
+  border-radius: 4px;
+}
+
+.issues-tab::-webkit-scrollbar-thumb:hover,
+.issues-list::-webkit-scrollbar-thumb:hover {
+  background: var(--astral-gold);
+}

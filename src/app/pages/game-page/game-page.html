@@ -11,6 +11,11 @@
         <span class="user-avatar">{{ userName.charAt(0).toUpperCase() }}</span>
         {{ userName }}
       </span>
+      @if (isHost() && hasJoined) {
+      <button class="btn-outline" (click)="toggleIssuesTab()" [class.active]="showIssuesTab">
+        <span class="icon">📜</span> {{ showIssuesTab ? 'Hide' : 'Issues' }}
+      </button>
+      }
       <button class="btn-outline" (click)="showInvitePopup = true">
         {{ translateService.translate('header.invitePlayers') }}
       </button>
@@ -22,28 +27,65 @@
   </header>
 
   <!-- Main game area -->
-  <main class="game-main">
-    @if (!hasJoined) {
-    <!-- Join form for new players -->
-    <div class="join-form-container">
-      <h2>{{ translateService.translate('join.title') }}</h2>
-      <div class="form-group">
-        <label>{{ translateService.translate('join.yourName') }}</label>
-        <input type="text" [(ngModel)]="userName" [placeholder]="translateService.translate('join.enterName')"
-          class="input-field" />
-      </div>
-      <button class="btn-primary" (click)="joinLobby()" [disabled]="!userName.trim()">
-        {{ translateService.translate('join.button') }}
-      </button>
-      <div class="or-divider">
+  <main class="game-main" [class.with-sidebar]="showIssuesTab">
+    <div class="game-content">
+      @if (!hasJoined) {
+      <!-- Join form for new players -->
+      <div class="join-form-container">
+        <h2>{{ translateService.translate('join.title') }}</h2>
+        <div class="form-group">
+          <label>{{ translateService.translate('join.yourName') }}</label>
+          <input type="text" [(ngModel)]="userName" [placeholder]="translateService.translate('join.enterName')"
+            class="input-field" />
+        </div>
+        <button class="btn-primary" (click)="joinLobby()" [disabled]="!userName.trim()">
+          {{ translateService.translate('join.button') }}
+        </button>
+        <div class="or-divider">
         <span>{{ translateService.translate('join.or') }}</span>
       </div>
       <button class="btn-login" (click)="login()">
         {{ translateService.translate('join.login') }}
       </button>
     </div>
-    } @else {
-    <!-- Table area -->
+      } @else {
+
+      <!-- Current Issue Title -->
+      @if (currentIssue) {
+      <div class="current-issue-banner">
+        <div class="parchment">
+          <div class="parchment-content">
+            <h3 class="issue-label">Current Issue</h3>
+            <p class="issue-title-display">{{ currentIssue.title }}</p>
+            @if (currentIssue.status === 'voting' && !lobby?.votesRevealed) {
+            <div class="voting-progress">
+              <p class="progress-text">{{ getVotedPlayersCount() }} / {{ (lobby?.users?.length ?? 0) }} players voted</p>
+            </div>
+            } @else if (currentIssue.status === 'completed' && currentIssue.points) {
+            <div class="issue-result">
+              <p class="result-label">Story Points</p>
+              <p class="result-points">{{ currentIssue.points }}</p>
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+      }
+
+      <!-- Vote Statistics -->
+      @if (lobby?.votesRevealed && voteStatistics.length > 0) {
+      <div class="vote-statistics">
+        @for (stat of voteStatistics; track stat.vote) {
+        <div class="statistic-item">
+          <span class="stat-label">{{ stat.vote }}</span>
+          <div class="stat-bar" [style.width.%]="stat.percentage"></div>
+          <span class="stat-value">{{ stat.count }} ({{ stat.percentage }}%)</span>
+        </div>
+        }
+      </div>
+      }
+
+      <!-- Table area -->
     <div class="table-section">
       <div class="poker-table">
         <!-- Players around the table -->
@@ -66,37 +108,53 @@
           }
         </div>
 
-        @if (lobby?.votesRevealed && voteStatistics.length > 0) {
-        <div class="vote-statistics">
-          <h3>Vote Distribution</h3>
-          <div class="statistics-container">
-            @for (stat of voteStatistics; track stat.vote) {
-            <div class="statistic-item">
-              <div class="stat-label">{{ stat.vote }}</div>
-              <div class="stat-bar-container">
-                <div class="stat-bar" [style.width.%]="stat.percentage">
-                  <span class="stat-text">{{ stat.count }} ({{ stat.percentage }}%)</span>
-                </div>
-              </div>
+          <!-- Center button -->
+          <div class="table-center">
+            @if (isRevealing && countdownValue) {
+            <div class="countdown-overlay">
+              <div class="countdown-number">{{ countdownValue }}</div>
+              <p class="countdown-text">Revealing cards...</p>
             </div>
+            } @else if (!currentIssue) {
+            @if (isHost()) {
+            <div class="no-issues-message">
+              <p class="message-title">📋 No Active Issue</p>
+              <p class="message-subtitle">Select an issue from the Issues tab to start voting</p>
+            </div>
+            } @else {
+            <div class="waiting-message">
+              <p>Waiting for host to select an issue...</p>
+            </div>
+            }
+            } @else if (noIssuesMessage) {
+            <div class="no-issues-message">
+              <p class="message-title">🎯 No Issues Left!</p>
+              <p class="message-subtitle">Add a new issue to continue voting</p>
+            </div>
+            } @else if (!lobby?.votesRevealed) {
+            @if (isHost()) {
+            <button class="btn-reveal" (click)="revealVotes()" [disabled]="!allPlayersVoted() || isRevealing"
+              [title]="!allPlayersVoted() ? 'Waiting for all players to vote' : 'Reveal cards'">
+              {{ translateService.translate('game.revealCards') }}
+            </button>
+            } @else {
+            <div class="waiting-message">
+              <p>Waiting for host to reveal...</p>
+            </div>
+            }
+            } @else {
+            @if (isHost()) {
+            <button class="btn-new-round" (click)="startNewRound()">
+              {{ translateService.translate('game.startNewRound') }}
+            </button>
+            } @else {
+            <div class="waiting-message">
+              <p>Waiting for host to start new round...</p>
+            </div>
+            }
             }
           </div>
         </div>
-        }
-
-        <!-- Center button -->
-        <div class="table-center">
-          @if (!lobby?.votesRevealed) {
-          <button class="btn-reveal" (click)="revealVotes()">
-            {{ translateService.translate('game.revealCards') }}
-          </button>
-          } @else {
-          <button class="btn-new-round" (click)="startNewRound()">
-            {{ translateService.translate('game.startNewRound') }}
-          </button>
-          }
-        </div>
-      </div>
     </div>
 
     <div class="voting-section">
@@ -114,6 +172,21 @@
         }
       </div>
     </div>
+    }
+    </div>
+
+    <!-- Issues Sidebar -->
+    @if (showIssuesTab) {
+    <aside class="issues-sidebar">
+      <app-issues-tab 
+        [isHost]="isHost()" 
+        [currentIssue]="currentIssue" 
+        [issues]="issues"
+        (issueSelected)="onIssueSelected($event)"
+        (issueAdded)="onIssueAdded($event)" 
+        (issueDeleted)="onIssueDeleted($event)">
+      </app-issues-tab>
+    </aside>
     }
   </main>
 

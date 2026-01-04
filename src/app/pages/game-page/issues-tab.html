@@ -1,0 +1,97 @@
+<div class="issues-tab">
+  <div class="issues-header">
+    <h2 class="issues-title">
+      <span class="scroll-icon">📜</span>
+      Issues
+    </h2>
+    @if (isHost) {
+    <button class="btn-add-issue" (click)="showAddForm = !showAddForm" [class.active]="showAddForm">
+      {{ showAddForm ? '✕' : '+' }}
+    </button>
+    }
+  </div>
+
+  @if (isHost && showAddForm) {
+  <div class="add-issue-form">
+    <input type="text" [(ngModel)]="newIssueTitle" placeholder="Enter issue title..." class="issue-input"
+      (keyup.enter)="addIssue()" />
+    <button class="btn-submit-issue" (click)="addIssue()" [disabled]="!newIssueTitle.trim()">
+      Add Issue
+    </button>
+  </div>
+  }
+
+  <div class="issues-stats">
+    <div class="stat-item">
+      <span class="stat-label">Total Issues:</span>
+      <span class="stat-value">{{ issues.length }}</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label">Completed:</span>
+      <span class="stat-value">{{ getIssuesByStatus('completed').length }}</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label">Total Points:</span>
+      <span class="stat-value">{{ getTotalPoints() }}</span>
+    </div>
+  </div>
+
+  <div class="issues-list">
+    <div class="issue-section">
+      <h3 class="section-title">Pending</h3>
+      @if (getIssuesByStatus('pending').length === 0) {
+      <p class="empty-message">No pending issues</p>
+      }
+      @for (issue of getIssuesByStatus('pending'); track issue.id) {
+      <div class="issue-item" [class.selected]="currentIssue?.id === issue.id" (click)="selectIssue(issue)">
+        <div class="issue-content">
+          <span class="issue-title">{{ issue.title }}</span>
+          @if (issue.points) {
+          <span class="issue-points">{{ issue.points }} pts</span>
+          }
+        </div>
+        @if (isHost) {
+        <button class="btn-delete-issue" (click)="deleteIssue(issue); $event.stopPropagation()"
+          title="Delete issue">✕</button>
+        }
+      </div>
+      }
+    </div>
+
+    <div class="issue-section">
+      <h3 class="section-title">Voting</h3>
+      @if (getIssuesByStatus('voting').length === 0) {
+      <p class="empty-message">No issues in voting</p>
+      }
+      @for (issue of getIssuesByStatus('voting'); track issue.id) {
+      <div class="issue-item voting" [class.selected]="currentIssue?.id === issue.id">
+        <div class="issue-content">
+          <span class="issue-title">{{ issue.title }}</span>
+          <span class="voting-badge">Voting now...</span>
+        </div>
+      </div>
+      }
+    </div>
+
+    <div class="issue-section">
+      <h3 class="section-title">Completed</h3>
+      @if (getIssuesByStatus('completed').length === 0) {
+      <p class="empty-message">No completed issues</p>
+      }
+      @for (issue of getIssuesByStatus('completed'); track issue.id) {
+      <div class="issue-item completed">
+        <div class="issue-content">
+          <span class="issue-title">{{ issue.title }}</span>
+          @if (issue.points) {
+          <span class="issue-points">{{ issue.points }} pts</span>
+          }
+        </div>
+        @if (isHost) {
+        <button class="btn-delete-issue" (click)="deleteIssue(issue); $event.stopPropagation()"
+          title="Delete issue">✕</button>
+        }
+      </div>
+      }
+    </div>
+  </div>
+</div>
