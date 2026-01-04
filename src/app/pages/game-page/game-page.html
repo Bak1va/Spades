@@ -6,7 +6,7 @@
       <span class="game-name">{{ lobby?.name || lobbyId }}</span>
     </div>
     <div class="header-right">
-      <span class="user-badge">
+      <span class="user-badge" (click)="goToAccount()">
         <span class="user-avatar">{{ userName.charAt(0).toUpperCase() }}</span>
         {{ userName }}
       </span>

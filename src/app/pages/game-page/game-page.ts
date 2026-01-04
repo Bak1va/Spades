@@ -429,7 +429,12 @@ export class GamePage implements OnInit, OnDestroy {
     this.socketService.reconnect();
     this.router.navigate(['/']);
   }
-calculateVoteStatistics(): void {
+
+  goToAccount(): void {
+    this.router.navigate(['/account']);
+  }
+
+  calculateVoteStatistics(): void {
     if (!this.lobby || this.lobby.users.length === 0) {
       this.voteStatistics = [];
       return;
