@@ -3,7 +3,7 @@
   <header class="game-header">
     <div class="header-left">
       <span class="logo-icon">♠</span>
-      <span class="game-name">{{ lobbyId }}</span>
+      <span class="game-name">{{ lobby?.name || lobbyId }}</span>
     </div>
     <div class="header-right">
       @if (isAuthenticated) {
@@ -104,23 +104,8 @@
       </div>
       }
 
-      <!-- Vote Statistics -->
-      @if (lobby?.votesRevealed && voteStatistics.length > 0) {
-      <div class="vote-statistics">
-        @for (stat of voteStatistics; track stat.vote) {
-        <div class="statistic-item">
-          <span class="stat-label">{{ stat.vote }}</span>
-          <div class="stat-bar" [style.width.%]="stat.percentage"></div>
-          <span class="stat-value"
-            >{{ stat.count }} ({{ stat.percentage }}%)</span
-          >
-        </div>
-        }
-      </div>
-      }
-
       <!-- Table area -->
-      <div class="table-section">
+      <div class="table-section" [class.votes-revealed]="lobby?.votesRevealed">
         <div class="poker-table">
           <!-- Players around the table -->
           <div class="players-around-table">
@@ -204,6 +189,8 @@
         </div>
       </div>
 
+      <!-- Voting Section - Show only when votes not revealed -->
+      @if (!lobby?.votesRevealed && currentIssue) {
       <div class="voting-section">
         <p class="voting-label">
           {{ translateService.translate("game.chooseCard") }}
@@ -226,11 +213,30 @@
         </div>
       </div>
       }
+
+      <!-- Vote Statistics - Show when votes revealed -->
+      @if (lobby?.votesRevealed && voteStatistics.length > 0) {
+      <div class="vote-statistics-section">
+        <h3 class="vote-statistics-title">Vote Statistics:</h3>
+        <div class="vote-statistics">
+          @for (stat of voteStatistics; track stat.vote) {
+          <div class="statistic-item">
+            <span class="stat-label">{{ stat.vote }}</span>
+            <div class="stat-bar" [style.width.%]="stat.percentage"></div>
+            <span class="stat-value"
+              >{{ stat.count }} ({{ stat.percentage }}%)</span
+            >
+          </div>
+          }
+        </div>
+      </div>
+      }
+      }
     </div>
 
     <!-- Issues Sidebar -->
     @if (showIssuesTab) {
-    <aside class="issues-sidebar">
+    <aside class="issues-sidebar" [class.closing]="isClosingSidebar">
       <app-issues-tab
         [isHost]="isHost()"
         [currentIssue]="currentIssue"

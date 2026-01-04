@@ -82,6 +82,7 @@ export class GamePage implements OnInit, OnDestroy {
   copied = false;
   gameLink = '';
   showIssuesTab = false;
+  isClosingSidebar = false;
   currentIssue: Issue | null = null;
   issues: Issue[] = [];
   isRevealing = false;
@@ -427,7 +428,17 @@ export class GamePage implements OnInit, OnDestroy {
   }
 
   toggleIssuesTab(): void {
-    this.showIssuesTab = !this.showIssuesTab;
+    if (this.showIssuesTab) {
+      // Start closing animation
+      this.isClosingSidebar = true;
+      // Wait for animation to complete before hiding
+      setTimeout(() => {
+        this.showIssuesTab = false;
+        this.isClosingSidebar = false;
+      }, 300); // Match animation duration
+    } else {
+      this.showIssuesTab = true;
+    }
   }
 
   copyLink(): void {

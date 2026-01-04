@@ -59,8 +59,13 @@ export class NewGame implements OnInit {
 
     localStorage.setItem('planningPokerUsername', this.userName);
     localStorage.setItem('planningPokerVotingSystem', this.selectedVotingSystem);
+    
+    const gameNameToUse = this.gameName.trim() || undefined;
+    if (gameNameToUse) {
+      localStorage.setItem('planningPokerGameName', gameNameToUse);
+    }
 
-    this.socketService.createLobby(this.userName).subscribe({
+    this.socketService.createLobby(this.userName, gameNameToUse).subscribe({
       next: (data) => {
         this.lobbyId = data.lobbyId || data.lobby?.id || '';
         if (this.lobbyId) {

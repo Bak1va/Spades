@@ -12,6 +12,7 @@ export interface User {
 
 export interface Lobby {
   id: string;
+  name?: string;
   host: string;
   users: User[];
   currentStory: string | null;
@@ -60,9 +61,9 @@ export class SocketService {
     return this.socket.id || '';
   }
 
-  createLobby(userName: string): Observable<{ lobbyId: string; lobby: Lobby }> {
+  createLobby(userName: string, gameName?: string): Observable<{ lobbyId: string; lobby: Lobby }> {
     return new Observable(observer => {
-      this.socket.emit('create-lobby', { userName });
+      this.socket.emit('create-lobby', { userName, gameName });
       this.socket.once('lobby-created', (data: any) => {
         const lobby: Lobby | null = data?.lobby ?? (data?.id ? { ...data, id: data.id } : null);
         const lobbyId: string = data?.lobbyId ?? data?.id ?? lobby?.id ?? '';
