@@ -70,6 +70,13 @@ export class GamePage implements OnInit, OnDestroy {
       ? `${window.location.origin}/game/${this.lobbyId}`
       : window.location.href;
 
+    // Subscribe to language changes
+    this.subscriptions.push(
+      this.translateService.currentLang$.subscribe(lang => {
+        this.lang = lang;
+      })
+    );
+
     // Load saved username from localStorage
     const savedName = localStorage.getItem('planningPokerUsername');
     if (savedName) {

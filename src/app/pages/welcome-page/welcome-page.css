@@ -119,6 +119,35 @@
   transform: translateY(-2px);
 }
 
+.lang-select {
+  background: rgba(74, 45, 107, 0.5);
+  border: 2px solid var(--cosmic-purple);
+  color: var(--moonlight);
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-family: 'Cinzel', serif;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.lang-select:hover {
+  border-color: var(--astral-gold);
+  background: rgba(74, 45, 107, 0.7);
+}
+
+.lang-select:focus {
+  border-color: var(--stardust-gold);
+  box-shadow: 0 0 12px var(--ethereal-glow);
+}
+
+.lang-select option {
+  background: var(--cosmic-purple);
+  color: var(--moonlight);
+}
+
 /* Hero Section */
 .hero-section {
   min-height: 100vh;

@@ -18,6 +18,19 @@
             <button class="btn-login" (click)="login()">Login</button>
           </ng-template>
         </ng-container>
+        <select
+          class="lang-select"
+          [(ngModel)]="lang"
+          (ngModelChange)="setLanguage($event)"
+          title="Change language"
+        >
+          <option
+            *ngFor="let opt of translateService.languageOptions"
+            [value]="opt.code"
+          >
+            {{ opt.label }}
+          </option>
+        </select>
       </div>
     </div>
   </header>
@@ -26,10 +39,10 @@
   <section class="hero-section">
     <div class="hero-content">
       <div class="hero-text">
-        <h1 class="hero-title animate-fade-in">Planning Poker for Agile Teams</h1>
-        <p class="hero-subtitle animate-fade-in-delay">Easy-to-use and fun estimations. Collaborate in real-time with your team using Fibonacci, T-Shirt, or custom voting systems.</p>
+        <h1 class="hero-title animate-fade-in">{{ 'welcome.title' | translate }}</h1>
+        <p class="hero-subtitle animate-fade-in-delay">{{ 'welcome.subtitle' | translate }}</p>
         <button class="btn-get-started animate-fade-in-delay-2" (click)="getStarted()">
-          Get Started
+          {{ 'welcome.getStarted' | translate }}
           <span class="arrow">→</span>
         </button>
       </div>
@@ -72,37 +85,37 @@
 
   <!-- Features Section -->
   <section class="features-section">
-    <h2 class="section-title">Why Choose Our Planning Poker?</h2>
+    <h2 class="section-title">{{ 'welcome.whyChoose' | translate }}</h2>
     <div class="features-grid">
       <div class="feature-card">
         <div class="feature-icon">⚡</div>
-        <h3>Real-Time Collaboration</h3>
-        <p>Vote together with your team in real-time. See votes as they happen and reveal results instantly.</p>
+        <h3>{{ 'welcome.features.realTime.title' | translate }}</h3>
+        <p>{{ 'welcome.features.realTime.description' | translate }}</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">🎯</div>
-        <h3>Multiple Voting Systems</h3>
-        <p>Choose from Fibonacci, T-Shirt sizes, or Powers of 2. Customize your estimation approach.</p>
+        <h3>{{ 'welcome.features.votingSystems.title' | translate }}</h3>
+        <p>{{ 'welcome.features.votingSystems.description' | translate }}</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">📊</div>
-        <h3>Vote Statistics</h3>
-        <p>Analyze voting patterns with detailed statistics and consensus indicators.</p>
+        <h3>{{ 'welcome.features.statistics.title' | translate }}</h3>
+        <p>{{ 'welcome.features.statistics.description' | translate }}</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">📄</div>
-        <h3>Issue Management</h3>
-        <p>Manage your stories and issues directly in the app. Track progress and results.</p>
+        <h3>{{ 'welcome.features.issues.title' | translate }}</h3>
+        <p>{{ 'welcome.features.issues.description' | translate }}</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">🔒</div>
-        <h3>Secure & Private</h3>
-        <p>Your sessions are private and secure. Integrated with Keycloak authentication.</p>
+        <h3>{{ 'welcome.features.secure.title' | translate }}</h3>
+        <p>{{ 'welcome.features.secure.description' | translate }}</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">🌐</div>
-        <h3>Multi-Language</h3>
-        <p>Available in English, Romanian, and French. More languages coming soon.</p>
+        <h3>{{ 'welcome.features.multiLanguage.title' | translate }}</h3>
+        <p>{{ 'welcome.features.multiLanguage.description' | translate }}</p>
       </div>
     </div>
   </section>
@@ -110,10 +123,10 @@
   <!-- CTA Section -->
   <section class="cta-section">
     <div class="cta-content">
-      <h2>Ready to Start Estimating?</h2>
-      <p>Join thousands of agile teams using our Planning Poker tool</p>
+      <h2>{{ 'welcome.cta.title' | translate }}</h2>
+      <p>{{ 'welcome.cta.subtitle' | translate }}</p>
       <button class="btn-cta" (click)="getStarted()">
-        Get Started Now
+        {{ 'welcome.cta.button' | translate }}
         <span class="arrow">→</span>
       </button>
     </div>
@@ -127,7 +140,7 @@
         <span class="logo-text">Planning Poker</span>
       </div>
       <div class="footer-section">
-        <p>&copy; 2026 Planning Poker. All rights reserved.</p>
+        <p>{{ 'welcome.footer.copyright' | translate }}</p>
       </div>
     </div>
   </footer>

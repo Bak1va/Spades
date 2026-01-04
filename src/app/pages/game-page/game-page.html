@@ -76,19 +76,19 @@
       <div class="current-issue-banner">
         <div class="parchment">
           <div class="parchment-content">
-            <h3 class="issue-label">Current Issue</h3>
+            <h3 class="issue-label">{{ translateService.translate("game.currentIssue") }}</h3>
             <p class="issue-title-display">{{ currentIssue.title }}</p>
             @if (currentIssue.status === 'voting' && !lobby?.votesRevealed) {
             <div class="voting-progress">
               <p class="progress-text">
                 {{ getVotedPlayersCount() }} /
-                {{ lobby?.users?.length ?? 0 }} players voted
+                {{ lobby?.users?.length ?? 0 }} {{ translateService.translate("game.playersVoted") }}
               </p>
             </div>
             } @else if (currentIssue.status === 'completed' &&
             currentIssue.points) {
             <div class="issue-result">
-              <p class="result-label">Story Points</p>
+              <p class="result-label">{{ translateService.translate("game.storyPoints") }}</p>
               <p class="result-points">{{ currentIssue.points }}</p>
             </div>
             }
@@ -134,23 +134,23 @@
             @if (isRevealing && countdownValue) {
             <div class="countdown-overlay">
               <div class="countdown-number">{{ countdownValue }}</div>
-              <p class="countdown-text">Revealing cards...</p>
+              <p class="countdown-text">{{ translateService.translate("game.revealingCards") }}</p>
             </div>
             } @else if (!currentIssue) { @if (isHost()) {
             <div class="no-issues-message">
-              <p class="message-title">📋 No Active Issue</p>
+              <p class="message-title">📋 {{ translateService.translate("game.noActiveIssue") }}</p>
               <p class="message-subtitle">
-                Select an issue from the Issues tab to start voting
+                {{ translateService.translate("game.selectIssueToStart") }}
               </p>
             </div>
             } @else {
             <div class="waiting-message">
-              <p>Waiting for host to select an issue...</p>
+              <p>{{ translateService.translate("game.waitingForHost") }}</p>
             </div>
             } } @else if (noIssuesMessage) {
             <div class="no-issues-message">
-              <p class="message-title">🎯 No Issues Left!</p>
-              <p class="message-subtitle">Add a new issue to continue voting</p>
+              <p class="message-title">🎯 {{ translateService.translate("game.noIssuesLeft") }}</p>
+              <p class="message-subtitle">{{ translateService.translate("game.addIssueToContinue") }}</p>
             </div>
             } @else if (!lobby?.votesRevealed) { @if (isHost()) {
             <button
@@ -167,7 +167,7 @@
             </button>
             } @else {
             <div class="waiting-message">
-              <p>Waiting for host to reveal...</p>
+              <p>{{ translateService.translate("game.waitingForReveal") }}</p>
             </div>
             } } @else { @if (isHost()) {
             <button class="btn-new-round" (click)="startNewRound()">
@@ -175,7 +175,7 @@
             </button>
             } @else {
             <div class="waiting-message">
-              <p>Waiting for host to start new round...</p>
+              <p>{{ translateService.translate("game.waitingForNewRound") }}</p>
             </div>
             } }
           </div>
@@ -210,7 +210,7 @@
       <!-- Vote Statistics - Show when votes revealed -->
       @if (lobby?.votesRevealed && voteStatistics.length > 0) {
       <div class="vote-statistics-section">
-        <h3 class="vote-statistics-title">Vote Statistics:</h3>
+        <h3 class="vote-statistics-title">{{ translateService.translate("game.voteStatistics") }}</h3>
         <div class="vote-statistics">
           @for (stat of voteStatistics; track stat.vote) {
           <div class="statistic-item">
