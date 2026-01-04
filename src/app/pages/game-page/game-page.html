@@ -6,10 +6,17 @@
       <span class="game-name">{{ lobbyId }}</span>
     </div>
     <div class="header-right">
+      @if (isAuthenticated) {
+      <span class="user-badge" [routerLink]="'/account'" title="Account">
+        <span class="user-avatar">{{ userName.charAt(0).toUpperCase() }}</span>
+        <span class="user-name-text">{{ userName }}</span>
+      </span>
+      } @else {
       <span class="user-badge">
         <span class="user-avatar">{{ userName.charAt(0).toUpperCase() }}</span>
         {{ userName }}
       </span>
+      }
       @if (isHost() && hasJoined) {
       <button
         class="btn-outline"
