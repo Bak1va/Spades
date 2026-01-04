@@ -7,7 +7,7 @@ import { SocketService, Lobby } from '../../services/socket.service';
 import { TranslateService } from '../../services/translate.service';
 import { UserService } from '../../services/user.service';
 import { QRCodeComponent } from 'angularx-qrcode';
-import { IssuesTab, Issue } from './issues-tab';
+import { IssuesTab, Issue } from '../issues-tab/issues-tab';
 
 @Component({
   selector: 'app-game-page',
