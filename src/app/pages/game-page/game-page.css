@@ -63,6 +63,18 @@
   border: 1px solid var(--astral-gold);
   color: var(--stardust-gold);
   padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-outline .icon {
+  font-size: 18px;
+}
+
+.btn-outline.active {
+  background: rgba(74, 45, 107, 0.7);
+  box-shadow: 0 0 16px var(--ethereal-glow);
 }
 
 .btn-outline:hover {
@@ -80,10 +92,44 @@
 .game-main {
   flex: 1;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   padding: 20px;
   position: relative;
   z-index: 1;
+  gap: 20px;
+  overflow: hidden;
+}
+
+.game-main.with-sidebar .game-content {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.game-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.issues-sidebar {
+  width: 380px;
+  height: calc(100vh - 90px);
+  position: sticky;
+  top: 20px;
+  flex-shrink: 0;
+  animation: slideInRight 0.3s ease;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 .join-form-container {
@@ -98,6 +144,173 @@
 .join-form-container h2 {
   margin-bottom: 24px;
   text-align: center;
+}
+
+.current-issue-banner {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 32px;
+  padding: 0 20px;
+  animation: fadeInDown 0.5s ease;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.parchment {
+  position: relative;
+  max-width: 700px;
+  width: 100%;
+  background: linear-gradient(180deg, 
+    #f4e4c1 0%, 
+    #e8d8b0 10%, 
+    #dbc89f 50%, 
+    #e8d8b0 90%, 
+    #f4e4c1 100%
+  );
+  padding: 32px 48px;
+  border-radius: 12px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.6),
+    inset 0 2px 4px rgba(255, 255, 255, 0.3),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+  border: 3px solid #c4a574;
+}
+
+.parchment::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(139, 90, 43, 0.03) 2px,
+      rgba(139, 90, 43, 0.03) 4px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(139, 90, 43, 0.03) 2px,
+      rgba(139, 90, 43, 0.03) 4px
+    );
+  border-radius: 12px;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.parchment::after {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 2px solid rgba(139, 90, 43, 0.15);
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+.parchment-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.issue-label {
+  font-family: 'Cinzel', serif;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: #8b5a2b;
+  margin-bottom: 12px;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+.issue-title-display {
+  font-family: 'Cinzel', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #4a2d1a;
+  line-height: 1.4;
+  text-shadow: 
+    0 1px 0 rgba(255, 255, 255, 0.8),
+    0 2px 4px rgba(0, 0, 0, 0.2);
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.issue-label::before,
+.issue-label::after {
+  content: '✦';
+  color: var(--astral-gold);
+  margin: 0 12px;
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+.voting-progress {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(139, 90, 43, 0.3);
+}
+
+.progress-text {
+  font-family: 'Raleway', sans-serif;
+  font-size: 14px;
+  color: #8b5a2b;
+  margin: 0;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.issue-result {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(139, 90, 43, 0.3);
+  animation: fadeIn 0.5s ease;
+}
+
+.result-label {
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #8b5a2b;
+  margin: 0 0 8px 0;
+  font-weight: 600;
+}
+
+.result-points {
+  font-family: 'Cinzel', serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--astral-gold);
+  margin: 0;
+  text-shadow: 
+    0 1px 0 rgba(255, 255, 255, 0.5),
+    0 2px 4px rgba(0, 0, 0, 0.3);
+  animation: scaleIn 0.5s ease;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .form-group {
@@ -300,8 +513,120 @@
   box-shadow: 0 6px 24px var(--ethereal-glow);
 }
 
+.btn-reveal:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: rgba(74, 45, 107, 0.5);
+}
+
 .btn-new-round {
   background: linear-gradient(135deg, #2d6b4e, var(--astral-gold));
+}
+
+/* Countdown Animation */
+.countdown-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.countdown-number {
+  font-family: 'Cinzel', serif;
+  font-size: 72px;
+  font-weight: 700;
+  color: var(--astral-gold);
+  text-shadow: 0 0 24px var(--ethereal-glow),
+               0 0 48px var(--ethereal-glow);
+  animation: countdownPulse 1s ease-in-out;
+}
+
+@keyframes countdownPulse {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.countdown-text {
+  font-family: 'Raleway', sans-serif;
+  font-size: 16px;
+  color: var(--stardust-gold);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  animation: fadeInOut 1s ease-in-out infinite;
+}
+
+@keyframes fadeInOut {
+  0%, 100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.no-issues-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 20px;
+  animation: fadeIn 0.5s ease;
+}
+
+.message-title {
+  font-family: 'Cinzel', serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--stardust-gold);
+  margin: 0;
+  text-shadow: 0 0 12px var(--ethereal-glow);
+}
+
+.message-subtitle {
+  font-size: 14px;
+  color: var(--moonlight);
+  margin: 0;
+  opacity: 0.8;
+}
+
+.waiting-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.waiting-message p {
+  font-size: 16px;
+  color: var(--moonlight);
+  opacity: 0.7;
+  font-style: italic;
+  margin: 0;
+  animation: fadeInOut 2s ease-in-out infinite;
 }
 
 .voting-section {
@@ -460,65 +785,57 @@
   color: var(--stardust-gold);
 }
 
+/* Vote Statistics - Minimalist Design */
 .vote-statistics {
-  position: absolute;
-  bottom: 60px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(20, 10, 30, 0.95);
-  padding: 10px 16px;
-  width: 85%;
-  max-width: 420px;
-  z-index: 20;
-}
-
-.vote-statistics h3 {
-  color: var(--astral-gold);
-  font-size: 12px;
-  margin: 0 0 10px;
-  text-align: center;
-}
-
-.statistics-container {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 0 20px;
+  animation: fadeIn 0.4s ease;
 }
 
 .statistic-item {
   display: flex;
-  gap: 6px;
   align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(45, 27, 78, 0.3);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 6px;
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+}
+
+.statistic-item:hover {
+  background: rgba(45, 27, 78, 0.5);
+  border-color: var(--astral-gold);
+  transform: translateY(-2px);
 }
 
 .stat-label {
-  min-width: 30px;
-  color: var(--stardust-gold);
+  font-family: 'Cinzel', serif;
+  font-size: 16px;
   font-weight: 600;
-  font-size: 13px;
+  color: var(--astral-gold);
+  min-width: 24px;
   text-align: center;
 }
 
-.stat-bar-container {
-  flex: 1;
-  height: 24px;
-  background: rgba(30, 15, 50, 0.8);
-  border-radius: 2px;
-  overflow: hidden;
-}
-
 .stat-bar {
-  height: 100%;
-  background: var(--astral-gold);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 30px;
+  height: 4px;
+  min-width: 40px;
+  max-width: 80px;
+  background: linear-gradient(90deg, var(--cosmic-purple), var(--astral-gold));
+  border-radius: 2px;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
 }
 
-.stat-text {
-  color: #000;
-  font-size: 10px;
-  font-weight: 600;
-  padding: 0 4px;
+.stat-value {
+  font-family: 'Raleway', sans-serif;
+  font-size: 13px;
+  color: var(--moonlight);
+  font-weight: 500;
+  white-space: nowrap;
 }
