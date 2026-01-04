@@ -61,4 +61,8 @@ export class AccountPage implements OnInit {
       // Login redirect failed - user stays on page
     }
   }
+
+  goBack(): void {
+    this.router.navigate(['/']);
+  }
 }
