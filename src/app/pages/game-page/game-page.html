@@ -183,8 +183,13 @@
     <!-- Issues Sidebar -->
     @if (showIssuesTab) {
     <aside class="issues-sidebar">
-      <app-issues-tab [isHost]="isHost()" [currentIssue]="currentIssue" (issueSelected)="onIssueSelected($event)"
-        (issueAdded)="onIssueAdded($event)" (issueDeleted)="onIssueDeleted($event)">
+      <app-issues-tab 
+        [isHost]="isHost()" 
+        [currentIssue]="currentIssue" 
+        [issues]="issues"
+        (issueSelected)="onIssueSelected($event)"
+        (issueAdded)="onIssueAdded($event)" 
+        (issueDeleted)="onIssueDeleted($event)">
       </app-issues-tab>
     </aside>
     }

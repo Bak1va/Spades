@@ -19,11 +19,11 @@ export interface Issue {
 export class IssuesTab {
   @Input() isHost = false;
   @Input() currentIssue: Issue | null = null;
+  @Input() issues: Issue[] = [];
   @Output() issueSelected = new EventEmitter<Issue>();
-  @Output() issueAdded = new EventEmitter<string>();
+  @Output() issueAdded = new EventEmitter<Issue>();
   @Output() issueDeleted = new EventEmitter<string>();
 
-  issues: Issue[] = [];
   newIssueTitle = '';
   showAddForm = false;
 
@@ -37,8 +37,7 @@ export class IssuesTab {
       status: 'pending'
     };
 
-    this.issues.push(issue);
-    this.issueAdded.emit(title);
+    this.issueAdded.emit(issue);
     this.newIssueTitle = '';
     this.showAddForm = false;
   }
@@ -48,7 +47,6 @@ export class IssuesTab {
   }
 
   deleteIssue(issue: Issue): void {
-    this.issues = this.issues.filter(i => i.id !== issue.id);
     this.issueDeleted.emit(issue.id);
   }
 

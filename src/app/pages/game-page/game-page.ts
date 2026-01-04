@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -26,11 +26,11 @@ export class GamePage implements OnInit, OnDestroy {
   gameLink = '';
   showIssuesTab = false;
   currentIssue: Issue | null = null;
+  issues: Issue[] = [];
   isRevealing = false;
   countdownValue: number | null = null;
   noIssuesMessage = false;
 
-  @ViewChild(IssuesTab) issuesTabComponent!: IssuesTab;
   lang: 'en' | 'ro' | 'fr';
   isAuthenticating = true; // Show loading state while checking auth
 
@@ -111,17 +111,15 @@ export class GamePage implements OnInit, OnDestroy {
         this.currentIssue = data.issue;
         this.noIssuesMessage = false;
         
-        if (this.issuesTabComponent && data.issue) {
-          const issueIndex = this.issuesTabComponent.issues.findIndex(i => i.id === data.issue.id);
+        if (data.issue) {
+          const issueIndex = this.issues.findIndex(i => i.id === data.issue.id);
           if (issueIndex !== -1) {
-            this.issuesTabComponent.issues[issueIndex] = data.issue;
+            this.issues[issueIndex] = data.issue;
           }
         }
       }),
       this.socketService.onIssuesUpdated().subscribe(data => {
-        if (this.issuesTabComponent) {
-          this.issuesTabComponent.issues = data.issues;
-        }
+        this.issues = data.issues;
       }),
       this.socketService.onLobbyClosed().subscribe(() => {
         alert(this.translateService.translate('alert.lobbyClosed'));
@@ -335,18 +333,14 @@ export class GamePage implements OnInit, OnDestroy {
       this.currentIssue.points = '?';
       
       // Update the issue in the issues list as well
-      if (this.issuesTabComponent) {
-        const issueIndex = this.issuesTabComponent.issues.findIndex(i => i.id === this.currentIssue!.id);
-        if (issueIndex !== -1) {
-          this.issuesTabComponent.issues[issueIndex] = { ...this.currentIssue };
-        }
+      const issueIndex = this.issues.findIndex(i => i.id === this.currentIssue!.id);
+      if (issueIndex !== -1) {
+        this.issues[issueIndex] = { ...this.currentIssue };
       }
       
       // Broadcast the updated issue to all players
       this.socketService.selectIssue(this.lobbyId, this.currentIssue);
-      if (this.issuesTabComponent) {
-        this.socketService.updateIssuesList(this.lobbyId, this.issuesTabComponent.issues);
-      }
+      this.socketService.updateIssuesList(this.lobbyId, this.issues);
       return;
     }
 
@@ -359,18 +353,14 @@ export class GamePage implements OnInit, OnDestroy {
     this.currentIssue.points = roundedMean.toString();
     
     // Update the issue in the issues list as well
-    if (this.issuesTabComponent) {
-      const issueIndex = this.issuesTabComponent.issues.findIndex(i => i.id === this.currentIssue!.id);
-      if (issueIndex !== -1) {
-        this.issuesTabComponent.issues[issueIndex] = { ...this.currentIssue };
-      }
+    const issueIndex = this.issues.findIndex(i => i.id === this.currentIssue!.id);
+    if (issueIndex !== -1) {
+      this.issues[issueIndex] = { ...this.currentIssue };
     }
     
     // Broadcast the updated issue to all players
     this.socketService.selectIssue(this.lobbyId, this.currentIssue);
-    if (this.issuesTabComponent) {
-      this.socketService.updateIssuesList(this.lobbyId, this.issuesTabComponent.issues);
-    }
+    this.socketService.updateIssuesList(this.lobbyId, this.issues);
   }
 
   startNewRound(): void {
@@ -381,24 +371,22 @@ export class GamePage implements OnInit, OnDestroy {
     this.noIssuesMessage = false;
 
     // Check if there are pending issues
-    if (this.issuesTabComponent) {
-      const pendingIssues = this.issuesTabComponent.getIssuesByStatus('pending');
-      
-      if (pendingIssues.length > 0) {
-        // Automatically select the next pending issue
-        const nextIssue = pendingIssues[0];
-        nextIssue.status = 'voting';
-        this.currentIssue = nextIssue;
-        // Broadcast to all players
-        this.socketService.selectIssue(this.lobbyId, nextIssue);
-        this.socketService.updateIssuesList(this.lobbyId, this.issuesTabComponent.issues);
-      } else {
-        // No pending issues left
-        this.currentIssue = null;
-        this.noIssuesMessage = true;
-        // Broadcast to all players
-        this.socketService.selectIssue(this.lobbyId, null);
-      }
+    const pendingIssues = this.issues.filter(i => i.status === 'pending');
+    
+    if (pendingIssues.length > 0) {
+      // Automatically select the next pending issue
+      const nextIssue = pendingIssues[0];
+      nextIssue.status = 'voting';
+      this.currentIssue = nextIssue;
+      // Broadcast to all players
+      this.socketService.selectIssue(this.lobbyId, nextIssue);
+      this.socketService.updateIssuesList(this.lobbyId, this.issues);
+    } else {
+      // No pending issues left
+      this.currentIssue = null;
+      this.noIssuesMessage = true;
+      // Broadcast to all players
+      this.socketService.selectIssue(this.lobbyId, null);
     }
   }
 
@@ -481,28 +469,24 @@ calculateVoteStatistics(): void {
     // Broadcast the selected issue to all players
     this.socketService.selectIssue(this.lobbyId, issue);
     // Broadcast updated issues list
-    if (this.issuesTabComponent) {
-      this.socketService.updateIssuesList(this.lobbyId, this.issuesTabComponent.issues);
-    }
+    this.socketService.updateIssuesList(this.lobbyId, this.issues);
   }
 
-  onIssueAdded(title: string): void {
-    console.log('Issue added:', title);
+  onIssueAdded(issue: Issue): void {
+    this.issues.push(issue);
+    console.log('Issue added:', issue.title);
     // Broadcast updated issues list
-    if (this.issuesTabComponent) {
-      this.socketService.updateIssuesList(this.lobbyId, this.issuesTabComponent.issues);
-    }
+    this.socketService.updateIssuesList(this.lobbyId, this.issues);
   }
 
   onIssueDeleted(issueId: string): void {
+    this.issues = this.issues.filter(i => i.id !== issueId);
     if (this.currentIssue?.id === issueId) {
       this.currentIssue = null;
       this.socketService.selectIssue(this.lobbyId, null);
     }
     // Broadcast updated issues list
-    if (this.issuesTabComponent) {
-      this.socketService.updateIssuesList(this.lobbyId, this.issuesTabComponent.issues);
-    }
+    this.socketService.updateIssuesList(this.lobbyId, this.issues);
   }
 }
 
