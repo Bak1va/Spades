@@ -223,7 +223,7 @@
 
     <!-- Issues Sidebar -->
     @if (showIssuesTab) {
-    <aside class="issues-sidebar">
+    <aside class="issues-sidebar" [class.closing]="isClosingSidebar">
       <app-issues-tab
         [isHost]="isHost()"
         [currentIssue]="currentIssue"
