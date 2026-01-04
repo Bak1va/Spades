@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { SocketService } from '../../services/socket.service';
 import { TranslateService } from '../../services/translate.service';
 import { UserService } from '../../services/user.service';
-import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-new-game',
@@ -17,11 +16,10 @@ export class NewGame implements OnInit {
   gameName = '';
   userName = '';
   selectedVotingSystem = 'fibonacci';
-  gameLink = '';
-  copied = false;
-  lobbyId = '';
   lang: 'en' | 'ro' | 'fr';
-  isLoading = true; // Show loading while checking auth
+  isLoading = true;
+
+  private lobbyId = '';
 
   constructor(
     private router: Router,
@@ -32,59 +30,32 @@ export class NewGame implements OnInit {
     this.lang = this.translateService.currentLang;
   }
 
-  ngOnInit(): void {
-    this.userService
-      .init()
-      .then((authenticated) => {
-        if (!authenticated) {
-          // Not logged in - redirect to Keycloak login
-          // After login, Keycloak will redirect back to this page
-          this.userService.login(window.location.href);
-          return Promise.reject('not-authenticated');
-        }
-        return this.userService.getBearerToken();
-      })
-      .then((token) =>
-        fetch(`${environment.backendUrl}/me`, {
-          headers: { Authorization: token },
-        })
-      )
-      .then((resp) => {
-        if (!resp.ok) return Promise.reject('no-user');
-        return resp.json();
-      })
-      .then((data: any) => {
-        const user = data?.user || data;
-        if (user?.name) {
-          this.userName = user.name;
-        } else {
-          // Fallback to Keycloak token username
-          const kc = this.userService.getUsername();
-          if (kc) {
-            this.userName = kc;
-          }
-        }
+  async ngOnInit(): Promise<void> {
+    try {
+      const authenticated = await this.userService.init();
+
+      if (!authenticated) {
+        await this.userService.login(window.location.href);
+        return;
+      }
+
+      this.userName = this.userService.getFullName() 
+        || this.userService.getUsername() 
+        || '';
+
+      if (this.userName) {
         localStorage.setItem('planningPokerUsername', this.userName);
-        this.isLoading = false;
-      })
-      .catch((err) => {
-        if (err !== 'not-authenticated') {
-          // Authenticated but /me failed - use Keycloak username directly
-          const kc = this.userService.getUsername();
-          if (kc) {
-            this.userName = kc;
-            localStorage.setItem('planningPokerUsername', kc);
-          }
-          this.isLoading = false;
-        }
-        // If 'not-authenticated', we're redirecting to login, so don't update isLoading
-      });
+      }
+    } catch {
+      // Use cached username as fallback
+      this.userName = localStorage.getItem('planningPokerUsername') || '';
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   createGame(): void {
-    if (!this.userName.trim()) {
-      return;
-    }
+    if (!this.userName.trim()) return;
 
     localStorage.setItem('planningPokerUsername', this.userName);
     localStorage.setItem('planningPokerVotingSystem', this.selectedVotingSystem);
@@ -93,32 +64,11 @@ export class NewGame implements OnInit {
       next: (data) => {
         this.lobbyId = data.lobbyId || data.lobby?.id || '';
         if (this.lobbyId) {
-          this.gameLink = `${window.location.origin}/game/${this.lobbyId}`;
-        } else if (data.lobby && data.lobby.id) {
-          this.gameLink = `${window.location.origin}/game/${data.lobby.id}`;
-          this.lobbyId = data.lobby.id;
-        } else {
-          this.gameLink = window.location.href;
+          this.router.navigate(['/game', this.lobbyId]);
         }
-        this.goToGame();
       },
-      error: (err) => {
-        console.error('Failed to create lobby:', err);
-      },
+      error: (err) => console.error('Failed to create lobby:', err),
     });
-  }
-
-  copyLink(): void {
-    navigator.clipboard.writeText(this.gameLink).then(() => {
-      this.copied = true;
-      setTimeout(() => {
-        this.copied = false;
-      }, 2000);
-    });
-  }
-
-  goToGame(): void {
-    this.router.navigate(['/game', this.lobbyId]);
   }
 
   setLanguage(lang: 'en' | 'ro' | 'fr'): void {

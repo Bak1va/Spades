@@ -10,8 +10,9 @@
   </div>
 
   <!-- Loading state while checking authentication -->
-  <div *ngIf="isLoading" class="form-section" style="text-align: center;">
-    <p>{{ translateService.translate('newGame.checkingAuth') || 'Checking authentication...' }}</p>
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>{{ translateService.translate('newGame.checkingAuth') || 'Loading...' }}</p>
   </div>
 
   <!-- Form shown only when authenticated -->

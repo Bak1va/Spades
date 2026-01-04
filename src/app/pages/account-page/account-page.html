@@ -1,0 +1,36 @@
+<div class="account-container">
+  <h2>Account</h2>
+
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading...</p>
+  </div>
+
+  <ng-container *ngIf="!loading">
+    <div *ngIf="authenticated; else notAuth">
+      <div class="profile-card">
+        <div class="profile-header">
+          <div class="avatar">{{ (fullName || username || '?').charAt(0).toUpperCase() }}</div>
+          <div class="user-info">
+            <h3>{{ fullName || username }}</h3>
+            <p class="username">@{{ username }}</p>
+          </div>
+        </div>
+
+        <div class="profile-details">
+          <div class="detail-row" *ngIf="email">
+            <span class="label">Email</span>
+            <span class="value">{{ email }}</span>
+          </div>
+        </div>
+
+        <button class="btn-logout" (click)="logout()">Logout</button>
+      </div>
+    </div>
+
+    <ng-template #notAuth>
+      <p>You are not authenticated.</p>
+      <button class="btn-login" (click)="login()">Login</button>
+    </ng-template>
+  </ng-container>
+</div>

@@ -7,7 +7,7 @@ import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-home-page',
-  imports: [FormsModule, CommonModule, UpperCasePipe],
+  imports: [FormsModule, CommonModule],
   templateUrl: './home-page.html',
   styleUrl: './home-page.css',
 })

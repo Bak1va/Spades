@@ -156,6 +156,7 @@ export class UserService {
     }
 
     /**
+     * @unused - for debug only
      * Get user's roles from the token
      */
     getRoles(): string[] {
@@ -174,6 +175,7 @@ export class UserService {
     }
 
     /**
+     * @unused - for debug only
      * Check if user has a specific role
      */
     hasRole(role: string): boolean {
