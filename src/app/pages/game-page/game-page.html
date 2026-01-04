@@ -7,10 +7,10 @@
     </div>
     <div class="header-right">
 
-      <span class="user-badge">
-        <span class="user-avatar">{{ userName.charAt(0).toUpperCase() }}</span>
-        {{ userName }}
-      </span>
+    <a class="user-badge" href="/account" title="Account">
+      <span class="user-avatar">{{ userName.charAt(0).toUpperCase() }}</span>
+      {{ userName }}
+    </a>
       <button class="btn-outline" (click)="showInvitePopup = true">
         {{ translateService.translate('header.invitePlayers') }}
       </button>
