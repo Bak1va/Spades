@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
@@ -11,7 +11,7 @@ import { IssuesTab, Issue } from '../issues-tab/issues-tab';
 
 @Component({
   selector: 'app-game-page',
-  imports: [FormsModule, CommonModule, QRCodeComponent, IssuesTab],
+  imports: [FormsModule, CommonModule, RouterLink, QRCodeComponent, IssuesTab],
   templateUrl: './game-page.html',
   styleUrl: './game-page.css',
 })
@@ -34,6 +34,10 @@ export class GamePage implements OnInit, OnDestroy {
 
   lang: 'en' | 'ro' | 'fr';
   isAuthenticating = true; // Show loading state while checking auth
+
+  get isAuthenticated(): boolean {
+    return this.userService.isLoggedIn();
+  }
 
   votingCards = [
     { value: '0', image: 'assets/card_0.png' },
