@@ -99,6 +99,13 @@ export class GamePage implements OnInit, OnDestroy {
         if (lobby) {
           this.lobby = lobby;
           this.hasJoined = true;
+          
+          if ((lobby as any).currentIssue !== undefined) {
+            this.currentIssue = (lobby as any).currentIssue;
+          }
+          if ((lobby as any).issues !== undefined) {
+            this.issues = (lobby as any).issues || [];
+          }
         }
       })
     );
@@ -112,9 +119,16 @@ export class GamePage implements OnInit, OnDestroy {
         this.selectedVote = null;
         this.calculateVoteStatistics();
       }),
-      this.socketService.onRoundStarted().subscribe(() => {
+      this.socketService.onRoundStarted().subscribe((data) => {
         this.selectedVote = null;
         this.voteStatistics = [];
+        // Maintain current issue and issues from round data
+        if (data.currentIssue !== undefined) {
+          this.currentIssue = data.currentIssue;
+        }
+        if (data.issues !== undefined) {
+          this.issues = data.issues || [];
+        }
       }),
       this.socketService.onCountdownStarted().subscribe(() => {
         this.startCountdownAnimation();
@@ -488,15 +502,16 @@ export class GamePage implements OnInit, OnDestroy {
   onIssueSelected(issue: Issue): void {
     this.currentIssue = issue;
     this.noIssuesMessage = false;
-    // Update issue status to voting and start a new round
+    // Update issue status to voting
     if (issue.status === 'pending') {
       issue.status = 'voting';
-      this.socketService.newRound(this.lobbyId);
     }
-    // Broadcast the selected issue to all players
+    // Broadcast the selected issue to all players FIRST
     this.socketService.selectIssue(this.lobbyId, issue);
     // Broadcast updated issues list
     this.socketService.updateIssuesList(this.lobbyId, this.issues);
+    // Start a new round after issue is set
+    this.socketService.newRound(this.lobbyId);
   }
 
   onIssueAdded(issue: Issue): void {
@@ -514,6 +529,89 @@ export class GamePage implements OnInit, OnDestroy {
     }
     // Broadcast updated issues list
     this.socketService.updateIssuesList(this.lobbyId, this.issues);
+  }
+
+  /**
+   * Check if second ring is active (more than 10 players)
+   */
+  hasSecondRing(): boolean {
+    return (this.lobby?.users?.length || 0) > 10;
+  }
+
+  /**
+   * Calculate dynamic position for a player around the table
+   * Uses an elliptical distribution with multiple rings when needed
+   * Responsive to screen size
+   */
+  getPlayerPosition(index: number, totalPlayers: number): { left: string; top: string; transform: string } {
+    // Detect screen size for responsive table dimensions
+    const isMobile = window.innerWidth <= 480;
+    const isTablet = window.innerWidth <= 768 && !isMobile;
+    
+    // Table dimensions (ellipse) - responsive
+    let tableWidth = 480;
+    let tableHeight = 240;
+    
+    if (isMobile) {
+      tableWidth = Math.min(300, window.innerWidth - 40);
+      tableHeight = 150;
+    } else if (isTablet) {
+      tableWidth = Math.min(360, window.innerWidth - 80);
+      tableHeight = 180;
+    }
+    
+    const centerX = tableWidth / 2;
+    const centerY = tableHeight / 2;
+
+    // First ring can hold up to 10 players comfortably around the ellipse
+    const firstRingCapacity = 10;
+
+    let ring = 0;
+    let positionInRing = index;
+    let playersInCurrentRing = totalPlayers;
+
+    // Determine which ring this player belongs to
+    if (totalPlayers > firstRingCapacity) {
+      if (index < firstRingCapacity) {
+        ring = 0;
+        positionInRing = index;
+        playersInCurrentRing = firstRingCapacity;
+      } else {
+        ring = 1;
+        positionInRing = index - firstRingCapacity;
+        playersInCurrentRing = totalPlayers - firstRingCapacity;
+      }
+    }
+
+    // Calculate angle for even distribution
+    const angleStep = (2 * Math.PI) / playersInCurrentRing;
+    const angle = angleStep * positionInRing - Math.PI / 2; // Start from top
+
+    // Ellipse radii with offset for players to be around (not on) the table
+    const baseRadiusX = tableWidth / 2;
+    const baseRadiusY = tableHeight / 2;
+    
+    // Offset distance from table edge (player distance from table) - responsive
+    let ringOffset = ring === 0 ? 80 : 140;
+    
+    if (isMobile) {
+      ringOffset = ring === 0 ? 55 : 100;
+    } else if (isTablet) {
+      ringOffset = ring === 0 ? 60 : 110;
+    }
+    
+    const radiusX = baseRadiusX + ringOffset;
+    const radiusY = baseRadiusY + ringOffset;
+
+    // Calculate position on ellipse
+    const x = centerX + radiusX * Math.cos(angle);
+    const y = centerY + radiusY * Math.sin(angle);
+
+    return {
+      left: `${x}px`,
+      top: `${y}px`,
+      transform: 'translate(-50%, -50%)'
+    };
   }
 }
 
