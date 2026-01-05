@@ -54,6 +54,15 @@ export class SocketService {
 
     this.socket.on('lobby-updated', (data: { lobby: Lobby }) => {
       if (data.lobby) {
+        const currentLobby = this.lobbySubject.value;
+        if (currentLobby) {
+          if (!(data.lobby as any).currentIssue && (currentLobby as any).currentIssue) {
+            (data.lobby as any).currentIssue = (currentLobby as any).currentIssue;
+          }
+          if (!(data.lobby as any).issues && (currentLobby as any).issues) {
+            (data.lobby as any).issues = (currentLobby as any).issues;
+          }
+        }
         this.lobbySubject.next(data.lobby);
       }
     });
@@ -127,7 +136,8 @@ export class SocketService {
           const exists = lobby.users.some(u => u.id === data.user.id);
           if (!exists) {
             lobby.users.push(data.user);
-            this.lobbySubject.next({ ...lobby });
+            const updatedLobby = Object.assign({}, lobby);
+            this.lobbySubject.next(updatedLobby);
           }
         }
         observer.next(data);
@@ -140,10 +150,8 @@ export class SocketService {
       this.socket.on('user-left', (data: { userId: string; userName: string }) => {
         const lobby = this.lobbySubject.value;
         if (lobby) {
-          const updatedLobby = {
-            ...lobby,
-            users: lobby.users.filter(u => u.id !== data.userId)
-          };
+          lobby.users = lobby.users.filter(u => u.id !== data.userId);
+          const updatedLobby = Object.assign({}, lobby);
           this.lobbySubject.next(updatedLobby);
         }
         observer.next(data);
@@ -160,7 +168,8 @@ export class SocketService {
           if (user) {
             user.vote = 'hidden';
           }
-          this.lobbySubject.next(lobby);
+          const updatedLobby = Object.assign({}, lobby);
+          this.lobbySubject.next(updatedLobby);
         }
         observer.next(data);
       });
@@ -174,7 +183,8 @@ export class SocketService {
         if (lobby) {
           lobby.users = data.users;
           lobby.votesRevealed = true;
-          this.lobbySubject.next(lobby);
+          const updatedLobby = Object.assign({}, lobby);
+          this.lobbySubject.next(updatedLobby);
         }
         observer.next(data);
       });
@@ -219,7 +229,8 @@ export class SocketService {
           if (data.issues !== undefined) {
             (lobby as any).issues = data.issues;
           }
-          this.lobbySubject.next(lobby);
+          const updatedLobby = Object.assign({}, lobby);
+          this.lobbySubject.next(updatedLobby);
         }
         observer.next(data);
       });
