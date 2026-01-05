@@ -18,6 +18,8 @@ export interface Lobby {
   currentStory: string | null;
   votesRevealed: boolean;
   createdAt: number;
+  currentIssue?: any;
+  issues?: any[];
 }
 
 @Injectable({
@@ -203,14 +205,21 @@ export class SocketService {
     });
   }
 
-  onRoundStarted(): Observable<{ story: string; users: User[] }> {
+  onRoundStarted(): Observable<{ story: string; users: User[]; currentIssue?: any; issues?: any[] }> {
     return new Observable(observer => {
-      this.socket.on('round-started', (data: { story: string; users: User[] }) => {
+      this.socket.on('round-started', (data: { story: string; users: User[]; currentIssue?: any; issues?: any[] }) => {
         const lobby = this.lobbySubject.value;
         if (lobby) {
           lobby.users = data.users;
           lobby.currentStory = data.story;
           lobby.votesRevealed = false;
+          // Update current issue and issues from the event
+          if (data.currentIssue !== undefined) {
+            (lobby as any).currentIssue = data.currentIssue;
+          }
+          if (data.issues !== undefined) {
+            (lobby as any).issues = data.issues;
+          }
           this.lobbySubject.next({ ...lobby });
         }
         observer.next(data);

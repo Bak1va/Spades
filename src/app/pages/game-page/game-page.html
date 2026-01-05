@@ -105,12 +105,21 @@
       }
 
       <!-- Table area -->
-      <div class="table-section" [class.votes-revealed]="lobby?.votesRevealed">
+      <div 
+        class="table-section" 
+        [class.votes-revealed]="lobby?.votesRevealed"
+        [class.has-second-ring]="hasSecondRing()"
+      >
         <div class="poker-table">
           <!-- Players around the table -->
           <div class="players-around-table">
-            @for (user of lobby?.users; track user.id) {
-            <div class="player-spot">
+            @for (user of lobby?.users; track user.id; let i = $index) {
+            <div 
+              class="player-spot"
+              [style.left]="getPlayerPosition(i, lobby?.users?.length || 0).left"
+              [style.top]="getPlayerPosition(i, lobby?.users?.length || 0).top"
+              [style.transform]="getPlayerPosition(i, lobby?.users?.length || 0).transform"
+            >
               <div
                 class="player-card"
                 [class.voted]="user.vote"

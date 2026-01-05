@@ -193,9 +193,11 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
   padding: 0 20px;
   animation: fadeInDown 0.5s ease;
+  z-index: 10;
+  position: relative;
 }
 
 @keyframes fadeInDown {
@@ -434,11 +436,23 @@
   align-items: center;
   justify-content: center;
   padding-top: 30px;
-  transition: padding-top 0.3s ease;
+  padding-bottom: 20px;
+  transition: all 0.3s ease;
 }
 
 .table-section.votes-revealed {
   padding-top: 15px;
+}
+
+.table-section.has-second-ring {
+  padding-top: 80px;
+  padding-bottom: 80px;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.table-section.has-second-ring .poker-table {
+  margin: 60px 0;
 }
 
 .poker-table {
@@ -472,50 +486,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.player-spot:nth-child(1) {
-  bottom: -80px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.player-spot:nth-child(2) {
-  top: -80px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.player-spot:nth-child(3) {
-  left: -60px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.player-spot:nth-child(4) {
-  right: -60px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.player-spot:nth-child(5) {
-  bottom: -80px;
-  left: 25%;
-}
-
-.player-spot:nth-child(6) {
-  bottom: -80px;
-  right: 25%;
-}
-
-.player-spot:nth-child(7) {
-  top: -80px;
-  left: 25%;
-}
-
-.player-spot:nth-child(8) {
-  top: -80px;
-  right: 25%;
+  transition: all 0.3s ease;
 }
 
 .player-card {
@@ -728,6 +699,12 @@
   margin-left: auto;
   margin-right: auto;
   border-radius: 8px 8px 0 0;
+  transition: margin-top 0.3s ease;
+}
+
+.table-section.has-second-ring ~ .voting-section,
+.table-section.has-second-ring ~ * .voting-section {
+  margin-top: 120px;
 }
 
 .voting-label {
@@ -904,6 +881,18 @@
 
   .table-section {
     padding-top: 20px;
+    padding-bottom: 15px;
+  }
+
+  .table-section.has-second-ring {
+    padding-top: 50px;
+    padding-bottom: 50px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .table-section.has-second-ring .poker-table {
+    margin: 40px 0;
   }
 
   .poker-table {
@@ -911,29 +900,6 @@
     max-width: 360px;
     height: 180px;
     margin: 20px 0;
-  }
-
-  .player-spot:nth-child(1) {
-    bottom: -60px;
-  }
-
-  .player-spot:nth-child(2) {
-    top: -60px;
-  }
-
-  .player-spot:nth-child(3) {
-    left: -50px;
-  }
-
-  .player-spot:nth-child(4) {
-    right: -50px;
-  }
-
-  .player-spot:nth-child(5),
-  .player-spot:nth-child(6),
-  .player-spot:nth-child(7),
-  .player-spot:nth-child(8) {
-    display: none;
   }
 
   .player-card {
@@ -1115,27 +1081,27 @@
     font-size: 10px;
   }
 
+  .table-section {
+    padding-top: 15px;
+    padding-bottom: 10px;
+  }
+
+  .table-section.has-second-ring {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .table-section.has-second-ring .poker-table {
+    margin: 30px 0;
+  }
+
   .poker-table {
     width: 100%;
     max-width: 300px;
     height: 150px;
     margin: 16px 0;
-  }
-
-  .player-spot:nth-child(1) {
-    bottom: -55px;
-  }
-
-  .player-spot:nth-child(2) {
-    top: -55px;
-  }
-
-  .player-spot:nth-child(3) {
-    left: -45px;
-  }
-
-  .player-spot:nth-child(4) {
-    right: -45px;
   }
 
   .player-card {
@@ -1312,6 +1278,12 @@
   margin-left: auto;
   margin-right: auto;
   border-radius: 8px 8px 0 0;
+  transition: margin-top 0.3s ease;
+}
+
+.table-section.has-second-ring ~ .vote-statistics-section,
+.table-section.has-second-ring ~ * .vote-statistics-section {
+  margin-top: 120px;
 }
 
 .vote-statistics-title {
@@ -1384,7 +1356,7 @@
 
 .account-link {
   margin-left: 8px;
-  color: #d4af37; /* or your accent color */
+  color: #d4af37;
   text-decoration: underline;
   cursor: pointer;
 }
