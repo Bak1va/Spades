@@ -160,7 +160,7 @@ export class SocketService {
           if (user) {
             user.vote = 'hidden';
           }
-          this.lobbySubject.next({ ...lobby });
+          this.lobbySubject.next(lobby);
         }
         observer.next(data);
       });
@@ -174,7 +174,7 @@ export class SocketService {
         if (lobby) {
           lobby.users = data.users;
           lobby.votesRevealed = true;
-          this.lobbySubject.next({ ...lobby });
+          this.lobbySubject.next(lobby);
         }
         observer.next(data);
       });
@@ -213,14 +213,13 @@ export class SocketService {
           lobby.users = data.users;
           lobby.currentStory = data.story;
           lobby.votesRevealed = false;
-          // Update current issue and issues from the event
           if (data.currentIssue !== undefined) {
             (lobby as any).currentIssue = data.currentIssue;
           }
           if (data.issues !== undefined) {
             (lobby as any).issues = data.issues;
           }
-          this.lobbySubject.next({ ...lobby });
+          this.lobbySubject.next(lobby);
         }
         observer.next(data);
       });
