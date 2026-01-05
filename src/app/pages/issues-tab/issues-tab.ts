@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { TranslateService } from '../../services/translate.service';
 
 export interface Issue {
   id: string;
@@ -26,6 +27,8 @@ export class IssuesTab {
 
   newIssueTitle = '';
   showAddForm = false;
+
+  constructor(public translateService: TranslateService) {}
 
   addIssue(): void {
     const title = this.newIssueTitle.trim();

@@ -44,6 +44,16 @@
   gap: 8px;
   color: var(--moonlight);
   cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.user-badge:hover {
+  color: var(--stardust-gold);
+  transform: translateY(-1px);
+}
+
+.user-badge:hover .user-avatar {
+  box-shadow: 0 0 16px var(--ethereal-glow), 0 0 8px var(--astral-gold);
 }
 
 .user-name-text {

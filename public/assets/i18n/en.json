@@ -1,0 +1,149 @@
+{
+  "header": {
+    "invitePlayers": "Invite players",
+    "language": "Language"
+  },
+  "home": {
+    "title": "Planning Poker",
+    "startNewGame": "Start New Game",
+    "orJoinWithCode": "Or join with code:",
+    "gameCode": "Game code",
+    "join": "Join"
+  },
+  "newGame": {
+    "createGame": "Create Game",
+    "gameName": "Game's name",
+    "enterGameName": "Enter game name",
+    "yourName": "Your name",
+    "enterYourName": "Enter your name",
+    "votingSystem": "Voting system",
+    "fibonacci": "Fibonacci ( 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, ?, ☕ )",
+    "tshirt": "T-Shirt ( XS, S, M, L, XL, XXL, ?, ☕ )",
+    "powers": "Powers of 2 ( 1, 2, 4, 8, 16, 32, 64, ?, ☕ )",
+    "createButton": "Create game",
+    "checkingAuth": "Checking authentication..."
+  },
+  "join": {
+    "login": "Login",
+    "or": "or",
+    "title": "Join the game",
+    "yourName": "Your name",
+    "enterName": "Enter your name",
+    "button": "Join Game"
+  },
+  "game": {
+    "invitePlayers": "Invite players",
+    "revealCards": "Reveal cards",
+    "startNewRound": "Start new round",
+    "chooseCard": "Choose your card 👇",
+    "kickPlayer": "Kick player",
+    "voteStatistics": "Vote Statistics:",
+    "noVotesYet": "No votes yet",
+    "votes": "votes",
+    "observer": "Observer",
+    "host": "Host",
+    "currentIssue": "Current Issue",
+    "storyPoints": "Story Points",
+    "playersVoted": "players voted",
+    "revealingCards": "Revealing cards...",
+    "noActiveIssue": "No Active Issue",
+    "selectIssueToStart": "Select an issue from the Issues tab to start voting",
+    "waitingForHost": "Waiting for host to select an issue...",
+    "noIssuesLeft": "No Issues Left!",
+    "addIssueToContinue": "Add a new issue to continue voting",
+    "waitingForReveal": "Waiting for host to reveal...",
+    "waitingForNewRound": "Waiting for host to start new round...",
+    "waitingForVote": "Waiting for your vote..."
+  },
+  "invite": {
+    "title": "Invite players",
+    "shareLink": "Share this link with your team:",
+    "orScanQr": "Or scan this QR code:",
+    "copy": "Copy",
+    "copied": "✓ Copied!",
+    "close": "Close"
+  },
+  "issues": {
+    "title": "Issues",
+    "noIssues": "No issues yet",
+    "addIssue": "Add Issue",
+    "issueTitle": "Issue title",
+    "enterTitle": "Enter issue title",
+    "issueDescription": "Description",
+    "enterDescription": "Enter description (optional)",
+    "cancel": "Cancel",
+    "create": "Create",
+    "edit": "Edit",
+    "save": "Save",
+    "delete": "Delete",
+    "select": "Select",
+    "selected": "Selected",
+    "estimatedAs": "Estimated as",
+    "totalIssues": "Total Issues:",
+    "completed": "Completed:",
+    "totalPoints": "Total Points:",
+    "pending": "Pending",
+    "voting": "Voting",
+    "noPendingIssues": "No pending issues",
+    "noVotingIssues": "No issues in voting",
+    "noCompletedIssues": "No completed issues",
+    "votingNow": "Voting now...",
+    "pts": "pts",
+    "enterIssueTitle": "Enter issue title..."
+  },
+  "alert": {
+    "lobbyClosed": "The game has been closed by the host",
+    "kicked": "You have been kicked from the game by the host",
+    "confirmKick": "Are you sure you want to kick this player?",
+    "joinFailed": "Failed to join lobby",
+    "confirmDelete": "Are you sure you want to delete this issue?"
+  },
+  "account": {
+    "title": "Account",
+    "email": "Email",
+    "logout": "Logout",
+    "login": "Login",
+    "notAuthenticated": "You are not authenticated.",
+    "loading": "Loading..."
+  },
+  "welcome": {
+    "title": "Planning Poker for Agile Teams",
+    "subtitle": "Easy-to-use and fun estimations. Collaborate in real-time with your team using Fibonacci, T-Shirt, or custom voting systems.",
+    "getStarted": "Get Started",
+    "whyChoose": "Why Choose Our Planning Poker?",
+    "features": {
+      "realTime": {
+        "title": "Real-Time Collaboration",
+        "description": "Vote together with your team in real-time. See votes as they happen and reveal results instantly."
+      },
+      "votingSystems": {
+        "title": "Multiple Voting Systems",
+        "description": "Choose from Fibonacci, T-Shirt sizes, or Powers of 2. Customize your estimation approach."
+      },
+      "statistics": {
+        "title": "Vote Statistics",
+        "description": "Analyze voting patterns with detailed statistics and consensus indicators."
+      },
+      "issues": {
+        "title": "Issue Management",
+        "description": "Manage your stories and issues directly in the app. Track progress and results."
+      },
+      "secure": {
+        "title": "Secure & Private",
+        "description": "Your sessions are private and secure. Integrated with Keycloak authentication."
+      },
+      "multiLanguage": {
+        "title": "Multi-Language",
+        "description": "Available in English, Romanian, and French. More languages coming soon."
+      }
+    },
+    "cta": {
+      "title": "Ready to Start Estimating?",
+      "subtitle": "Join thousands of agile teams using our Planning Poker tool",
+      "button": "Get Started Now"
+    },
+    "footer": {
+      "copyright": "© 2026 Planning Poker. All rights reserved."
+    }
+  }
+}

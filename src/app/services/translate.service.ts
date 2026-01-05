@@ -1,12 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
-interface Translations {
-    [key: string]: {
-        en: string;
-        ro: string;
-        fr: string;
-    };
+interface TranslationData {
+    [key: string]: any;
 }
 
 @Injectable({
@@ -21,205 +18,42 @@ export class TranslateService {
     ];
     private currentLangSubject = new BehaviorSubject<'en' | 'ro' | 'fr'>('en');
     public currentLang$ = this.currentLangSubject.asObservable();
+    
+    private translations: { [lang: string]: TranslationData } = {};
+    private isLoaded = false;
 
-    private translations: Translations = {
-        'header.invitePlayers': {
-            en: '👥 Invite players',
-            ro: '👥 Invită jucători',
-            fr: '👥 Inviter des joueurs'
-        },
-        'header.language': {
-            en: 'RO',
-            ro: 'FR',
-            fr: 'EN'
-        },
-
-        'home.title': {
-            en: 'Planning Poker',
-            ro: 'Planning Poker',
-            fr: 'Planning Poker'
-        },
-        'home.startNewGame': {
-            en: 'Start New Game',
-            ro: 'Începe joc nou',
-            fr: 'Commencer une nouvelle partie'
-        },
-        'home.orJoinWithCode': {
-            en: 'Or join with code:',
-            ro: 'Sau intră cu codul:',
-            fr: 'Ou rejoins avec un code :'
-        },
-        'home.gameCode': {
-            en: 'Game code',
-            ro: 'Cod joc',
-            fr: 'Code de partie'
-        },
-        'home.join': {
-            en: 'Join',
-            ro: 'Intră',
-            fr: 'Rejoindre'
-        },
-
-        'newGame.createGame': {
-            en: 'Create Game',
-            ro: 'Crează joc',
-            fr: 'Créer une partie'
-        },
-        'newGame.gameName': {
-            en: "Game's name",
-            ro: 'Numele jocului',
-            fr: 'Nom de la partie'
-        },
-        'newGame.enterGameName': {
-            en: 'Enter game name',
-            ro: 'Introdu numele jocului',
-            fr: 'Saisis le nom de la partie'
-        },
-        'newGame.yourName': {
-            en: 'Your name',
-            ro: 'Numele tău',
-            fr: 'Ton nom'
-        },
-        'newGame.enterYourName': {
-            en: 'Enter your name',
-            ro: 'Introdu numele tău',
-            fr: 'Saisis ton nom'
-        },
-        'newGame.votingSystem': {
-            en: 'Voting system',
-            ro: 'Sistem de votare',
-            fr: 'Système de vote'
-        },
-        'newGame.fibonacci': {
-            en: 'Fibonacci ( 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, ?, ☕ )',
-            ro: 'Fibonacci ( 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, ?, ☕ )',
-            fr: 'Fibonacci ( 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, ?, ☕ )'
-        },
-        'newGame.tshirt': {
-            en: 'T-Shirt ( XS, S, M, L, XL, XXL, ?, ☕ )',
-            ro: 'T-Shirt ( XS, S, M, L, XL, XXL, ?, ☕ )',
-            fr: 'T-Shirt ( XS, S, M, L, XL, XXL, ?, ☕ )'
-        },
-        'newGame.powers': {
-            en: 'Powers of 2 ( 1, 2, 4, 8, 16, 32, 64, ?, ☕ )',
-            ro: 'Puteri ale lui 2 ( 1, 2, 4, 8, 16, 32, 64, ?, ☕ )',
-            fr: 'Puissances de 2 ( 1, 2, 4, 8, 16, 32, 64, ?, ☕ )'
-        },
-        'newGame.createButton': {
-            en: 'Create game',
-            ro: 'Crează joc',
-            fr: 'Créer la partie'
-        },
-
-        'join.login' : {
-            en: 'Login',
-            ro: 'Autentificare',
-            fr: 'Connexion'
-        },
-        'join.or' : {
-            en: 'or',
-            ro: 'sau',
-            fr: 'ou'
-        },
-        'join.title': {
-            en: 'Join the game',
-            ro: 'Intră în joc',
-            fr: 'Rejoindre la partie'
-        },
-        'join.yourName': {
-            en: 'Your name',
-            ro: 'Numele tău',
-            fr: 'Ton nom'
-        },
-        'join.enterName': {
-            en: 'Enter your name',
-            ro: 'Introdu numele tău',
-            fr: 'Saisis ton nom'
-        },
-        'join.button': {
-            en: 'Join Game',
-            ro: 'Intră în joc',
-            fr: 'Rejoindre la partie'
-        },
-
-        'game.invitePlayers': {
-            en: 'Invite players',
-            ro: 'Invită jucători',
-            fr: 'Inviter des joueurs'
-        },
-        'game.revealCards': {
-            en: 'Reveal cards',
-            ro: 'Dezvăluie cărțile',
-            fr: 'Révéler les cartes'
-        },
-        'game.startNewRound': {
-            en: 'Start new round',
-            ro: 'Începe rundă nouă',
-            fr: 'Commencer une nouvelle manche'
-        },
-        'game.chooseCard': {
-            en: 'Choose your card 👇',
-            ro: 'Alege cardul tău 👇',
-            fr: 'Choisis ta carte 👇'
-        },
-        'game.kickPlayer': {
-            en: 'Kick player',
-            ro: 'Elimină jucătorul',
-            fr: 'Exclure le joueur'
-        },
-
-        'invite.title': {
-            en: 'Invite players',
-            ro: 'Invită jucători',
-            fr: 'Inviter des joueurs'
-        },
-        'invite.shareLink': {
-            en: 'Share this link with your team:',
-            ro: 'Distribuie acest link echipei tale:',
-            fr: 'Partage ce lien avec ton équipe :'
-        },
-        'invite.copy': {
-            en: '📋 Copy',
-            ro: '📋 Copiază',
-            fr: '📋 Copier'
-        },
-        'invite.copied': {
-            en: '✓ Copied!',
-            ro: '✓ Copiat!',
-            fr: '✓ Copié !'
-        },
-        'invite.close': {
-            en: 'Close',
-            ro: 'Închide',
-            fr: 'Fermer'
-        },
-
-        'alert.lobbyClosed': {
-            en: 'The game has been closed by the host',
-            ro: 'Jocul a fost închis de către gazdă',
-            fr: 'La partie a été fermée par l’hôte'
-        },
-        'alert.kicked': {
-            en: 'You have been kicked from the game by the host',
-            ro: 'Ai fost eliminat din joc de către gazdă',
-            fr: 'Tu as été exclu de la partie par l’hôte'
-        },
-        'alert.confirmKick': {
-            en: 'Are you sure you want to kick this player?',
-            ro: 'Ești sigur că vrei să elimini acest jucător?',
-            fr: 'Es-tu sûr de vouloir exclure ce joueur ?'
-        },
-        'alert.joinFailed': {
-            en: 'Failed to join lobby',
-            ro: 'Intrarea în lobby a eșuat',
-            fr: 'Échec de connexion au lobby'
-        }
-    };
-
-    constructor() {
+    constructor(private http: HttpClient) {
         const savedLang = localStorage.getItem('planningPokerLanguage');
         if (savedLang && this.supportedLangs.includes(savedLang as any)) {
             this.currentLangSubject.next(savedLang as 'en' | 'ro' | 'fr');
+        }
+        this.loadTranslations();
+    }
+
+    private async loadTranslations(): Promise<void> {
+        console.log('Starting to load translations...');
+        try {
+            const [en, ro, fr] = await Promise.all([
+                this.http.get<TranslationData>('/assets/i18n/en.json').toPromise(),
+                this.http.get<TranslationData>('/assets/i18n/ro.json').toPromise(),
+                this.http.get<TranslationData>('/assets/i18n/fr.json').toPromise()
+            ]);
+            
+            console.log('Translations loaded:', { en: !!en, ro: !!ro, fr: !!fr });
+            console.log('Sample EN keys:', en ? Object.keys(en) : 'null');
+            
+            this.translations = {
+                en: en || {},
+                ro: ro || {},
+                fr: fr || {}
+            };
+            this.isLoaded = true;
+            console.log('Translations ready, triggering UI update');
+            // Trigger a language change to force UI update
+            this.currentLangSubject.next(this.currentLangSubject.value);
+        } catch (error) {
+            console.error('Failed to load translations:', error);
+            this.isLoaded = true; // Set to true to prevent infinite loading
         }
     }
 
@@ -228,12 +62,44 @@ export class TranslateService {
     }
 
     translate(key: string): string {
-        const translation = this.translations[key];
-        if (!translation) {
-            console.warn(`Translation key not found: ${key}`);
+        if (!this.isLoaded) {
+            console.log('Translations not loaded yet for key:', key);
             return key;
         }
-        return translation[this.currentLang] ?? translation.en;
+
+        if (!this.translations || Object.keys(this.translations).length === 0) {
+            console.error('Translations object is empty');
+            return key;
+        }
+
+        const keys = key.split('.');
+        let value: any = this.translations[this.currentLang];
+        
+        if (!value) {
+            console.error(`No translations found for language: ${this.currentLang}`);
+            return key;
+        }
+        
+        for (const k of keys) {
+            if (value && typeof value === 'object' && k in value) {
+                value = value[k];
+            } else {
+                // Fallback to English
+                console.log(`Key "${k}" not found in ${this.currentLang}, trying English fallback`);
+                value = this.translations['en'];
+                for (const k2 of keys) {
+                    if (value && typeof value === 'object' && k2 in value) {
+                        value = value[k2];
+                    } else {
+                        console.warn(`Translation key not found: ${key}`);
+                        return key;
+                    }
+                }
+                break;
+            }
+        }
+        
+        return typeof value === 'string' ? value : key;
     }
 
     get languages(): Array<'en' | 'ro' | 'fr'> {

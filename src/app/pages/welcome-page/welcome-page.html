@@ -1,0 +1,147 @@
+<div class="welcome-container">
+  <!-- Header -->
+  <header class="welcome-header" [class.scrolled]="scrollY > 50">
+    <div class="header-content">
+      <div class="header-left">
+        <span class="logo-icon">♠</span>
+        <span class="logo-text">Planning Poker</span>
+      </div>
+      <div class="header-right">
+        <ng-container *ngIf="!isLoading">
+          <ng-container *ngIf="isAuthenticated; else loginBtn">
+            <div class="user-badge" (click)="goToAccount()">
+              <span class="user-avatar">{{ (fullName || username || '?').charAt(0).toUpperCase() }}</span>
+              <span class="user-name">{{ fullName || username }}</span>
+            </div>
+          </ng-container>
+          <ng-template #loginBtn>
+            <button class="btn-login" (click)="login()">Login</button>
+          </ng-template>
+        </ng-container>
+        <select
+          class="lang-select"
+          [(ngModel)]="lang"
+          (ngModelChange)="setLanguage($event)"
+          title="Change language"
+        >
+          <option
+            *ngFor="let opt of translateService.languageOptions"
+            [value]="opt.code"
+          >
+            {{ opt.label }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1 class="hero-title animate-fade-in">{{ 'welcome.title' | translate }}</h1>
+        <p class="hero-subtitle animate-fade-in-delay">{{ 'welcome.subtitle' | translate }}</p>
+        <button class="btn-get-started animate-fade-in-delay-2" (click)="getStarted()">
+          {{ 'welcome.getStarted' | translate }}
+          <span class="arrow">→</span>
+        </button>
+      </div>
+      <div class="hero-visual animate-slide-in">
+        <div class="demo-card">
+          <div class="demo-header">
+            <div class="demo-dot"></div>
+            <div class="demo-dot"></div>
+            <div class="demo-dot"></div>
+          </div>
+          <div class="demo-content">
+            <div class="demo-cards">
+              <div class="demo-card-item">1</div>
+              <div class="demo-card-item">2</div>
+              <div class="demo-card-item active">3</div>
+              <div class="demo-card-item">5</div>
+              <div class="demo-card-item">8</div>
+            </div>
+            <div class="demo-users">
+              <div class="demo-user">
+                <div class="demo-avatar">A</div>
+                <div class="demo-user-info">
+                  <div class="demo-name"></div>
+                  <div class="demo-vote"></div>
+                </div>
+              </div>
+              <div class="demo-user">
+                <div class="demo-avatar">B</div>
+                <div class="demo-user-info">
+                  <div class="demo-name"></div>
+                  <div class="demo-vote"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section">
+    <h2 class="section-title">{{ 'welcome.whyChoose' | translate }}</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>{{ 'welcome.features.realTime.title' | translate }}</h3>
+        <p>{{ 'welcome.features.realTime.description' | translate }}</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎯</div>
+        <h3>{{ 'welcome.features.votingSystems.title' | translate }}</h3>
+        <p>{{ 'welcome.features.votingSystems.description' | translate }}</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>{{ 'welcome.features.statistics.title' | translate }}</h3>
+        <p>{{ 'welcome.features.statistics.description' | translate }}</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📄</div>
+        <h3>{{ 'welcome.features.issues.title' | translate }}</h3>
+        <p>{{ 'welcome.features.issues.description' | translate }}</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>{{ 'welcome.features.secure.title' | translate }}</h3>
+        <p>{{ 'welcome.features.secure.description' | translate }}</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌐</div>
+        <h3>{{ 'welcome.features.multiLanguage.title' | translate }}</h3>
+        <p>{{ 'welcome.features.multiLanguage.description' | translate }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="cta-content">
+      <h2>{{ 'welcome.cta.title' | translate }}</h2>
+      <p>{{ 'welcome.cta.subtitle' | translate }}</p>
+      <button class="btn-cta" (click)="getStarted()">
+        {{ 'welcome.cta.button' | translate }}
+        <span class="arrow">→</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="welcome-footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <span class="logo-icon">♠</span>
+        <span class="logo-text">Planning Poker</span>
+      </div>
+      <div class="footer-section">
+        <p>{{ 'welcome.footer.copyright' | translate }}</p>
+      </div>
+    </div>
+  </footer>
+</div>
