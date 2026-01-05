@@ -56,6 +56,15 @@
   box-shadow: 0 0 16px var(--ethereal-glow), 0 0 8px var(--astral-gold);
 }
 
+.user-name-text {
+  text-decoration: none;
+  transition: text-decoration 0.2s ease;
+}
+
+.user-badge:hover .user-name-text {
+  text-decoration: underline;
+}
+
 .user-avatar {
   width: 32px;
   height: 32px;
@@ -1332,4 +1341,15 @@
   color: var(--moonlight);
   font-weight: 500;
   white-space: nowrap;
+}
+
+.account-link {
+  margin-left: 8px;
+  color: #d4af37; /* or your accent color */
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.account-link:hover {
+  opacity: 0.8;
 }
