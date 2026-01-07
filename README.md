@@ -4,7 +4,7 @@
 
 Collaborative, real‑time planning poker for agile teams.
 
-🌐 **Live site:** https://planning-poker.xyz
+🌐 **Live site:** <a href="https://planning-poker.xyz" target="_blank">https://planning-poker.xyz</a>
 
 </div>
 
