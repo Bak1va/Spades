@@ -1,0 +1,149 @@
+{
+  "header": {
+    "invitePlayers": "Inviter des joueurs",
+    "language": "Langue"
+  },
+  "home": {
+    "title": "Planning Poker",
+    "startNewGame": "Commencer une nouvelle partie",
+    "orJoinWithCode": "Ou rejoins avec un code :",
+    "gameCode": "Code de partie",
+    "join": "Rejoindre"
+  },
+  "newGame": {
+    "createGame": "Créer une partie",
+    "gameName": "Nom de la partie",
+    "enterGameName": "Saisis le nom de la partie",
+    "yourName": "Ton nom",
+    "enterYourName": "Saisis ton nom",
+    "votingSystem": "Système de vote",
+    "fibonacci": "Fibonacci ( 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, ?, ☕ )",
+    "tshirt": "T-Shirt ( XS, S, M, L, XL, XXL, ?, ☕ )",
+    "powers": "Puissances de 2 ( 1, 2, 4, 8, 16, 32, 64, ?, ☕ )",
+    "createButton": "Créer la partie",
+    "checkingAuth": "Vérification de l'authentification..."
+  },
+  "join": {
+    "login": "Connexion",
+    "or": "ou",
+    "title": "Rejoindre la partie",
+    "yourName": "Ton nom",
+    "enterName": "Saisis ton nom",
+    "button": "Rejoindre la partie"
+  },
+  "game": {
+    "invitePlayers": "Inviter des joueurs",
+    "revealCards": "Révéler les cartes",
+    "startNewRound": "Commencer une nouvelle manche",
+    "chooseCard": "Choisis ta carte 👇",
+    "kickPlayer": "Exclure le joueur",
+    "voteStatistics": "Statistiques des Votes :",
+    "noVotesYet": "Pas encore de votes",
+    "votes": "votes",
+    "observer": "Observateur",
+    "host": "Hôte",
+    "currentIssue": "Problème Actuel",
+    "storyPoints": "Points Story",
+    "playersVoted": "joueurs ont voté",
+    "revealingCards": "Révélation des cartes...",
+    "noActiveIssue": "Aucun Problème Actif",
+    "selectIssueToStart": "Sélectionne un problème depuis l'onglet Problèmes pour commencer le vote",
+    "waitingForHost": "En attente que l'hôte sélectionne un problème...",
+    "noIssuesLeft": "Plus de Problèmes !",
+    "addIssueToContinue": "Ajoute un nouveau problème pour continuer le vote",
+    "waitingForReveal": "En attente que l'hôte révèle...",
+    "waitingForNewRound": "En attente que l'hôte commence une nouvelle manche...",
+    "waitingForVote": "En attente de ton vote..."
+  },
+  "invite": {
+    "title": "Inviter des joueurs",
+    "shareLink": "Partage ce lien avec ton équipe :",
+    "orScanQr": "Ou scanne ce code QR :",
+    "copy": "Copier",
+    "copied": "✓ Copié !",
+    "close": "Fermer"
+  },
+  "issues": {
+    "title": "Problèmes",
+    "noIssues": "Pas encore de problèmes",
+    "addIssue": "Ajouter un Problème",
+    "issueTitle": "Titre du problème",
+    "enterTitle": "Saisis le titre du problème",
+    "issueDescription": "Description",
+    "enterDescription": "Saisis la description (optionnel)",
+    "cancel": "Annuler",
+    "create": "Créer",
+    "edit": "Modifier",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "select": "Sélectionner",
+    "selected": "Sélectionné",
+    "estimatedAs": "Estimé à",
+    "totalIssues": "Total Problèmes :",
+    "completed": "Complétés :",
+    "totalPoints": "Total Points :",
+    "pending": "En Attente",
+    "voting": "En Vote",
+    "noPendingIssues": "Aucun problème en attente",
+    "noVotingIssues": "Aucun problème en vote",
+    "noCompletedIssues": "Aucun problème complété",
+    "votingNow": "Vote en cours...",
+    "pts": "pts",
+    "enterIssueTitle": "Saisis le titre du problème..."
+  },
+  "alert": {
+    "lobbyClosed": "La partie a été fermée par l'hôte",
+    "kicked": "Tu as été exclu de la partie par l'hôte",
+    "confirmKick": "Es-tu sûr de vouloir exclure ce joueur ?",
+    "joinFailed": "Échec de connexion au lobby",
+    "confirmDelete": "Es-tu sûr de vouloir supprimer ce problème ?"
+  },
+  "account": {
+    "title": "Compte",
+    "email": "Email",
+    "logout": "Déconnexion",
+    "login": "Connexion",
+    "notAuthenticated": "Tu n'es pas authentifié.",
+    "loading": "Chargement..."
+  },
+  "welcome": {
+    "title": "Planning Poker pour Équipes Agiles",
+    "subtitle": "Des estimations faciles à utiliser et amusantes. Collabore en temps réel avec ton équipe en utilisant Fibonacci, T-Shirt ou des systèmes de vote personnalisés.",
+    "getStarted": "Commencer",
+    "whyChoose": "Pourquoi Choisir Notre Planning Poker ?",
+    "features": {
+      "realTime": {
+        "title": "Collaboration en Temps Réel",
+        "description": "Votez ensemble avec votre équipe en temps réel. Voyez les votes au fur et à mesure et révélez les résultats instantanément."
+      },
+      "votingSystems": {
+        "title": "Systèmes de Vote Multiples",
+        "description": "Choisissez parmi Fibonacci, tailles T-Shirt ou Puissances de 2. Personnalisez votre approche d'estimation."
+      },
+      "statistics": {
+        "title": "Statistiques des Votes",
+        "description": "Analysez les modèles de vote avec des statistiques détaillées et des indicateurs de consensus."
+      },
+      "issues": {
+        "title": "Gestion des Problèmes",
+        "description": "Gérez vos histoires et problèmes directement dans l'application. Suivez les progrès et les résultats."
+      },
+      "secure": {
+        "title": "Sécurisé et Privé",
+        "description": "Vos sessions sont privées et sécurisées. Intégré avec l'authentification Keycloak."
+      },
+      "multiLanguage": {
+        "title": "Multi-Langue",
+        "description": "Disponible en Anglais, Roumain et Français. Plus de langues bientôt."
+      }
+    },
+    "cta": {
+      "title": "Prêt à Commencer les Estimations ?",
+      "subtitle": "Rejoignez des milliers d'équipes agiles utilisant notre outil Planning Poker",
+      "button": "Commencer Maintenant"
+    },
+    "footer": {
+      "copyright": "© 2026 Planning Poker. Tous droits réservés."
+    }
+  }
+}

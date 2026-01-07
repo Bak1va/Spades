@@ -1,0 +1,149 @@
+{
+  "header": {
+    "invitePlayers": "Invită jucători",
+    "language": "Limbă"
+  },
+  "home": {
+    "title": "Planning Poker",
+    "startNewGame": "Începe joc nou",
+    "orJoinWithCode": "Sau intră cu codul:",
+    "gameCode": "Cod joc",
+    "join": "Intră"
+  },
+  "newGame": {
+    "createGame": "Crează joc",
+    "gameName": "Numele jocului",
+    "enterGameName": "Introdu numele jocului",
+    "yourName": "Numele tău",
+    "enterYourName": "Introdu numele tău",
+    "votingSystem": "Sistem de votare",
+    "fibonacci": "Fibonacci ( 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, ?, ☕ )",
+    "tshirt": "T-Shirt ( XS, S, M, L, XL, XXL, ?, ☕ )",
+    "powers": "Puteri ale lui 2 ( 1, 2, 4, 8, 16, 32, 64, ?, ☕ )",
+    "createButton": "Crează joc",
+    "checkingAuth": "Se verifică autentificarea..."
+  },
+  "join": {
+    "login": "Autentificare",
+    "or": "sau",
+    "title": "Intră în joc",
+    "yourName": "Numele tău",
+    "enterName": "Introdu numele tău",
+    "button": "Intră în joc"
+  },
+  "game": {
+    "invitePlayers": "Invită jucători",
+    "revealCards": "Dezvăluie cărțile",
+    "startNewRound": "Începe rundă nouă",
+    "chooseCard": "Alege cardul tău 👇",
+    "kickPlayer": "Elimină jucătorul",
+    "voteStatistics": "Statistici Voturi:",
+    "noVotesYet": "Încă nu sunt voturi",
+    "votes": "voturi",
+    "observer": "Observator",
+    "host": "Gazdă",
+    "currentIssue": "Problemă Curentă",
+    "storyPoints": "Puncte Story",
+    "playersVoted": "jucători au votat",
+    "revealingCards": "Se dezvăluie cărțile...",
+    "noActiveIssue": "Nicio Problemă Activă",
+    "selectIssueToStart": "Selectează o problemă din tabul Probleme pentru a începe votarea",
+    "waitingForHost": "Se așteaptă ca gazda să selecteze o problemă...",
+    "noIssuesLeft": "Nu Mai Sunt Probleme!",
+    "addIssueToContinue": "Adaugă o problemă nouă pentru a continua votarea",
+    "waitingForReveal": "Se așteaptă ca gazda să dezvăluie...",
+    "waitingForNewRound": "Se așteaptă ca gazda să înceapă o rundă nouă...",
+    "waitingForVote": "Se așteaptă votul tău..."
+  },
+  "invite": {
+    "title": "Invită jucători",
+    "shareLink": "Distribuie acest link echipei tale:",
+    "orScanQr": "Sau scanează acest cod QR:",
+    "copy": "Copiază",
+    "copied": "✓ Copiat!",
+    "close": "Închide"
+  },
+  "issues": {
+    "title": "Probleme",
+    "noIssues": "Încă nu există probleme",
+    "addIssue": "Adaugă Problemă",
+    "issueTitle": "Titlu problemă",
+    "enterTitle": "Introdu titlul problemei",
+    "issueDescription": "Descriere",
+    "enterDescription": "Introdu descrierea (opțional)",
+    "cancel": "Anulează",
+    "create": "Crează",
+    "edit": "Editează",
+    "save": "Salvează",
+    "delete": "Șterge",
+    "select": "Selectează",
+    "selected": "Selectată",
+    "estimatedAs": "Estimată ca",
+    "totalIssues": "Total Probleme:",
+    "completed": "Completate:",
+    "totalPoints": "Total Puncte:",
+    "pending": "În Așteptare",
+    "voting": "În Votare",
+    "noPendingIssues": "Nicio problemă în așteptare",
+    "noVotingIssues": "Nicio problemă în votare",
+    "noCompletedIssues": "Nicio problemă completată",
+    "votingNow": "Se votează acum...",
+    "pts": "pct",
+    "enterIssueTitle": "Introdu titlul problemei..."
+  },
+  "alert": {
+    "lobbyClosed": "Jocul a fost închis de către gazdă",
+    "kicked": "Ai fost eliminat din joc de către gazdă",
+    "confirmKick": "Ești sigur că vrei să elimini acest jucător?",
+    "joinFailed": "Intrarea în lobby a eșuat",
+    "confirmDelete": "Ești sigur că vrei să ștergi această problemă?"
+  },
+  "account": {
+    "title": "Cont",
+    "email": "Email",
+    "logout": "Deconectare",
+    "login": "Autentificare",
+    "notAuthenticated": "Nu ești autentificat.",
+    "loading": "Se încarcă..."
+  },
+  "welcome": {
+    "title": "Planning Poker pentru Echipe Agile",
+    "subtitle": "Estimări ușor de folosit și distractive. Colaborează în timp real cu echipa ta folosind Fibonacci, T-Shirt sau sisteme personalizate de votare.",
+    "getStarted": "Începe Acum",
+    "whyChoose": "De ce să Alegi Planning Poker-ul Nostru?",
+    "features": {
+      "realTime": {
+        "title": "Colaborare în Timp Real",
+        "description": "Votează împreună cu echipa ta în timp real. Vezi voturile pe măsură ce apar și dezvăluie rezultatele instant."
+      },
+      "votingSystems": {
+        "title": "Sisteme Multiple de Votare",
+        "description": "Alege din Fibonacci, mărimi T-Shirt sau Puteri ale lui 2. Personalizează abordarea ta de estimare."
+      },
+      "statistics": {
+        "title": "Statistici Voturi",
+        "description": "Analizează tiparele de votare cu statistici detaliate și indicatori de consens."
+      },
+      "issues": {
+        "title": "Gestionarea Problemelor",
+        "description": "Gestionează poveștile și problemele tale direct în aplicație. Urmărește progresul și rezultatele."
+      },
+      "secure": {
+        "title": "Sigur și Privat",
+        "description": "Sesiunile tale sunt private și sigure. Integrat cu autentificarea Keycloak."
+      },
+      "multiLanguage": {
+        "title": "Multi-Limbă",
+        "description": "Disponibil în Engleză, Română și Franceză. Mai multe limbi în curând."
+      }
+    },
+    "cta": {
+      "title": "Gata să Începi Estimarea?",
+      "subtitle": "Alătură-te miilor de echipe agile care folosesc instrumentul nostru Planning Poker",
+      "button": "Începe Acum"
+    },
+    "footer": {
+      "copyright": "© 2026 Planning Poker. Toate drepturile rezervate."
+    }
+  }
+}

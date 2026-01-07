@@ -2,7 +2,7 @@
   <div class="header">
     <div class="header-left">
       <span class="logo-icon">♠</span>
-      <h1>{{ translateService.translate('newGame.createGame') }}</h1>
+      <h1>{{ 'newGame.createGame' | translate }}</h1>
     </div>
     <select class="lang-select" [(ngModel)]="lang" (ngModelChange)="setLanguage($event)" title="Change language">
       <option *ngFor="let opt of translateService.languageOptions" [value]="opt.code">{{ opt.label }}</option>
@@ -12,35 +12,35 @@
   <!-- Loading state while checking authentication -->
   <div *ngIf="isLoading" class="loading-state">
     <div class="spinner"></div>
-    <p>{{ translateService.translate('newGame.checkingAuth') || 'Loading...' }}</p>
+    <p>{{ 'newGame.checkingAuth' | translate }}</p>
   </div>
 
   <!-- Form shown only when authenticated -->
   <div *ngIf="!isLoading" class="form-section">
     <div class="form-group">
-      <label for="gameName">{{ translateService.translate('newGame.gameName') }}</label>
+      <label for="gameName">{{ 'newGame.gameName' | translate }}</label>
       <input type="text" id="gameName" [(ngModel)]="gameName"
-        [placeholder]="translateService.translate('newGame.enterGameName')" class="input-field" />
+        [placeholder]="'newGame.enterGameName' | translate" class="input-field" />
     </div>
 
     <div class="form-group">
-      <label>{{ translateService.translate('newGame.yourName') }}</label>
+      <label>{{ 'newGame.yourName' | translate }}</label>
       <div class="input-field readonly" style="padding: 8px; background: #f5f5f5; border-radius:4px; color: #333;">
         {{ userName }}
       </div>
     </div>
 
     <div class="form-group">
-      <label for="votingSystem">{{ translateService.translate('newGame.votingSystem') }}</label>
+      <label for="votingSystem">{{ 'newGame.votingSystem' | translate }}</label>
       <select id="votingSystem" [(ngModel)]="selectedVotingSystem" class="input-field">
-        <option value="fibonacci">{{ translateService.translate('newGame.fibonacci') }}</option>
-        <option value="tshirt">{{ translateService.translate('newGame.tshirt') }}</option>
-        <option value="powers">{{ translateService.translate('newGame.powers') }}</option>
+        <option value="fibonacci">{{ 'newGame.fibonacci' | translate }}</option>
+        <option value="tshirt">{{ 'newGame.tshirt' | translate }}</option>
+        <option value="powers">{{ 'newGame.powers' | translate }}</option>
       </select>
     </div>
 
     <button class="btn-primary" (click)="createGame()" [disabled]="!userName.trim()">
-      {{ translateService.translate('newGame.createButton') }}
+      {{ 'newGame.createButton' | translate }}
     </button>
   </div>
 </div>

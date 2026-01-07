@@ -12,11 +12,14 @@ export interface User {
 
 export interface Lobby {
   id: string;
+  name?: string;
   host: string;
   users: User[];
   currentStory: string | null;
   votesRevealed: boolean;
   createdAt: number;
+  currentIssue?: any;
+  issues?: any[];
 }
 
 @Injectable({
@@ -51,6 +54,15 @@ export class SocketService {
 
     this.socket.on('lobby-updated', (data: { lobby: Lobby }) => {
       if (data.lobby) {
+        const currentLobby = this.lobbySubject.value;
+        if (currentLobby) {
+          if (!(data.lobby as any).currentIssue && (currentLobby as any).currentIssue) {
+            (data.lobby as any).currentIssue = (currentLobby as any).currentIssue;
+          }
+          if (!(data.lobby as any).issues && (currentLobby as any).issues) {
+            (data.lobby as any).issues = (currentLobby as any).issues;
+          }
+        }
         this.lobbySubject.next(data.lobby);
       }
     });
@@ -60,9 +72,9 @@ export class SocketService {
     return this.socket.id || '';
   }
 
-  createLobby(userName: string): Observable<{ lobbyId: string; lobby: Lobby }> {
+  createLobby(userName: string, gameName?: string): Observable<{ lobbyId: string; lobby: Lobby }> {
     return new Observable(observer => {
-      this.socket.emit('create-lobby', { userName });
+      this.socket.emit('create-lobby', { userName, gameName });
       this.socket.once('lobby-created', (data: any) => {
         const lobby: Lobby | null = data?.lobby ?? (data?.id ? { ...data, id: data.id } : null);
         const lobbyId: string = data?.lobbyId ?? data?.id ?? lobby?.id ?? '';
@@ -124,7 +136,8 @@ export class SocketService {
           const exists = lobby.users.some(u => u.id === data.user.id);
           if (!exists) {
             lobby.users.push(data.user);
-            this.lobbySubject.next({ ...lobby });
+            const updatedLobby = Object.assign({}, lobby);
+            this.lobbySubject.next(updatedLobby);
           }
         }
         observer.next(data);
@@ -137,10 +150,8 @@ export class SocketService {
       this.socket.on('user-left', (data: { userId: string; userName: string }) => {
         const lobby = this.lobbySubject.value;
         if (lobby) {
-          const updatedLobby = {
-            ...lobby,
-            users: lobby.users.filter(u => u.id !== data.userId)
-          };
+          lobby.users = lobby.users.filter(u => u.id !== data.userId);
+          const updatedLobby = Object.assign({}, lobby);
           this.lobbySubject.next(updatedLobby);
         }
         observer.next(data);
@@ -157,7 +168,8 @@ export class SocketService {
           if (user) {
             user.vote = 'hidden';
           }
-          this.lobbySubject.next({ ...lobby });
+          const updatedLobby = Object.assign({}, lobby);
+          this.lobbySubject.next(updatedLobby);
         }
         observer.next(data);
       });
@@ -171,7 +183,8 @@ export class SocketService {
         if (lobby) {
           lobby.users = data.users;
           lobby.votesRevealed = true;
-          this.lobbySubject.next({ ...lobby });
+          const updatedLobby = Object.assign({}, lobby);
+          this.lobbySubject.next(updatedLobby);
         }
         observer.next(data);
       });
@@ -202,15 +215,22 @@ export class SocketService {
     });
   }
 
-  onRoundStarted(): Observable<{ story: string; users: User[] }> {
+  onRoundStarted(): Observable<{ story: string; users: User[]; currentIssue?: any; issues?: any[] }> {
     return new Observable(observer => {
-      this.socket.on('round-started', (data: { story: string; users: User[] }) => {
+      this.socket.on('round-started', (data: { story: string; users: User[]; currentIssue?: any; issues?: any[] }) => {
         const lobby = this.lobbySubject.value;
         if (lobby) {
           lobby.users = data.users;
           lobby.currentStory = data.story;
           lobby.votesRevealed = false;
-          this.lobbySubject.next({ ...lobby });
+          if (data.currentIssue !== undefined) {
+            (lobby as any).currentIssue = data.currentIssue;
+          }
+          if (data.issues !== undefined) {
+            (lobby as any).issues = data.issues;
+          }
+          const updatedLobby = Object.assign({}, lobby);
+          this.lobbySubject.next(updatedLobby);
         }
         observer.next(data);
       });

@@ -9,12 +9,14 @@
 .game-header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 16px 24px;
-  background: rgba(13, 6, 32, 0.8);
+  background: rgba(13, 6, 32, 0.95);
   border-bottom: 2px solid var(--astral-gold);
   backdrop-filter: blur(10px);
-  position: relative;
-  z-index: 10;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .logo-icon {
@@ -42,6 +44,16 @@
   gap: 8px;
   color: var(--moonlight);
   cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.user-badge:hover {
+  color: var(--stardust-gold);
+  transform: translateY(-1px);
+}
+
+.user-badge:hover .user-avatar {
+  box-shadow: 0 0 16px var(--ethereal-glow), 0 0 8px var(--astral-gold);
 }
 
 .user-name-text {
@@ -73,9 +85,14 @@
   border: 1px solid var(--astral-gold);
   color: var(--stardust-gold);
   padding: 8px 16px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
+  height: 40px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .btn-outline .icon {
@@ -97,22 +114,19 @@
   background: rgba(45, 27, 78, 0.5);
   color: var(--stardust-gold);
   border-radius: 4px;
+  height: 40px;
+  cursor: pointer;
 }
 
 .game-main {
   flex: 1;
   display: flex;
   flex-direction: row;
-  padding: 20px;
+  padding: 20px 20px 0;
   position: relative;
   z-index: 1;
   gap: 20px;
   overflow: hidden;
-}
-
-.game-main.with-sidebar .game-content {
-  flex: 1;
-  overflow-y: auto;
 }
 
 .game-content {
@@ -120,15 +134,19 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  overflow-y: auto;
 }
 
 .issues-sidebar {
   width: 380px;
   height: calc(100vh - 90px);
-  position: sticky;
-  top: 20px;
-  flex-shrink: 0;
+  position: fixed;
+  right: 0;
+  top: 70px;
+  z-index: 25;
   animation: slideInRight 0.3s ease;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.5);
+  overflow-y: auto;
 }
 
 @keyframes slideInRight {
@@ -140,6 +158,21 @@
     transform: translateX(0);
     opacity: 1;
   }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.issues-sidebar.closing {
+  animation: slideOutRight 0.3s ease forwards;
 }
 
 .join-form-container {
@@ -160,9 +193,11 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-bottom: 32px;
+  margin-bottom: 50px;
   padding: 0 20px;
   animation: fadeInDown 0.5s ease;
+  z-index: 10;
+  position: relative;
 }
 
 @keyframes fadeInDown {
@@ -178,7 +213,7 @@
 
 .parchment {
   position: relative;
-  max-width: 700px;
+  max-width: 550px;
   width: 100%;
   background: linear-gradient(180deg, 
     #f4e4c1 0%, 
@@ -187,13 +222,13 @@
     #e8d8b0 90%, 
     #f4e4c1 100%
   );
-  padding: 32px 48px;
-  border-radius: 12px;
+  padding: 20px 32px;
+  border-radius: 10px;
   box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.6),
+    0 6px 24px rgba(0, 0, 0, 0.5),
     inset 0 2px 4px rgba(255, 255, 255, 0.3),
     inset 0 -2px 4px rgba(0, 0, 0, 0.2);
-  border: 3px solid #c4a574;
+  border: 2px solid #c4a574;
 }
 
 .parchment::before {
@@ -237,26 +272,26 @@
 
 .issue-label {
   font-family: 'Cinzel', serif;
-  font-size: 14px;
+  font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   color: #8b5a2b;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   font-weight: 600;
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
 }
 
 .issue-title-display {
   font-family: 'Cinzel', serif;
-  font-size: 28px;
+  font-size: 22px;
   font-weight: 700;
   color: #4a2d1a;
-  line-height: 1.4;
+  line-height: 1.3;
   text-shadow: 
     0 1px 0 rgba(255, 255, 255, 0.8),
     0 2px 4px rgba(0, 0, 0, 0.2);
   margin: 0;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
 }
 
 .issue-label::before,
@@ -269,40 +304,40 @@
 }
 
 .voting-progress {
-  margin-top: 16px;
-  padding-top: 12px;
+  margin-top: 12px;
+  padding-top: 10px;
   border-top: 1px solid rgba(139, 90, 43, 0.3);
 }
 
 .progress-text {
   font-family: 'Raleway', sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   color: #8b5a2b;
   margin: 0;
   font-weight: 500;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
 }
 
 .issue-result {
-  margin-top: 16px;
-  padding-top: 12px;
+  margin-top: 12px;
+  padding-top: 10px;
   border-top: 1px solid rgba(139, 90, 43, 0.3);
   animation: fadeIn 0.5s ease;
 }
 
 .result-label {
   font-family: 'Cinzel', serif;
-  font-size: 12px;
+  font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
   color: #8b5a2b;
-  margin: 0 0 8px 0;
+  margin: 0 0 6px 0;
   font-weight: 600;
 }
 
 .result-points {
   font-family: 'Cinzel', serif;
-  font-size: 36px;
+  font-size: 28px;
   font-weight: 700;
   color: var(--astral-gold);
   margin: 0;
@@ -354,13 +389,70 @@
   box-shadow: 0 6px 20px var(--ethereal-glow);
 }
 
+.or-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0 16px 0;
+  position: relative;
+  text-align: center;
+}
+
+.or-divider span {
+  color: var(--moonlight);
+  font-size: 14px;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  opacity: 0.8;
+}
+
+.btn-login {
+  background: transparent;
+  border: 2px solid var(--astral-gold);
+  color: var(--stardust-gold);
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-family: 'Cinzel', serif;
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  display: block;
+}
+
+.btn-login:hover {
+  background: rgba(74, 45, 107, 0.3);
+  border-color: var(--stardust-gold);
+  box-shadow: 0 4px 16px var(--ethereal-glow);
+  transform: translateY(-2px);
+}
+
 .table-section {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 50px;
+  padding-top: 30px;
+  padding-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.table-section.votes-revealed {
+  padding-top: 15px;
+}
+
+.table-section.has-second-ring {
+  padding-top: 80px;
+  padding-bottom: 80px;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.table-section.has-second-ring .poker-table {
+  margin: 60px 0;
 }
 
 .poker-table {
@@ -394,50 +486,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.player-spot:nth-child(1) {
-  bottom: -80px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.player-spot:nth-child(2) {
-  top: -80px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.player-spot:nth-child(3) {
-  left: -60px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.player-spot:nth-child(4) {
-  right: -60px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.player-spot:nth-child(5) {
-  bottom: -80px;
-  left: 25%;
-}
-
-.player-spot:nth-child(6) {
-  bottom: -80px;
-  right: 25%;
-}
-
-.player-spot:nth-child(7) {
-  top: -80px;
-  left: 25%;
-}
-
-.player-spot:nth-child(8) {
-  top: -80px;
-  right: 25%;
+  transition: all 0.3s ease;
 }
 
 .player-card {
@@ -640,12 +689,22 @@
 }
 
 .voting-section {
-  padding: 24px;
+  padding: 32px 24px 24px;
   border-top: 2px solid var(--astral-gold);
   text-align: center;
-  background: rgba(13, 6, 32, 0.6);
+  background: rgba(13, 6, 32, 0.8);
   backdrop-filter: blur(10px);
   margin-top: 60px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 8px 8px 0 0;
+  transition: margin-top 0.3s ease;
+}
+
+.table-section.has-second-ring ~ .voting-section,
+.table-section.has-second-ring ~ * .voting-section {
+  margin-top: 120px;
 }
 
 .voting-label {
@@ -659,7 +718,7 @@
   display: flex;
   justify-content: center;
   gap: 12px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   max-width: 900px;
   margin: 0 auto;
 }
@@ -724,6 +783,419 @@
   font-weight: 600;
   position: relative;
   z-index: 1;
+}
+
+/* Tablet and Mobile Responsive Styles */
+@media (max-width: 768px) {
+  .game-header {
+    padding: 12px 16px;
+    flex-wrap: nowrap;
+    gap: 8px;
+    align-items: center;
+    position: sticky;
+    top: 0;
+  }
+
+  .header-left {
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .header-right {
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .game-name {
+    font-size: 14px;
+    letter-spacing: 1px;
+  }
+
+  .logo-icon {
+    font-size: 20px;
+  }
+
+  .btn-outline {
+    padding: 6px 10px;
+    font-size: 12px;
+    white-space: nowrap;
+    height: 36px;
+  }
+
+  .btn-outline .icon {
+    font-size: 14px;
+  }
+
+  .user-badge {
+    font-size: 12px;
+    gap: 6px;
+  }
+
+  .user-avatar {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+
+  .lang-select {
+    padding: 6px 8px;
+    font-size: 12px;
+    height: 36px;
+  }
+
+  .game-main {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .issues-sidebar {
+    width: 85%;
+    max-width: 380px;
+    height: 100vh;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 25;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.7);
+    padding-top: 62px;
+  }
+
+  .current-issue-banner {
+    margin-bottom: 20px;
+    padding: 0 10px;
+  }
+
+  .parchment {
+    padding: 20px 24px;
+  }
+
+  .issue-title-display {
+    font-size: 20px;
+  }
+
+  .issue-label {
+    font-size: 12px;
+    letter-spacing: 2px;
+  }
+
+  .table-section {
+    padding-top: 20px;
+    padding-bottom: 15px;
+  }
+
+  .table-section.has-second-ring {
+    padding-top: 50px;
+    padding-bottom: 50px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .table-section.has-second-ring .poker-table {
+    margin: 40px 0;
+  }
+
+  .poker-table {
+    width: 100%;
+    max-width: 360px;
+    height: 180px;
+    margin: 20px 0;
+  }
+
+  .player-card {
+    width: 40px;
+    height: 56px;
+  }
+
+  .vote-value,
+  .card-back {
+    font-size: 14px;
+  }
+
+  .player-name {
+    font-size: 11px;
+  }
+
+  .btn-reveal,
+  .btn-new-round {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  .message-title {
+    font-size: 18px;
+  }
+
+  .message-subtitle {
+    font-size: 12px;
+  }
+
+  .voting-section {
+    padding: 20px 16px 20px;
+    margin-top: 20px;
+  }
+
+  .voting-label {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  .voting-cards {
+    flex-wrap: wrap;
+    max-width: 100%;
+    padding: 0 10px;
+  }
+
+  .vote-card {
+    width: 65px;
+    height: 95px;
+  }
+
+  .card-text {
+    font-size: 22px;
+  }
+
+  .vote-statistics-section {
+    padding: 20px 16px 20px;
+    margin-top: 20px;
+  }
+
+  .vote-statistics {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 0;
+    margin-bottom: 6px;
+  }
+
+  .statistic-item {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .stat-label {
+    font-size: 14px;
+    min-width: 20px;
+  }
+
+  .stat-bar {
+    min-width: 30px;
+    max-width: 60px;
+  }
+
+  .stat-value {
+    font-size: 11px;
+  }
+
+  .countdown-number {
+    font-size: 48px;
+  }
+
+  .countdown-text {
+    font-size: 14px;
+  }
+
+  .result-points {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .game-container {
+    min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .game-header {
+    padding: 10px 12px;
+    align-items: center;
+    position: sticky;
+    top: 0;
+  }
+
+  .header-left {
+    flex-shrink: 0;
+    min-width: 0;
+  }
+
+  .header-right {
+    gap: 4px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .game-name {
+    font-size: 12px;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .btn-outline {
+    padding: 5px 8px;
+    font-size: 11px;
+    height: 32px;
+  }
+
+  .user-badge {
+    font-size: 11px;
+  }
+
+  .user-avatar {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+
+  .lang-select {
+    height: 32px;
+  }
+
+  .game-main {
+    padding: 8px;
+  }
+
+  .issues-sidebar {
+    width: 100%;
+    max-width: 100%;
+    height: 100vh;
+    top: 0;
+    padding-top: 78px;
+  }
+
+  .current-issue-banner {
+    padding: 0 8px;
+    margin-bottom: 16px;
+  }
+
+  .parchment {
+    padding: 16px 20px;
+  }
+
+  .issue-title-display {
+    font-size: 18px;
+  }
+
+  .issue-label {
+    font-size: 10px;
+  }
+
+  .table-section {
+    padding-top: 15px;
+    padding-bottom: 10px;
+  }
+
+  .table-section.has-second-ring {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .table-section.has-second-ring .poker-table {
+    margin: 30px 0;
+  }
+
+  .poker-table {
+    width: 100%;
+    max-width: 300px;
+    height: 150px;
+    margin: 16px 0;
+  }
+
+  .player-card {
+    width: 36px;
+    height: 50px;
+  }
+
+  .vote-value,
+  .card-back {
+    font-size: 12px;
+  }
+
+  .player-name {
+    font-size: 10px;
+  }
+
+  .btn-reveal,
+  .btn-new-round {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+
+  .message-title {
+    font-size: 16px;
+  }
+
+  .message-subtitle {
+    font-size: 11px;
+  }
+
+  .voting-section {
+    padding: 16px 12px 16px;
+    margin-top: 16px;
+    border-radius: 4px 4px 0 0;
+  }
+
+  .voting-label {
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+
+  .voting-cards {
+    gap: 8px;
+    padding: 0 5px;
+  }
+
+  .vote-card {
+    width: 60px;
+    height: 90px;
+  }
+
+  .card-text {
+    font-size: 20px;
+  }
+
+  .vote-statistics-section {
+    padding: 16px 12px 16px;
+    margin-top: 16px;
+    border-radius: 4px 4px 0 0;
+  }
+
+  .vote-statistics {
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 0;
+  }
+
+  .statistic-item {
+    width: 100%;
+    justify-content: space-between;
+    min-width: unset;
+    padding: 8px 12px;
+  }
+
+  .countdown-number {
+    font-size: 36px;
+  }
+
+  .countdown-text {
+    font-size: 12px;
+  }
+
+  .result-points {
+    font-size: 24px;
+  }
+
+  .modal-content {
+    padding: 20px;
+    width: 95%;
+  }
+
+  .modal-content h2 {
+    font-size: 18px;
+  }
 }
 
 .modal-overlay {
@@ -795,26 +1267,58 @@
   color: var(--stardust-gold);
 }
 
+.vote-statistics-section {
+  padding: 32px 24px 24px;
+  border-top: 2px solid var(--astral-gold);
+  text-align: center;
+  background: rgba(13, 6, 32, 0.8);
+  backdrop-filter: blur(10px);
+  margin-top: 60px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 8px 8px 0 0;
+  transition: margin-top 0.3s ease;
+}
+
+.table-section.has-second-ring ~ .vote-statistics-section,
+.table-section.has-second-ring ~ * .vote-statistics-section {
+  margin-top: 120px;
+}
+
+.vote-statistics-title {
+  font-family: 'Cinzel', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--astral-gold);
+  margin: 0 0 12px 0;
+  letter-spacing: 1px;
+  text-shadow: 0 0 12px var(--ethereal-glow);
+  text-align: center;
+}
+
 /* Vote Statistics - Minimalist Design */
 .vote-statistics {
   display: flex;
   justify-content: center;
-  gap: 16px;
-  margin-bottom: 24px;
-  padding: 0 20px;
+  gap: 20px;
+  padding: 0;
   animation: fadeIn 0.4s ease;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
 }
 
 .statistic-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  background: rgba(45, 27, 78, 0.3);
-  border: 1px solid rgba(212, 175, 55, 0.4);
-  border-radius: 6px;
+  gap: 10px;
+  padding: 10px 16px;
+  background: rgba(45, 27, 78, 0.5);
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  border-radius: 8px;
   backdrop-filter: blur(5px);
   transition: all 0.3s ease;
+  min-width: 140px;
 }
 
 .statistic-item:hover {
@@ -852,7 +1356,7 @@
 
 .account-link {
   margin-left: 8px;
-  color: #d4af37; /* or your accent color */
+  color: #d4af37;
   text-decoration: underline;
   cursor: pointer;
 }

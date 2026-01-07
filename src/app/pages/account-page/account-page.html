@@ -1,18 +1,29 @@
 <div class="account-container">
-  <h2>Account</h2>
+  <!-- Header -->
+  <header class="account-header">
+    <div class="header-left">
+      <span class="logo-icon">♠</span>
+      <h1>Account</h1>
+    </div>
+    <button class="btn-home" (click)="goBack()">
+      Home
+    </button>
+  </header>
 
+  <!-- Loading state -->
   <div *ngIf="loading" class="loading-state">
     <div class="spinner"></div>
     <p>Loading...</p>
   </div>
 
-  <ng-container *ngIf="!loading">
+  <!-- Main content -->
+  <div class="content-wrapper" *ngIf="!loading">
     <div *ngIf="authenticated; else notAuth">
       <div class="profile-card">
         <div class="profile-header">
           <div class="avatar">{{ (fullName || username || '?').charAt(0).toUpperCase() }}</div>
           <div class="user-info">
-            <h3>{{ fullName || username }}</h3>
+            <h2>{{ fullName || username }}</h2>
             <p class="username">@{{ username }}</p>
           </div>
         </div>
@@ -24,13 +35,19 @@
           </div>
         </div>
 
-        <button class="btn-logout" (click)="logout()">Logout</button>
+        <button class="btn-logout" (click)="logout()">
+          Logout
+        </button>
       </div>
     </div>
 
     <ng-template #notAuth>
-      <p>You are not authenticated.</p>
-      <button class="btn-login" (click)="login()">Login</button>
+      <div class="auth-message">
+        <p class="message-text">You are not authenticated.</p>
+        <button class="btn-login" (click)="login()">
+          Login
+        </button>
+      </div>
     </ng-template>
-  </ng-container>
+  </div>
 </div>
