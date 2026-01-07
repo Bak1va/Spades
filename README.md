@@ -1,59 +1,93 @@
-# Spades
+<div align="center">
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.5.
+# 🃏 Planning Poker – Agile Estimation App
 
-## Development server
+Collaborative, real‑time planning poker for agile teams.
 
-To start a local development server, run:
+🌐 **Live site:** https://planning-poker.xyz
 
-```bash
-ng serve
-```
+</div>
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## ✨ Features
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- 🔐 Login & user badge with avatar
+- 👥 Real‑time multiplayer lobbies
+- 🃏 Multiple card decks (Fibonacci, T‑shirt sizes, etc.)
+- 📊 Vote statistics and reveal countdown
+- 📋 Issues sidebar with current issue banner
+- 🌍 Multi‑language support
 
-```bash
-ng generate component component-name
-```
+---
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## 🚀 Tech Stack
 
-```bash
-ng generate --help
-```
+- ⚙️ **Framework:** Angular 20 (standalone components)
+- 🎨 **Styling:** CSS with a custom dark theme
+- 🔌 **Realtime:** WebSocket based `SocketService`
+- 🌐 **Hosting target:** Static site hosting / SPA hosting
 
-## Building
+---
 
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## 🧑‍💻 Local Development
 
 ```bash
-ng test
+npm install
+npm start
 ```
 
-## Running end-to-end tests
+Then open: http://localhost:4200
 
-For end-to-end (e2e) testing, run:
+---
+
+## 🏗️ Production Build
 
 ```bash
-ng e2e
+npm run build
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+The optimized build will be generated in `dist/`.
 
-## Additional Resources
+You can serve it with any static HTTP server, for example:
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+```bash
+npm install -g http-server
+http-server dist/spades -p 8080
+```
+
+Then open: http://localhost:8080
+
+---
+
+## ☁️ Hosting & SSO Requirements
+
+To host **planning-poker.xyz**, you basically need:
+
+1. 🌍 **A domain name** – e.g. `planning-poker.xyz` bought from any registrar.
+2. 📦 **A hosting provider** – Netlify, Vercel, GitHub Pages, Azure Static Web Apps, Nginx on a VPS, etc.
+3. 📁 **The production build** – contents of the `dist/` folder created by `npm run build`.
+4. 🔁 **SPA routing support** – configure your host so all unknown routes serve `index.html`.
+5. 🔒 **HTTPS** – usually automatic via your hosting provider (Let’s Encrypt / built‑in SSL).
+6. 🧩 **SSO server (Keycloak)** – a running Keycloak instance with:
+	- a realm called `planning-poker` (or update `authRealm` in `src/environments`),
+	- a public client named `frontend-service` (or update `authClient`),
+	- valid redirect URIs for `https://planning-poker.xyz/*`.
+
+By default the app expects Keycloak at **https://auth.planning-poker.xyz** (see `authUrl` in the environment files). If you host Keycloak somewhere else, just adjust the values in `src/environments/environment.ts` and `src/environments/environment.prod.ts`.
+
+---
+
+## 🧪 Testing
+
+```bash
+npm test
+```
+
+Runs the unit tests.
+
+---
+
+## 📄 License
+
+This project is for personal/educational use. Adapt it as needed for your own teams and hosting setup.
