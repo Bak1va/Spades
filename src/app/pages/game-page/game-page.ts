@@ -33,7 +33,7 @@ export class GamePage implements OnInit, OnDestroy {
   noIssuesMessage = false;
 
   lang: 'en' | 'ro' | 'fr';
-  isAuthenticating = true; // Show loading state while checking auth
+  isAuthenticating = true;
 
   get isAuthenticated(): boolean {
     return this.userService.isLoggedIn();
@@ -99,7 +99,7 @@ export class GamePage implements OnInit, OnDestroy {
         if (lobby) {
           this.lobby = lobby;
           this.hasJoined = true;
-          
+
           if ((lobby as any).currentIssue !== undefined) {
             this.currentIssue = (lobby as any).currentIssue;
           }
@@ -122,7 +122,6 @@ export class GamePage implements OnInit, OnDestroy {
       this.socketService.onRoundStarted().subscribe((data) => {
         this.selectedVote = null;
         this.voteStatistics = [];
-        // Maintain current issue and issues from round data
         if (data.currentIssue !== undefined) {
           this.currentIssue = data.currentIssue;
         }
@@ -136,7 +135,7 @@ export class GamePage implements OnInit, OnDestroy {
       this.socketService.onIssueSelected().subscribe(data => {
         this.currentIssue = data.issue;
         this.noIssuesMessage = false;
-        
+
         if (data.issue) {
           const issueIndex = this.issues.findIndex(i => i.id === data.issue.id);
           if (issueIndex !== -1) {
@@ -157,14 +156,12 @@ export class GamePage implements OnInit, OnDestroy {
       })
     );
 
-    // Check if already in this lobby via socket
     if (this.socketService.currentLobby?.id === this.lobbyId) {
       this.hasJoined = true;
       this.isAuthenticating = false;
       return;
     }
 
-    // Initialize user authentication
     this.initializeUser();
   }
 
@@ -172,9 +169,6 @@ export class GamePage implements OnInit, OnDestroy {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  /**
-   * Initialize user - check Keycloak auth and auto-join if possible
-   */
   private async initializeUser(): Promise<void> {
     try {
       // Wait for Keycloak to initialize and check SSO
@@ -185,14 +179,13 @@ export class GamePage implements OnInit, OnDestroy {
 
         // Get username from Keycloak token
         const keycloakUsername = this.userService.getUsername() || this.userService.getFullName();
-        
+
         if (keycloakUsername) {
           this.userName = keycloakUsername;
           localStorage.setItem('planningPokerUsername', this.userName);
         }
       }
 
-      // Done checking auth
       this.isAuthenticating = false;
 
       // Auto-join lobby if we have username and lobbyId
@@ -203,7 +196,6 @@ export class GamePage implements OnInit, OnDestroy {
       console.log('Keycloak initialization failed or user not authenticated:', err);
       this.isAuthenticating = false;
 
-      // Still try to join if we have a saved username
       if (this.userName && this.lobbyId && !this.hasJoined) {
         this.joinLobby();
       }
@@ -304,7 +296,6 @@ export class GamePage implements OnInit, OnDestroy {
 
   revealVotes(): void {
     if (!this.lobbyId || !this.allPlayersVoted() || !this.currentIssue) return;
-    
     // Emit countdown start event - this will trigger startCountdownAnimation for ALL players
     this.socketService.startCountdown(this.lobbyId);
   }
@@ -320,11 +311,9 @@ export class GamePage implements OnInit, OnDestroy {
         clearInterval(countdownInterval);
         this.countdownValue = null;
         this.isRevealing = false;
-        
         // Only host reveals the votes after countdown
         if (this.isHost()) {
           this.socketService.revealVotes(this.lobbyId);
-          
           // Calculate and store the result after a short delay
           setTimeout(() => {
             this.calculateAndStoreResult();
@@ -357,13 +346,13 @@ export class GamePage implements OnInit, OnDestroy {
       // If no numeric votes, mark as completed without points
       this.currentIssue.status = 'completed';
       this.currentIssue.points = '?';
-      
+
       // Update the issue in the issues list as well
       const issueIndex = this.issues.findIndex(i => i.id === this.currentIssue!.id);
       if (issueIndex !== -1) {
         this.issues[issueIndex] = { ...this.currentIssue };
       }
-      
+
       // Broadcast the updated issue to all players
       this.socketService.selectIssue(this.lobbyId, this.currentIssue);
       this.socketService.updateIssuesList(this.lobbyId, this.issues);
@@ -377,13 +366,13 @@ export class GamePage implements OnInit, OnDestroy {
     // Update the current issue
     this.currentIssue.status = 'completed';
     this.currentIssue.points = roundedMean.toString();
-    
+
     // Update the issue in the issues list as well
     const issueIndex = this.issues.findIndex(i => i.id === this.currentIssue!.id);
     if (issueIndex !== -1) {
       this.issues[issueIndex] = { ...this.currentIssue };
     }
-    
+
     // Broadcast the updated issue to all players
     this.socketService.selectIssue(this.lobbyId, this.currentIssue);
     this.socketService.updateIssuesList(this.lobbyId, this.issues);
@@ -391,28 +380,27 @@ export class GamePage implements OnInit, OnDestroy {
 
   startNewRound(): void {
     if (!this.lobbyId) return;
-    
-    // Clear votes and reset state
-    this.socketService.newRound(this.lobbyId);
+
     this.noIssuesMessage = false;
 
     // Check if there are pending issues
     const pendingIssues = this.issues.filter(i => i.status === 'pending');
-    
+
     if (pendingIssues.length > 0) {
-      // Automatically select the next pending issue
+      // Automatically select the next pending issue BEFORE starting the round
       const nextIssue = pendingIssues[0];
       nextIssue.status = 'voting';
       this.currentIssue = nextIssue;
-      // Broadcast to all players
+      // Broadcast to all players FIRST
       this.socketService.selectIssue(this.lobbyId, nextIssue);
       this.socketService.updateIssuesList(this.lobbyId, this.issues);
+      this.socketService.newRound(this.lobbyId);
     } else {
-      // No pending issues left
       this.currentIssue = null;
       this.noIssuesMessage = true;
       // Broadcast to all players
       this.socketService.selectIssue(this.lobbyId, null);
+      this.socketService.newRound(this.lobbyId);
     }
   }
 
@@ -547,11 +535,11 @@ export class GamePage implements OnInit, OnDestroy {
     // Detect screen size for responsive table dimensions
     const isMobile = window.innerWidth <= 480;
     const isTablet = window.innerWidth <= 768 && !isMobile;
-    
+
     // Table dimensions (ellipse) - responsive
     let tableWidth = 480;
     let tableHeight = 240;
-    
+
     if (isMobile) {
       tableWidth = Math.min(300, window.innerWidth - 40);
       tableHeight = 150;
@@ -559,7 +547,7 @@ export class GamePage implements OnInit, OnDestroy {
       tableWidth = Math.min(360, window.innerWidth - 80);
       tableHeight = 180;
     }
-    
+
     const centerX = tableWidth / 2;
     const centerY = tableHeight / 2;
 
@@ -585,21 +573,21 @@ export class GamePage implements OnInit, OnDestroy {
 
     // Calculate angle for even distribution
     const angleStep = (2 * Math.PI) / playersInCurrentRing;
-    const angle = angleStep * positionInRing - Math.PI / 2; // Start from top
+    const angle = angleStep * positionInRing - Math.PI / 2;
 
     // Ellipse radii with offset for players to be around (not on) the table
     const baseRadiusX = tableWidth / 2;
     const baseRadiusY = tableHeight / 2;
-    
+
     // Offset distance from table edge (player distance from table) - responsive
     let ringOffset = ring === 0 ? 80 : 140;
-    
+
     if (isMobile) {
       ringOffset = ring === 0 ? 55 : 100;
     } else if (isTablet) {
       ringOffset = ring === 0 ? 60 : 110;
     }
-    
+
     const radiusX = baseRadiusX + ringOffset;
     const radiusY = baseRadiusY + ringOffset;
 

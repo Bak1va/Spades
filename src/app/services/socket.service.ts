@@ -168,7 +168,15 @@ export class SocketService {
           if (user) {
             user.vote = 'hidden';
           }
+          const currentIssue = (lobby as any).currentIssue;
+          const issues = (lobby as any).issues;
           const updatedLobby = Object.assign({}, lobby);
+          if (currentIssue !== undefined) {
+            (updatedLobby as any).currentIssue = currentIssue;
+          }
+          if (issues !== undefined) {
+            (updatedLobby as any).issues = issues;
+          }
           this.lobbySubject.next(updatedLobby);
         }
         observer.next(data);
@@ -223,12 +231,19 @@ export class SocketService {
           lobby.users = data.users;
           lobby.currentStory = data.story;
           lobby.votesRevealed = false;
+
           if (data.currentIssue !== undefined) {
             (lobby as any).currentIssue = data.currentIssue;
+          } else if ((lobby as any).currentIssue === undefined) {
+            (lobby as any).currentIssue = null;
           }
+
           if (data.issues !== undefined) {
             (lobby as any).issues = data.issues;
+          } else if ((lobby as any).issues === undefined) {
+            (lobby as any).issues = [];
           }
+
           const updatedLobby = Object.assign({}, lobby);
           this.lobbySubject.next(updatedLobby);
         }
